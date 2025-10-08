@@ -1,4 +1,7 @@
 #include "backEnd/Effect/DamageEffect.hpp"
 
-DamageEffect::DamageEffect() {}
-DamageEffect::~DamageEffect() {}
+DamageEffect::DamageEffect(int damage) : _damage(damage) {}
+
+void DamageEffect::applyEffect() {
+    // Implémentez l'effet de dégât ici
+}

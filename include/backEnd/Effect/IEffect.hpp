@@ -1,7 +1,10 @@
-#pragma once
+#ifndef IEFFECT_H
+#define IEFFECT_H
 
 class IEffect {
 public:
-    IEffect();
-    ~IEffect();
+    virtual ~IEffect() = default;
+    virtual void applyEffect() = 0;  // Méthode virtuelle pure
 };
+
+#endif // IEFFECT_H

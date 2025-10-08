@@ -1,7 +1,23 @@
-#pragma once
+#ifndef PREPARECHAMPION_H
+#define PREPARECHAMPION_H
 
-class PrepareChampion {
+#include "backEnd/Effect/IEffect.hpp"
+
+// Forward declaration pour éviter les dépendances circulaires
+class Champion;
+
+class PrepareChampion : public IEffect {
+private:
+    Champion* _champion;
+
 public:
-    PrepareChampion();
-    ~PrepareChampion();
+    PrepareChampion(Champion* champion = nullptr);
+    ~PrepareChampion() override = default;
+    
+    void applyEffect() override;
+
+    inline Champion* getChampion() const { return _champion; }
+    inline void setChampion(Champion* champion) { _champion = champion; }
 };
+
+#endif // PREPARECHAMPION_H
