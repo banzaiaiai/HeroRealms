@@ -1,7 +1,6 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Carte/Carte.hpp"
 #include "backEnd/Partie.hpp"  // Inclure le header complet
-#include <cstdlib>
 #include <random>
 #include <typeinfo>
 #include <vector>
@@ -85,8 +84,8 @@ void Joueur::mouve(Carte& carte, std::vector<Carte>& source, std::vector<Carte>&
 
 void Joueur::viderPlateau(){
     for(Carte carte : _plateau) {
-        if (typeid(carte)==typeid(Carte)) // faux le changer pour les non permanent
-         {
+        if (typeid(carte)==typeid(NonPermanent)) // faux le changer pour les non permanent
+        {
             mouve(carte,_plateau,_defausse);
         }
     }

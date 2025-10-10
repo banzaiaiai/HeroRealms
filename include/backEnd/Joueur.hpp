@@ -2,6 +2,7 @@
 #define JOUEUR_H
 
 #include "backEnd/Carte/Carte.hpp"
+#include "backEnd/Carte/NonPermanent.hpp"
 #include <string>
 #include <vector>
 
