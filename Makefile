@@ -8,7 +8,7 @@ INC_DIR := include
 
 # Compilateur et options
 CXX := g++
-CXXFLAGS := -Wall -Wextra -std=c++17 -I$(INC_DIR)
+CXXFLAGS := -Wall -Wextra -std=c++17 -lsfml-graphics -lsfml-window -lsfml-system -I$(INC_DIR)
 
 # Mode par défaut (release ou debug)
 BUILD ?= release

@@ -1,0 +1,19 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-Iinclude",
+      "-O2",
+      "-c",
+      "-o",
+      "build/backEnd/Joueur.o",
+      "src/backEnd/Joueur.cpp"
+    ],
+    "directory": "/home/admin/Documents/c++/project/HeroRealms",
+    "file": "/home/admin/Documents/c++/project/HeroRealms/src/backEnd/Joueur.cpp",
+    "output": "/home/admin/Documents/c++/project/HeroRealms/build/backEnd/Joueur.o"
+  }
+]
