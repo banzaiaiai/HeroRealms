@@ -17,6 +17,7 @@ public:
     Carte();
     ~Carte();
     //virtual void effect(enum effect) = 0;
+    //void trigger(EventType, EffectContext);
 
     // Getters
     inline Joueur* getJoueur() const { return _joueur; }  // Retourne un pointeur

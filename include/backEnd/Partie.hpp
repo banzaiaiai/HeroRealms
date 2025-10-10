@@ -3,7 +3,14 @@
 
 #include "backEnd/Carte/Carte.hpp"
 #include <vector>
-#include <memory>
+
+
+extern std::vector<Carte>* GLOBALRiviere;
+extern Joueur* GLOBALJoueurActif;
+extern Joueur* GLOBALJoueurCible;
+extern Carte* GLOBALCarteActif;
+
+
 
 // Forward declaration
 class Joueur;
