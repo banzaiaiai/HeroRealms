@@ -1,0 +1,39 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/include/backEnd",
+        "${workspaceFolder}/include/backEnd/Carte",
+        "${workspaceFolder}/include/backEnd/Effect",
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/src/backEnd",
+        "${workspaceFolder}/src/backEnd/Carte", 
+        "${workspaceFolder}/src/backEnd/Effect",
+        "/usr/include",
+        "/usr/include/c++/*",
+        "/usr/include/x86_64-linux-gnu/c++/*"
+      ],
+      "defines": [],
+      "compilerPath": "/usr/bin/g++",
+      "cStandard": "c17",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-gcc-x64",
+      "browse": {
+        "path": [
+          "${workspaceFolder}/include",
+          "${workspaceFolder}/include/backEnd",
+          "${workspaceFolder}/include/backEnd/Carte",
+          "${workspaceFolder}/include/backEnd/Effect",
+          "${workspaceFolder}/src",
+          "/usr/include",
+          "/usr/lib/gcc/x86_64-linux-gnu/*/include"
+        ],
+        "limitSymbolsToIncludedHeaders": true,
+        "databaseFilename": ""
+      }
+    }
+  ],
+  "version": 4
+}

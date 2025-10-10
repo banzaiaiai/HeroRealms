@@ -29,6 +29,9 @@ public:
     inline void setName(std::string name) { _name = name; }
     inline void setFaction(Faction faction) { _faction = faction; }
     inline void setCoupOr(int coupOr) { _coupOr = coupOr; }
+
+    // Operateur
+    bool operator==(const Carte & other) const;
 };
 
 #endif // CARTE_H

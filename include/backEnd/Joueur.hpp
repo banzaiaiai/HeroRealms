@@ -11,12 +11,13 @@ class Partie;
 class Joueur {
 private:
     int _id;
-    Partie* _partie;  // POINTEUR au lieu d'objet
+    Partie* _partie;
     std::string _name;
-    int _nbCarte;
+    int _nbCarteCte;
     int _or;
     int _degat;
-    int _pv = 50;
+    int _pv;
+    
     std::vector<Carte> _main;
     std::vector<Carte> _pioche;
     std::vector<Carte> _defausse;
@@ -35,12 +36,17 @@ public:
     void defausser(Carte carte);
     void subitAttaque(Carte carte);
     void subitAttaque(Joueur* joueur);  // Prend un pointeur
+    void piocher(int nbCarte);
+    void melanger();
+    void viderPlateau();
+    void mouve(Carte& carte, std::vector<Carte>& source, std::vector<Carte>& destination);
+    void mouve(std::vector<Carte>& source, std::vector<Carte>& destination);
 
     // Getters
     inline int getId() const { return _id; }
     inline Partie* getPartie() const { return _partie; }  // Retourne un pointeur
     inline std::string getName() const { return _name; }
-    inline int getNbCarte() const { return _nbCarte; }
+    inline int getNbCarte() const { return _nbCarteCte; }
     inline int getOr() const { return _or; }
     inline int getDegat() const { return _degat; }
     inline int getPv() const { return _pv; }
@@ -53,7 +59,7 @@ public:
     inline void setId(int id) { _id = id; }
     inline void setPartie(Partie* partie) { _partie = partie; }  // Prend un pointeur
     inline void setName(std::string name) { _name = name; }
-    inline void setNbCarte(int nbCarte) { _nbCarte = nbCarte; }
+    inline void setNbCarte(int nbCarte) { _nbCarteCte = nbCarte; }
     inline void setOr(int ore) { _or = ore; }
     inline void setDegat(int degat) { _degat = degat; }
     inline void setPv(int pv) { _pv = pv; }

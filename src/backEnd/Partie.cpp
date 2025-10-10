@@ -16,4 +16,11 @@ Partie::~Partie() {
     }
 }
 
+bool Partie::victoireDefaite(Joueur* joueur)
+{
+  if(joueur->getPv()==0){
+    return true ;
+  }
+  return false;
+}
 // Implémentation des autres méthodes...
