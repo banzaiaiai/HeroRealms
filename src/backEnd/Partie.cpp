@@ -1,5 +1,8 @@
 #include "backEnd/Partie.hpp"
 #include "backEnd/Joueur.hpp"  // Inclure le header complet
+#include <cstddef>
+
+
 
 Partie::Partie(int nbjoueur) : _tour(0) {
     // Créer les joueurs
@@ -7,6 +10,15 @@ Partie::Partie(int nbjoueur) : _tour(0) {
         _listJoueur.push_back(new Joueur(i, this, "Joueur " + std::to_string(i)));
     }
     _joueurActuelle = _listJoueur[0];
+
+
+
+
+    // Initialisation dans un .cpp
+std::vector<Carte>* GLOBALRiviere = nullptr;
+Joueur* GLOBALJoueurActif = nullptr;
+Joueur* GLOBALJoueurCible = nullptr;
+Carte* GLOBALCarteActif = nullptr;
 }
 
 Partie::~Partie() {

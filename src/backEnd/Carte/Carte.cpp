@@ -12,3 +12,5 @@ bool Carte::operator==(const Carte &other) const{
     }
     return false;
 }
+
+

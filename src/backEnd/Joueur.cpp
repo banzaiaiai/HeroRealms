@@ -91,3 +91,7 @@ void Joueur::viderPlateau(){
     }
 }
 
+void Joueur::jouerUneCarte(Carte carte){
+    mouve(carte,_main,_plateau);
+    
+}
