@@ -3,11 +3,16 @@
 #include <cstddef>
 
 
+std::vector<Carte>* GLOBALRiviere = nullptr;
+Joueur* GLOBALJoueurActif = nullptr;
+Joueur* GLOBALJoueurCible = nullptr;
+Carte* GLOBALCarteActif = nullptr;
+
 
 Partie::Partie(int nbjoueur) : _tour(0) {
     // Créer les joueurs
     for (int i = 0; i < nbjoueur; ++i) {
-        _listJoueur.push_back(new Joueur(i, this, "Joueur " + std::to_string(i)));
+        _listJoueur.push_back(new Joueur(i, *this, "Joueur " + std::to_string(i)));
     }
     _joueurActuelle = _listJoueur[0];
 
@@ -15,10 +20,10 @@ Partie::Partie(int nbjoueur) : _tour(0) {
 
 
     // Initialisation dans un .cpp
-std::vector<Carte>* GLOBALRiviere = nullptr;
-Joueur* GLOBALJoueurActif = nullptr;
-Joueur* GLOBALJoueurCible = nullptr;
-Carte* GLOBALCarteActif = nullptr;
+    std::vector<Carte>* GLOBALRiviere = &_riviere;
+    Joueur* GLOBALJoueurActif = _joueurActuelle;
+    Joueur* GLOBALJoueurCible = nullptr;
+    Carte* GLOBALCarteActif = nullptr;
 }
 
 Partie::~Partie() {

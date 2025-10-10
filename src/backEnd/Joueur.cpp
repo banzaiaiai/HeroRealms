@@ -6,14 +6,7 @@
 #include <vector>
 #include <algorithm>
 
-Joueur::Joueur() : _id(0), _partie(nullptr), _name(""), _nbCarteCte(5), _or(0), _degat(0), _pv(50) {
-    _main = std::vector<Carte>();
-    _pioche = std::vector<Carte>();
-    _defausse = std::vector<Carte>();
-    _plateau = std::vector<Carte>();
-}
-
-Joueur::Joueur(int id, Partie* partie, std::string name) 
+Joueur::Joueur(int id, Partie& partie, std::string name) 
     : _id(id), _partie(partie), _name(name), _nbCarteCte(5), _or(0), _degat(0), _pv(50) {
     _main.clear();
     _pioche.clear();
@@ -93,5 +86,10 @@ void Joueur::viderPlateau(){
 
 void Joueur::jouerUneCarte(Carte carte){
     mouve(carte,_main,_plateau);
+    GLOBALJoueurActif=this;
+    GLOBALCarteActif=&carte;
+
+
+
     
 }
