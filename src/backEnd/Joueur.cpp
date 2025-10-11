@@ -6,21 +6,15 @@
 #include <vector>
 #include <algorithm>
 
-Joueur::Joueur() : _id(0), _partie(nullptr), _name(""), _nbCarteCte(5), _or(0), _degat(0), _pv(50) {
-    _main = std::vector<Carte>();
-    _pioche = std::vector<Carte>();
-    _defausse = std::vector<Carte>();
-    _plateau = std::vector<Carte>();
-}
-
-Joueur::Joueur(int id, Partie* partie, std::string name) 
-    : _id(id), _partie(partie), _name(name), _nbCarteCte(5), _or(0), _degat(0), _pv(50) {
+Joueur::Joueur(int id, Partie& partie, std::string name,std::vector<Carte> deck) 
+    : _id(id), _partie(partie), _name(name), _nbCarteCte(5), _or(0), _degat(0), _pv(50),_pioche(deck){
     _main.clear();
-    _pioche.clear();
     _defausse.clear();
     _plateau.clear();
     
     // Piocher les cartes initiales
+    
+    melanger();
     piocher(_nbCarteCte);
 }
 
@@ -31,7 +25,7 @@ Joueur::~Joueur() {
 // Implémentation des méthode de fonctionnement 
 
 void Joueur::piocher(int nbCarte){
-    for (int _; _<nbCarte ; _++){
+    for (int i=0; i<nbCarte ; i++){
         // Si la pioche est vide la remélange
         if(_pioche.empty()){
            melanger(); 
@@ -47,13 +41,9 @@ void Joueur::finDeTour(){
     }
     // repioche la main
     piocher(_nbCarteCte);
+    
     viderPlateau();
 }
-/* To Do 
-void Joueur::defausser(Carte carte){
-
-}
-*/ 
 
 void Joueur::melanger(){
     for(Carte carte : _defausse){
@@ -93,5 +83,17 @@ void Joueur::viderPlateau(){
 
 void Joueur::jouerUneCarte(Carte carte){
     mouve(carte,_main,_plateau);
-    
+    GLOBALJoueurActif=this;
+    GLOBALCarteActif=&carte;
+}
+
+void Joueur::defausser(Carte carte){
+    mouve(carte,_main,_defausse);
+}
+
+void Joueur::acheterUneCarte(Carte & carte){
+    if(carte.getCoupOr()>=this->getOr()){
+        this->setOr(this->getOr()-carte.getCoupOr());
+        mouve(carte,_partie.getRiviere(),_defausse);
+    }
 }
