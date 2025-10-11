@@ -14,7 +14,7 @@ bool Carte::operator==(const Carte &other) const{
 }
 
 void Carte::addTrigger(EventType eventType,
-                       std::vector<std::unique_ptr<IEffect>> effects)
+                       std::vector<std::shared_ptr<IEffect>> effects)
 {
     _trigger[eventType] = std::move(effects);
 }
