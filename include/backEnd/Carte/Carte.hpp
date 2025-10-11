@@ -1,17 +1,36 @@
 #ifndef CARTE_H
 #define CARTE_H
 
+#include "backEnd/Effect/IEffect.hpp"
+
 #include <string>
+#include <map>
+#include <vector>
 
 // Forward declaration
 class Joueur;
+
+enum EventType {
+    OnPlay,
+    OnTurnStart,
+    OnAllyEnter,
+    OnDelete
+};
+
+enum Faction {
+    Imperiale,
+    Guilde,
+    Necros,
+    Sauvage
+};
 
 class Carte {
 protected:
     Joueur* _joueur;  // POINTEUR au lieu d'objet
     std::string _name;
-    enum Faction { FACTION1, FACTION2, FACTION3 } _faction;
+    enum Faction _faction;
     int _coupOr;
+    std::map<EventType, std::vector<IEffect>> _trigger;
 
 public:
     Carte();
@@ -26,7 +45,7 @@ public:
     inline int getCoupOr() const { return _coupOr; }
 
     // Setters
-    inline void setJoueur(Joueur* joueur) { _joueur = joueur; }  // Prend un pointeur
+inline void setJoueur(Joueur* joueur) { _joueur = joueur; }  // Prend un pointeur
     inline void setName(std::string name) { _name = name; }
     inline void setFaction(Faction faction) { _faction = faction; }
     inline void setCoupOr(int coupOr) { _coupOr = coupOr; }

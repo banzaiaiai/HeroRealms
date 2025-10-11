@@ -13,4 +13,6 @@ bool Carte::operator==(const Carte &other) const{
     return false;
 }
 
-
+void Carte::addTrigger(EventType eventType, std::vector<IEffect> effects){
+    _trigger.add(eventType, effects);
+}
