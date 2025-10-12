@@ -4,6 +4,8 @@
 #include "backEnd/Carte/Carte.hpp"
 #include <vector>
 
+// Forward declaration
+class Joueur;
 
 extern std::vector<Carte>* GLOBALRiviere;
 extern Joueur* GLOBALJoueurActif;
@@ -12,8 +14,7 @@ extern Carte* GLOBALCarteActif;
 
 
 
-// Forward declaration
-class Joueur;
+
 
 class Partie {
 private:

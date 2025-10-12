@@ -42,6 +42,7 @@ public:
     void mouve(Carte& carte, std::vector<Carte>& source, std::vector<Carte>& destination);
     void mouve(std::vector<Carte>& source, std::vector<Carte>& destination);
     void acheterUneCarte(Carte &carte);
+    void attaque(Joueur jouer);
 
     // Getters
     inline int getId() const { return _id; }

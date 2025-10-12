@@ -28,7 +28,7 @@ enum Faction {
 
 class Carte {
 protected:
-    Joueur* _joueur;  // POINTEUR au lieu d'objet
+    Joueur* _joueur;  
     std::string _name;
     enum Faction _faction;
     int _coupOr;
@@ -43,13 +43,13 @@ public:
                     std::vector<std::shared_ptr<IEffect>> effects);
 
     // Getters
-    inline Joueur* getJoueur() const { return _joueur; }  // Retourne un pointeur
+    inline Joueur* getJoueur() const { return _joueur; } 
     inline std::string getName() const { return _name; }
     inline Faction getFaction() const { return _faction; }
     inline int getCoupOr() const { return _coupOr; }
 
     // Setters
-inline void setJoueur(Joueur* joueur) { _joueur = joueur; }  // Prend un pointeur
+inline void setJoueur(Joueur* joueur) { _joueur = joueur; } 
     inline void setName(std::string name) { _name = name; }
     inline void setFaction(Faction faction) { _faction = faction; }
     inline void setCoupOr(int coupOr) { _coupOr = coupOr; }

@@ -39,6 +39,10 @@ void Joueur::finDeTour(){
     for (Carte carte : _main){
         mouve(carte,_main,_defausse);
     }
+    // vide les caractéristique du joueur
+    setDegat(0);
+    setOr(0);
+
     // repioche la main
     piocher(_nbCarteCte);
     
@@ -96,4 +100,9 @@ void Joueur::acheterUneCarte(Carte & carte){
         this->setOr(this->getOr()-carte.getCoupOr());
         mouve(carte,_partie.getRiviere(),_defausse);
     }
+}
+
+// Il faut compléter & changer. Uniquement fait pour la phase de test
+void Joueur::attaque(Joueur joueur){
+    joueur.setPv(joueur.getPv()-this->getDegat());
 }

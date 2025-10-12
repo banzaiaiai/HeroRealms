@@ -1,7 +1,9 @@
 #include "backEnd/Effect/DamageEffect.hpp"
+#include "backEnd/Partie.hpp"
+#include "backEnd/Joueur.hpp"
 
 DamageEffect::DamageEffect(int damage) : _damage(damage) {}
 
 void DamageEffect::applyEffect() {
-    // Implémentez l'effet de dégât ici
+    GLOBALJoueurActif->setDegat(_damage);
 }

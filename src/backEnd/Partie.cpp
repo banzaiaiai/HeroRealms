@@ -1,7 +1,6 @@
 #include "backEnd/Partie.hpp"
 #include "backEnd/Carte/Carte.hpp"
 #include "backEnd/Joueur.hpp"  // Inclure le header complet
-#include <cstddef>
 #include <vector>
 
 
