@@ -3,9 +3,10 @@
 
 #include "backEnd/Carte/Carte.hpp"
 #include <vector>
+#include "backEnd/Joueur.hpp"
 
 // Forward declaration
-class Joueur;
+
 
 extern std::vector<Carte>* GLOBALRiviere;
 extern Joueur* GLOBALJoueurActif;
@@ -30,7 +31,7 @@ public:
     
     bool victoireDefaite(Joueur* joueur);  // Prend un pointeur
     void acheterUneCarte(Carte carte);
-
+    void mouve(std::vector<Carte>* source, std::vector<Carte>* destination);
     // Getters
     inline std::vector<Joueur>& getListJoueur() { return _listJoueur; }  
     inline std::vector<Carte> &getRiviere()  { return *_riviere; }

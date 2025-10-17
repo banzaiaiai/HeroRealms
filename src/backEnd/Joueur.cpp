@@ -76,6 +76,8 @@ void Joueur::mouve(Carte& carte, std::vector<Carte>& source, std::vector<Carte>&
     }
 }
 
+
+
 void Joueur::viderPlateau(){
     for(Carte carte : _plateau) {
         if (typeid(carte)==typeid(NonPermanent)) // faux le changer pour les non permanent
