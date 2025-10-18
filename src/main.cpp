@@ -3,7 +3,9 @@
 #include "backEnd/Effect/IEffect.hpp"
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Partie.hpp"
+#include "frontEnd/SFMLGame.hpp"
 #include <SFML/Graphics.hpp>
+#include "frontEnd/SFMLGame.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -31,13 +33,17 @@ int main()
   Joueur joueur2 = Joueur(1,partie1,"teste2",deck2);
   
   // début des teste 
+  /* tous est OK 
   std::cout<<"Taille des decks" << joueur1.getPioche().size()<<" "<<joueur2.getPioche().size()<< "\n";
   std::cout<<"Taille des mains" << joueur1.getMain().size()<<" "<<joueur2.getMain().size()<< "\n";
   joueur1.piocher(1);
   std::cout<<"Taille des decks" << joueur1.getPioche().size()<<" "<<joueur2.getPioche().size()<< "\n";
   std::cout<<"Taille des mains" << joueur1.getMain().size()<<" "<<joueur2.getMain().size()<< "\n";
   std::cout<<"Taille de la riviére" << partie1.getRiviere().size()<<"\n";
+  */
 
-
+  // SFML teste
+  SFMLGame teste;
+  teste.gameLoop();
   return 0;
 }
