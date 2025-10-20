@@ -2,6 +2,8 @@
 #include "frontEnd/ZoneCarte.hpp"
 #include <iostream>
 #include <algorithm>
+#include <iterator>
+#include <ostream>
 
 SFMLGame::SFMLGame(Partie* partie) 
     : _window(sf::VideoMode(1200, 800), "Jeu de Cartes", sf::Style::Titlebar | sf::Style::Close),
@@ -99,11 +101,12 @@ void SFMLGame::handleMouseClick(int mouseX, int mouseY) {
         if (carteGraphique->contains(mousePos)) {
             _carteSelectionnee = carteGraphique.get();
             _positionOriginale = carteGraphique->getPosition();
-            
+            std::cout<<carteGraphique->getCarteLogique()->getName()<<std::endl;
             // Trouver la zone source
             for (const auto& zone : _zones.getZones()) {
                 if (zone->contient(_positionOriginale)) {
                     _zoneSource = zone.get();
+                    std::cout<<_zoneSource->getNom()<<std::endl;
                     break;
                 }
             }

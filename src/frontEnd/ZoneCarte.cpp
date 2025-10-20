@@ -16,7 +16,7 @@ ZoneCarte::ZoneCarte(float x, float y, float width, float height,
 void ZoneCarte::ajouterCarteLogique(Carte* carte) {
     if (carte && !contientCarte(carte)) {
         _cartesLogiques.push_back(carte);
-        std::cout << "Carte '" << carte->getName() << "' ajoutée à la zone '" << _nom << "'" << std::endl;
+        //std::cout << "Carte '" << carte->getName() << "' ajoutée à la zone '" << _nom << "'" << std::endl;
     }
 }
 
