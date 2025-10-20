@@ -15,6 +15,7 @@ int main()
   Carte cDegat1 = Carte();
   std::shared_ptr<IEffect> seDegat1(new DamageEffect(5));
   std::vector<std::shared_ptr<IEffect>> vDegat1;
+  cDegat1.setName("le bonheur");
   vDegat1.push_back(seDegat1);
   cDegat1.addTrigger(OnPlay, vDegat1);
 
@@ -43,7 +44,7 @@ int main()
   */
 
   // SFML teste
-  SFMLGame teste;
+  SFMLGame teste(&partie1);
   teste.gameLoop();
   return 0;
 }

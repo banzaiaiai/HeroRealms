@@ -1,6 +1,13 @@
 #include "backEnd/Carte/Carte.hpp"
 
-Carte::Carte() {}
+Carte::Carte() 
+{
+    //_carteGraphique = CarteGraphique();
+}
+Carte::Carte(CarteGraphique* carteGraphique):_carteGraphique(carteGraphique)
+{
+    
+}
 Carte::~Carte() {}
 
 bool Carte::operator==(const Carte &other) const{

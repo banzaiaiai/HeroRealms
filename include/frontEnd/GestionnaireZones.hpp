@@ -1,35 +1,33 @@
-#ifndef GESTIONNAIREZONES_HPP
-#define GESTIONNAIREZONES_HPP
+#ifndef GESTIONNAIRE_ZONES_H
+#define GESTIONNAIRE_ZONES_H
 
-#include "frontEnd/ZoneCarte.hpp"
-#include <memory>
+#include "ZoneCarte.hpp"
 #include <vector>
-class GestionnaireZones {
-    std::vector<std::unique_ptr<ZoneCarte>> _zones;
-    ZoneCarte* _zoneActuelle;
-    
-    public: 
-        GestionnaireZones() : _zoneActuelle(nullptr) {}
-        
-        void ajouterZone(std::unique_ptr<ZoneCarte> zone) {
-            _zones.push_back(std::move(zone));
-        }
-        
-        
-        
-        void dessinerZones(sf::RenderWindow& window) ;
-        
-        // Zones prédéfinies pour un jeu de cartes
-        void creerZonesStandard() ;
+#include <memory>
+#include <map>
 
-        // getteur 
-        ZoneCarte* getZoneContenant(const sf::Vector2f& point) {
-            for (auto& zone : _zones) {
-                if (zone->contient(point)) {
-                    return zone.get();
-                }
-            }
-            return nullptr;
-        }
+// Forward declarations
+class Partie;
+class Joueur;
+
+class GestionnaireZones {
+private:
+    std::vector<std::unique_ptr<ZoneCarte>> _zones;
+    std::map<std::string, ZoneCarte*> _zonesParNom;
+    
+public:
+    GestionnaireZones();
+    
+    void creerZonesStandard();
+    void lierPartie(Partie* partie);
+    
+    ZoneCarte* getZoneContenant(const sf::Vector2f& point);
+    ZoneCarte* getZoneParNom(const std::string& nom);
+    
+    void dessinerZones(sf::RenderWindow& window);
+    void mettreAJourZones(Partie* partie);
+    
+    const std::vector<std::unique_ptr<ZoneCarte>>& getZones() const { return _zones; }
 };
+
 #endif

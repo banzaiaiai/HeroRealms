@@ -14,9 +14,9 @@ private:
     Carte* _carteLogique;  // Référence vers la logique métier
     
 public:
-    CarteGraphique(float x, float y, float width, float height, 
-                   Carte* carteLogique, const std::string& texturePath = "");
-    
+    // Le constructeur doit matcher exactement l'appel
+    CarteGraphique(float x, float y, float width, float height, Carte* carteLogique);
+    CarteGraphique(float width, float height, Carte* carteLogique);
     // Méthodes graphiques
     bool contains(const sf::Vector2f& point) const;
     void setSelected(bool selected);
@@ -28,6 +28,9 @@ public:
     // Lien avec la logique
     Carte* getCarteLogique() const { return _carteLogique; }
     void updateAppearance(); // Met à jour l'apparence selon l'état logique
+    sf::FloatRect getGlobalBounds() const {
+        return _shape.getGlobalBounds();
+    }
 };
 
 #endif

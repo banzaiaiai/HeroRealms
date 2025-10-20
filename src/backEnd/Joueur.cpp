@@ -1,6 +1,10 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Carte/Carte.hpp"
 #include "backEnd/Partie.hpp"  // Inclure le header complet
+#include "backEnd/Carte/NonPermanent.hpp"
+#include <iostream>
+#include <iterator>
+#include <list>
 #include <random>
 #include <typeinfo>
 #include <vector>
@@ -107,4 +111,42 @@ void Joueur::acheterUneCarte(Carte & carte){
 // Il faut compléter & changer. Uniquement fait pour la phase de test
 void Joueur::attaque(Joueur joueur){
     joueur.setPv(joueur.getPv()-this->getDegat());
+}
+// NOUVELLES méthodes graphiques
+void Joueur::creerCarteGraphique(Carte& carte, float x, float y) {
+        _cartesGraphiques.emplace_back(x, y, 80.f, 120.f, &carte);
+        carte.setCarteGraphique(&_cartesGraphiques.back());  // Adresse stable !
+}
+
+void Joueur::dessinerCartes(sf::RenderWindow& window) {
+        for (auto& carteGraphique : _cartesGraphiques) {
+            carteGraphique.draw(window);
+        }
+}
+
+// Méthode pour supprimer une carte graphique si besoin
+void Joueur::supprimerCarteGraphique(CarteGraphique* carte) {
+    _cartesGraphiques.remove_if([carte](const CarteGraphique& c) {
+        return &c == carte;
+    });
+}
+
+
+void Joueur::mettreAJourPositionsCartes() {
+    // Réorganise les cartes de la main
+    float startX = 50.f;
+    float y = 400.f;
+    float espacement = 90.f;
+    
+    int index = 0;
+    for (auto& carteGraphique : _cartesGraphiques) {
+        // Trouver la carte logique associée
+        Carte* carteLogique = carteGraphique.getCarteLogique();
+        
+        // Vérifier si la carte est dans la main
+        if (carteLogique && std::find(_main.begin(), _main.end(), *carteLogique) != _main.end()) {
+            carteGraphique.setPosition(startX + index * espacement, y);
+            index++;
+        }
+    }
 }

@@ -1,32 +1,25 @@
 #include "frontEnd/CarteGraphique.hpp"
 
-CarteGraphique::CarteGraphique(float x, float y, float width, float height, 
-                               Carte* carteLogique, const std::string& texturePath)
-    : _carteLogique(carteLogique), _isSelected(false) {
+CarteGraphique::CarteGraphique(float x, float y, float width, float height, Carte* carteLogique)
+    :  _isSelected(false) ,_carteLogique(carteLogique)
+    
+    {
     
     _shape.setPosition(x, y);
     _shape.setSize(sf::Vector2f(width, height));
-    
-    // Charger la texture si disponible
-    if (!texturePath.empty() && _texture.loadFromFile(texturePath)) {
-        _shape.setTexture(&_texture);
-    } else {
-        // Couleur par défaut basée sur la faction
-        if (_carteLogique) {
-            switch(_carteLogique->getFaction()) {
-                case Imperiale: _shape.setFillColor(sf::Color(200, 200, 255)); break;
-                case Guilde: _shape.setFillColor(sf::Color(255, 255, 200)); break;
-                case Necros: _shape.setFillColor(sf::Color(100, 100, 100)); break;
-                case Sauvage: _shape.setFillColor(sf::Color(200, 255, 200)); break;
-                default: _shape.setFillColor(sf::Color::White);
-            }
-        } else {
-            _shape.setFillColor(sf::Color::White);
-        }
-    }
-    
-    _shape.setOutlineThickness(2.f);
+    _shape.setFillColor(sf::Color::White);
     _shape.setOutlineColor(sf::Color::Black);
+    _shape.setOutlineThickness(2.f);
+}
+
+CarteGraphique::CarteGraphique(float width, float height, Carte* carteLogique)
+    :  _isSelected(false) ,_carteLogique(carteLogique)
+    
+    {
+    _shape.setSize(sf::Vector2f(width, height));
+    _shape.setFillColor(sf::Color::White);
+    _shape.setOutlineColor(sf::Color::Black);
+    _shape.setOutlineThickness(2.f);
 }
 
 bool CarteGraphique::contains(const sf::Vector2f& point) const {
