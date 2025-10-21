@@ -8,6 +8,7 @@
 #include "CarteGraphique.hpp"
 #include "GestionnaireZones.hpp"
 #include "frontEnd/ZoneCarte.hpp"
+#include "frontEnd/Overlay.hpp"
 #include <vector>
 #include <memory>
 #include <map>
@@ -24,12 +25,17 @@ private:
     ZoneCarte* _zoneSource;
     sf::Vector2f _positionOriginale;
 
+    Overlay _overlay;
+    bool _isOverlay;
+
 public:
     SFMLGame(Partie* partie = nullptr);
     ~SFMLGame();
 
     void setPartie(Partie* partie);
     void gameLoop();
+
+    void setIsOverlay(bool isOverlay) { _isOverlay = isOverlay; }
 
 private:
     void processEvents();
