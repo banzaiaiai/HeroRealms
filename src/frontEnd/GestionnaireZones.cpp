@@ -7,15 +7,17 @@ GestionnaireZones::GestionnaireZones() {}
 
 void GestionnaireZones::creerZonesStandard() {
     // Zones pour un jeu à 2 joueurs
-    _zones.push_back(std::make_unique<ZoneCarte>(50, 500, 1100, 150, "main_joueur1", sf::Color(0, 0, 255, 50)));
-    _zones.push_back(std::make_unique<ZoneCarte>(50, 50, 1100, 150, "main_joueur2", sf::Color(255, 0, 0, 50)));
-    _zones.push_back(std::make_unique<ZoneCarte>(200, 300, 800, 150, "plateau_joueur1", sf::Color(0, 255, 0, 50)));
-    _zones.push_back(std::make_unique<ZoneCarte>(200, 200, 800, 150, "plateau_joueur2", sf::Color(0, 255, 100, 50)));
-    _zones.push_back(std::make_unique<ZoneCarte>(1050, 350, 80, 120, "pioche_joueur1", sf::Color(255, 255, 0, 50)));
-    _zones.push_back(std::make_unique<ZoneCarte>(1050, 150, 80, 120, "pioche_joueur2", sf::Color(255, 200, 0, 50)));
-    _zones.push_back(std::make_unique<ZoneCarte>(950, 350, 80, 120, "defausse_joueur1", sf::Color(255, 0, 0, 50)));
-    _zones.push_back(std::make_unique<ZoneCarte>(950, 150, 80, 120, "defausse_joueur2", sf::Color(200, 0, 0, 50)));
-    _zones.push_back(std::make_unique<ZoneCarte>(50, 250, 350, 120, "marche", sf::Color(255, 165, 0, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(150, 640, 800, 150, "main_joueur1", sf::Color(0, 0, 255, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(50, 485, 1100, 150, "plateau_joueur1", sf::Color(0, 255, 0, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(1060, 640, 80, 120, "pioche_joueur1", sf::Color(255, 255, 0, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(960, 640, 80, 120, "defausse_joueur1", sf::Color(255, 0, 0, 50)));
+
+    _zones.push_back(std::make_unique<ZoneCarte>(150, 20, 800, 150, "main_joueur2", sf::Color(255, 0, 0, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(50, 175, 1100, 150, "plateau_joueur2", sf::Color(0, 255, 100, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(1060, 20, 80, 120, "pioche_joueur2", sf::Color(255, 200, 0, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(960, 20, 80, 120, "defausse_joueur2", sf::Color(200, 0, 0, 50)));
+    
+    _zones.push_back(std::make_unique<ZoneCarte>(400, 330, 500, 145, "marche0", sf::Color(255, 165, 0, 50)));
     
     // Mettre à jour la map de recherche
     for (auto& zone : _zones) {
@@ -51,6 +53,20 @@ void GestionnaireZones::mettreAJourZones(Partie* partie) {
                 zoneMain->ajouterCarteLogique(&carte);
             }
         }
+        
+        auto zoneTerrain = getZoneParNom("plateau" +suffixe);
+        if (zoneTerrain) {
+            for (auto& carte : joueurs[i].getPlateau()) {
+                zoneTerrain->ajouterCarteLogique(&carte);
+            }
+        }
+        auto zoneMarche = getZoneParNom("marche0");
+        if (zoneMarche) {
+            for (auto& carte : partie->getRiviere()) {
+                zoneMarche->ajouterCarteLogique(&carte);
+            }
+        }
+      
         
     }
     
