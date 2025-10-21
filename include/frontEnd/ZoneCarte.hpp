@@ -36,7 +36,7 @@ public:
     std::vector<sf::Vector2f> calculerPositionsCartes() const;
     
     // Getters
-    inline const std::string& getNom() const { return _nom; }
+    inline const std::string& getNom() { return _nom; }
     inline const sf::FloatRect& getBounds() const { return _zone; }
     inline const std::vector<Carte*>& getCartesLogiques() const { return _cartesLogiques; }
     inline bool estVide() const { return _cartesLogiques.empty(); }

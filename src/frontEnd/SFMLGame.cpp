@@ -3,7 +3,9 @@
 #include "backEnd/Partie.hpp"
 #include "frontEnd/ZoneCarte.hpp"
 #include <SFML/System/String.hpp>
+#include <cstring>
 #include <iostream>
+#include <iterator>
 #include <ostream>
 #include <string>
 
@@ -23,7 +25,7 @@ SFMLGame::SFMLGame(Partie* partie)
     }
 
     _overlay = Overlay();
-    _isOverlay = true;
+    _isOverlay = false;
 }
 
 SFMLGame::~SFMLGame() {
@@ -218,10 +220,14 @@ void SFMLGame::appliquerDeplacementLogique(Carte* carte, ZoneCarte* source, Zone
     // Exemple: _partie->deplacerCarte(carte, source->getNom(), cible->getNom());
     
     // Pour l'instant, on met à jour juste les zones graphiques
+    auto id1 = source->getNom().back();
+    int vid1 = (int)id1-48;
+    std::cout<<vid1<<std::endl;
+    std::cout<<_partie->getJoueurActuelle()->getId()+1<<std::endl;
     std::string tmpSource=source->getNom().substr(0,source->getNom().size()-1);
     std::string tmpCible=cible->getNom().substr(0,cible->getNom().size()-1);
     std::cout<<tmpSource<<" "<< tmpCible<<std::endl;
-    if(tmpSource=="main_joueur" && tmpCible=="plateau_joueur"){
+    if((tmpSource=="main_joueur" && tmpCible=="plateau_joueur") && (vid1==_partie->getJoueurActuelle()->getId()+1)){
         std::cout<<"réussi 1"<<std::endl;
         Joueur *joueur= _partie->getJoueurActuelle();
         joueur->mouve(carte,joueur->getMain(),joueur->getPlateau());

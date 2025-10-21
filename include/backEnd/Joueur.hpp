@@ -55,7 +55,7 @@ public:
     // Getters
     inline int getId() const { return _id; }
     inline Partie& getPartie() const { return _partie; }  
-    inline std::string getName() const { return _name; }
+    inline std::string getName() { return _name; }
     inline int getNbCarte() const { return _nbCarteCte; }
     int getPv() const { return _pv; }
     int getOr() const { return _or; }
