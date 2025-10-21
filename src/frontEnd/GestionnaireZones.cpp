@@ -60,11 +60,18 @@ void GestionnaireZones::mettreAJourZones(Partie* partie) {
                 zoneTerrain->ajouterCarteLogique(&carte);
             }
         }
+        
         auto zoneMarche = getZoneParNom("marche0");
         if (zoneMarche) {
             for (auto& carte : partie->getRiviere()) {
                 zoneMarche->ajouterCarteLogique(&carte);
             }
+        }
+        auto zoneDefausse = getZoneParNom("defausse" +suffixe);
+        if (zoneDefausse) {
+            auto & carte = joueurs[i].getDefausse().back();
+            zoneDefausse->viderCartes();
+            zoneDefausse->ajouterCarteLogique(&carte);
         }
       
         

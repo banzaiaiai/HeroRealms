@@ -62,7 +62,7 @@ public:
     inline int getDegat() const { return _degat; }
     inline std::vector<Carte>& getMain()  { return _main; }
     inline std::vector<Carte> getPioche() const { return _pioche; }
-    inline std::vector<Carte> getDefausse() const { return _defausse; }
+    inline std::vector<Carte>& getDefausse()  { return _defausse; }
     inline std::vector<Carte>& getPlateau() { return _plateau; }
     auto& getCartesGraphiques() const { return _cartesGraphiques;}
     inline CarteGraphique* getCarteGraphiqueAtPosition(const sf::Vector2f& position) {

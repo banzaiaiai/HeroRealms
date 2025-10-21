@@ -218,9 +218,9 @@ void SFMLGame::appliquerDeplacementLogique(Carte* carte, ZoneCarte* source, Zone
         Joueur *joueur= _partie->getJoueurActuelle();
         joueur->mouve(carte,joueur->getMain(),joueur->getPlateau());
     }
-    if(tmpSource=="marche" && tmpCible=="main_joueur"){
+    if((tmpSource=="marche" && tmpCible=="main_joueur") || (tmpSource=="marche" && tmpCible=="defausse_joueur")){
         std::cout<<"réussi 2"<<std::endl;
         Joueur *joueur= _partie->getJoueurActuelle();
-        joueur->mouve(carte,_partie->getRiviere(),joueur->getMain());
+        joueur->mouve(carte,_partie->getRiviere(),joueur->getDefausse());
     }
 }
