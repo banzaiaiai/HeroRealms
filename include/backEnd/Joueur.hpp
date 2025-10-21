@@ -43,6 +43,7 @@ public:
     void viderPlateau();
     void mouve(Carte& carte, std::vector<Carte>& source, std::vector<Carte>& destination);
     void mouve(std::vector<Carte>& source, std::vector<Carte>& destination);
+    void mouve(Carte* carte, std::vector<Carte>& source, std::vector<Carte>& destination);
     void acheterUneCarte(Carte &carte);
     void attaque(Joueur jouer);
     
@@ -62,7 +63,7 @@ public:
     inline std::vector<Carte>& getMain()  { return _main; }
     inline std::vector<Carte> getPioche() const { return _pioche; }
     inline std::vector<Carte> getDefausse() const { return _defausse; }
-    inline std::vector<Carte> getPlateau() const { return _plateau; }
+    inline std::vector<Carte>& getPlateau() { return _plateau; }
     auto& getCartesGraphiques() const { return _cartesGraphiques;}
     inline CarteGraphique* getCarteGraphiqueAtPosition(const sf::Vector2f& position) {
         for (auto& carteGraphique : _cartesGraphiques) {

@@ -58,6 +58,7 @@ public:
 
     // Opérateur
     bool operator==(const Carte & other) const;
+    bool operator==(const Carte *other) const;
 };
 
 #endif // CARTE_H

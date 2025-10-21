@@ -80,6 +80,16 @@ void Joueur::mouve(Carte& carte, std::vector<Carte>& source, std::vector<Carte>&
     }
 }
 
+void Joueur::mouve(Carte* carte, std::vector<Carte>& source, std::vector<Carte>& destination) {
+    // Recherche de la carte dans le vecteur source
+    auto it = std::find(source.begin(), source.end(), carte);
+    if (it != source.end()) {
+        destination.push_back(*it);
+        source.erase(it);
+    }
+}
+
+
 
 
 void Joueur::viderPlateau(){

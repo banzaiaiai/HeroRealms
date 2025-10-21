@@ -1,9 +1,11 @@
 #include "frontEnd/SFMLGame.hpp"
+#include "backEnd/Joueur.hpp"
+#include "backEnd/Partie.hpp"
 #include "frontEnd/ZoneCarte.hpp"
+#include <SFML/System/String.hpp>
 #include <iostream>
-#include <algorithm>
-#include <iterator>
 #include <ostream>
+#include <string>
 
 SFMLGame::SFMLGame(Partie* partie) 
     : _window(sf::VideoMode(1200, 800), "Jeu de Cartes", sf::Style::Titlebar | sf::Style::Close),
@@ -130,7 +132,9 @@ void SFMLGame::handleMouseRelease(int mouseX, int mouseY) {
     
     if (zoneCible && carteLogique) {
         if (deplacementValide(_zoneSource, zoneCible, carteLogique)) {
+            std::cout<<"deplacement possible"<<std::endl;
             appliquerDeplacementLogique(carteLogique, _zoneSource, zoneCible);
+            
             // L'affichage sera mis à jour via synchroniserAffichage()
         } else {
             // Annuler visuellement
@@ -192,14 +196,16 @@ bool SFMLGame::deplacementValide(ZoneCarte* source, ZoneCarte* cible, Carte* car
     // Règles de déplacement basées sur les noms des zones
     std::string sourceNom = source->getNom();
     std::string cibleNom = cible->getNom();
-    
     // Exemple de règles
-    if (sourceNom == "main_joueur" && cibleNom == "plateau") {
-        return _partie->getJoueurActuelle()->getOr() >= carte->getCoupOr();
+    if (/*sourceNom == "main_joueur" && cibleNom == "plateau"*/ true) {
+        //return _partie->getJoueurActuelle()->getOr() >= carte->getCoupOr();
+        return true;
+        
     }
     
-    if (sourceNom == "marche" && cibleNom == "main_joueur") {
-        return _partie->getJoueurActuelle()->getOr() >= carte->getCoupOr();
+    if (/*sourceNom == "marche" && cibleNom == "main_joueur"*/ true) {
+        // return _partie->getJoueurActuelle()->getOr() >= carte->getCoupOr();
+        return true;
     }
     
     return false;
@@ -212,6 +218,17 @@ void SFMLGame::appliquerDeplacementLogique(Carte* carte, ZoneCarte* source, Zone
     // Exemple: _partie->deplacerCarte(carte, source->getNom(), cible->getNom());
     
     // Pour l'instant, on met à jour juste les zones graphiques
-    source->retirerCarteLogique(carte);
-    cible->ajouterCarteLogique(carte);
+    std::string tmpSource=source->getNom().substr(0,source->getNom().size()-1);
+    std::string tmpCible=cible->getNom().substr(0,cible->getNom().size()-1);
+    std::cout<<tmpSource<<" "<< tmpCible<<std::endl;
+    if(tmpSource=="main_joueur" && tmpCible=="plateau_joueur"){
+        std::cout<<"réussi 1"<<std::endl;
+        Joueur *joueur= _partie->getJoueurActuelle();
+        joueur->mouve(carte,joueur->getMain(),joueur->getPlateau());
+    }
+    if(tmpSource=="marche" && tmpCible=="main_joueur"){
+        std::cout<<"réussi 2"<<std::endl;
+        Joueur *joueur= _partie->getJoueurActuelle();
+        joueur->mouve(carte,_partie->getRiviere(),joueur->getMain());
+    }
 }
