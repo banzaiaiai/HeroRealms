@@ -14,10 +14,10 @@ ZoneCarte::ZoneCarte(float x, float y, float width, float height,
 
 // Gestion des cartes logiques
 void ZoneCarte::ajouterCarteLogique(Carte* carte) {
-    if (carte && !contientCarte(carte)) {
+    //if (carte && !contientCarte(carte)) {
         _cartesLogiques.push_back(carte);
         //std::cout << "Carte '" << carte->getName() << "' ajoutée à la zone '" << _nom << "'" << std::endl;
-    }
+    //}
 }
 
 void ZoneCarte::retirerCarteLogique(Carte* carte) {

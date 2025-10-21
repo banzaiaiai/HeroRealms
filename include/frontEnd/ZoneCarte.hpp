@@ -12,6 +12,7 @@
 class Carte;
 
 class ZoneCarte {
+    friend class Overlay;
 private:
     sf::FloatRect _zone;
     std::string _nom;

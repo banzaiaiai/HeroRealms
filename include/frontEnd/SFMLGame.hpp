@@ -13,6 +13,8 @@
 #include <memory>
 #include <map>
 
+class Overlay;
+
 class SFMLGame {
 private:
     sf::RenderWindow _window;
@@ -25,17 +27,14 @@ private:
     ZoneCarte* _zoneSource;
     sf::Vector2f _positionOriginale;
 
-    Overlay _overlay;
-    bool _isOverlay;
 
 public:
     SFMLGame(Partie* partie = nullptr);
     ~SFMLGame();
 
+    Overlay _overlay;
     void setPartie(Partie* partie);
     void gameLoop();
-
-    void setIsOverlay(bool isOverlay) { _isOverlay = isOverlay; }
 
 private:
     void processEvents();

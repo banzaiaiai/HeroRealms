@@ -7,20 +7,21 @@
 #include "frontEnd/ZoneCarte.hpp"
 #include <vector>
 
-class SFMLGame;
-
 class Overlay{
     friend class SFMLGame;
 private:
     sf::RectangleShape _background;
     ZoneCarte _zoneCarte = ZoneCarte(100, 100, 1000, 600, "Overlay");
+    bool _isOverlay = false;
 
 public:
     Overlay();
     ~Overlay() {};
+    bool getIsOverlay() { return _isOverlay; };
 
-    //Carte openOverlay(std::vector<Carte> listCarte);
+    Carte* openOverlay(std::vector<Carte*> listCarte);
 
 };
 
 #endif
+

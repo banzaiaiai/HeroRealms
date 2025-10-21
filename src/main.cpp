@@ -44,7 +44,11 @@ int main()
   */
 
   // SFML teste
-  SFMLGame teste(&partie1);
-  teste.gameLoop();
+  SFMLGame test(&partie1);
+
+  auto vecTest = std::vector<Carte*>(5, &cDegat1);
+  test._overlay.openOverlay(vecTest);
+  test.gameLoop();
+
   return 0;
 }

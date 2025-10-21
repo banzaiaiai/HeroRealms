@@ -2,6 +2,7 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Partie.hpp"
 #include "frontEnd/ZoneCarte.hpp"
+#include "frontEnd/Overlay.hpp"
 #include <SFML/System/String.hpp>
 #include <iostream>
 #include <ostream>
@@ -21,9 +22,6 @@ SFMLGame::SFMLGame(Partie* partie)
         _zones.lierPartie(_partie);
         synchroniserAffichage();
     }
-
-    _overlay = Overlay();
-    _isOverlay = true;
 }
 
 SFMLGame::~SFMLGame() {
@@ -176,13 +174,15 @@ void SFMLGame::render() {
     
     // Dessiner les zones
     _zones.dessinerZones(_window);
+
+
     
     // Dessiner les cartes graphiques
     for (auto& [carteLogique, carteGraphique] : _cartesGraphiques) {
         carteGraphique->draw(_window);
     }
 
-    if (_isOverlay) {
+    if (_overlay.getIsOverlay()) {
         _window.draw(_overlay._background);
         _overlay._zoneCarte.dessiner(_window);
     }
