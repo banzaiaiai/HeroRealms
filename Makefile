@@ -8,7 +8,8 @@ INC_DIR := include
 
 # Compilateur et options
 CXX := g++
-CXXFLAGS := -Wall -Wextra -std=c++17 -lsfml-graphics -lsfml-window -lsfml-system -I$(INC_DIR)
+CXXFLAGS := -Wall -Wextra -std=c++17 -I$(INC_DIR)
+LDFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 
 # Mode par défaut (release ou debug)
 BUILD ?= release
@@ -33,7 +34,7 @@ all: $(TARGET)
 # Link final
 $(TARGET): $(OBJS)
 	@echo "🔗 Edition de liens -> $@"
-	$(CXX) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
 # Compilation des .cpp vers .o + génération des dépendances
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
