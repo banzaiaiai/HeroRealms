@@ -21,6 +21,9 @@ SFMLGame::SFMLGame(Partie* partie)
         _zones.lierPartie(_partie);
         synchroniserAffichage();
     }
+
+    _overlay = Overlay();
+    _isOverlay = true;
 }
 
 SFMLGame::~SFMLGame() {
@@ -177,6 +180,11 @@ void SFMLGame::render() {
     // Dessiner les cartes graphiques
     for (auto& [carteLogique, carteGraphique] : _cartesGraphiques) {
         carteGraphique->draw(_window);
+    }
+
+    if (_isOverlay) {
+        _window.draw(_overlay._background);
+        _overlay._zoneCarte.dessiner(_window);
     }
     
     _window.display();
