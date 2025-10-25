@@ -26,6 +26,7 @@ enum Faction {
 };
 
 class Carte {
+    friend class SFMLGame;
 protected:
     Joueur* _joueur;  
     std::string _name;

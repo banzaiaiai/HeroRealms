@@ -13,6 +13,7 @@ class Carte;
 
 class ZoneCarte {
     friend class Overlay;
+    friend class SFMLGame;
 private:
     sf::FloatRect _zone;
     std::string _nom;
