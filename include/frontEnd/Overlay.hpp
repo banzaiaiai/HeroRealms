@@ -5,17 +5,18 @@
 #include <SFML/Graphics.hpp>
 #include "backEnd/Carte/Carte.hpp"
 #include "frontEnd/ZoneCarte.hpp"
+#include "frontEnd/GestionnaireZones.hpp"
 #include <vector>
 
-class Overlay{
+class Overlay {
     friend class SFMLGame;
 private:
     sf::RectangleShape _background;
-    ZoneCarte _zoneCarte = ;
+    ZoneCarte* _zoneCarte;
     bool _isOverlay = false;
 
 public:
-    Overlay();
+    Overlay(ZoneCarte* zoneCarte);
     ~Overlay() {};
     bool getIsOverlay() { return _isOverlay; };
 

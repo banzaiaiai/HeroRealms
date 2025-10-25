@@ -12,7 +12,8 @@ SFMLGame::SFMLGame(Partie* partie)
     : _window(sf::VideoMode(1200, 800), "Jeu de Cartes", sf::Style::Titlebar | sf::Style::Close),
       _partie(partie),
       _carteSelectionnee(nullptr),
-      _zoneSource(nullptr) {
+      _zoneSource(nullptr),
+      _overlay(_zones.getZoneParNom("overlay")){
     
     std::cout << "SFMLGame construit" << std::endl;
     
@@ -22,6 +23,7 @@ SFMLGame::SFMLGame(Partie* partie)
         _zones.lierPartie(_partie);
         synchroniserAffichage();
     }
+
 }
 
 SFMLGame::~SFMLGame() {
@@ -184,7 +186,7 @@ void SFMLGame::render() {
 
     if (_overlay.getIsOverlay()) {
         _window.draw(_overlay._background);
-        _overlay._zoneCarte.dessiner(_window);
+        //_overlay._zoneCarte->dessiner(_window);
     }
     
     _window.display();
