@@ -5,5 +5,5 @@ NextCardRecup::NextCardRecup(int count) : _count(count)
 
 }
 
-void NextCardRecup::applyEffect(){}
+void NextCardRecup::applyEffect(Partie *partie){}
 NextCardRecup::~NextCardRecup() {}

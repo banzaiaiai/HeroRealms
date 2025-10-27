@@ -1,4 +1,5 @@
 #include "backEnd/Carte/Carte.hpp"
+#include "backEnd/Partie.hpp"
 
 Carte::Carte() 
 {
@@ -35,3 +36,12 @@ void Carte::addTrigger(EventType eventType,
     _trigger[eventType] = std::move(effects);
 }
 
+void Carte::jouer(Partie* partie)
+{
+    auto it = _trigger.find(EventType::OnPlay);
+    if (it != _trigger.end()) {
+        for (const auto& effect : it->second) {
+            effect->applyEffect(partie);
+        }
+    }
+}

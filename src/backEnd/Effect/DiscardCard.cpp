@@ -4,7 +4,7 @@ DiscardCard::DiscardCard(int count) : _count(count)
 {
 
 }
-void DiscardCard::applyEffect(){
+void DiscardCard::applyEffect(Partie *partie){
 
 }
 DiscardCard::~DiscardCard() {}

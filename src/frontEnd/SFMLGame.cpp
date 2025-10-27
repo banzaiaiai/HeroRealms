@@ -6,7 +6,6 @@
 #include <SFML/System/String.hpp>
 #include <cstring>
 #include <iostream>
-#include <iterator>
 #include <ostream>
 #include <string>
 
@@ -264,6 +263,7 @@ void SFMLGame::appliquerDeplacementLogique(Carte* carte, ZoneCarte* source, Zone
         std::cout<<"réussi 1"<<std::endl;
         Joueur *joueur= _partie->getJoueurActuelle();
         joueur->mouve(carte,joueur->getMain(),joueur->getPlateau());
+        carte->jouer(_partie);
     }
     if((tmpSource=="marche" && tmpCible=="main_joueur") || (tmpSource=="marche" && tmpCible=="defausse_joueur")){
         std::cout<<"réussi 2"<<std::endl;

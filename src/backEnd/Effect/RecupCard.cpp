@@ -4,5 +4,5 @@ RecupCard::RecupCard(int count): _count(count)
 {
   
 }
-void RecupCard::applyEffect(){}
+void RecupCard::applyEffect(Partie *partie){}
 RecupCard::~RecupCard() {}

@@ -2,6 +2,8 @@
 #define CARTE_H
 
 #include "backEnd/Effect/IEffect.hpp"
+
+//#include "backEnd/Partie.hpp"
 #include <string>
 #include <map>
 #include <vector>
@@ -10,6 +12,7 @@
 // Forward declarations
 class Joueur;
 class CarteGraphique;
+class Partie;
 
 enum EventType {
     OnPlay,
@@ -41,6 +44,7 @@ public:
     //virtual void effect(enum effect) = 0;
     //void trigger(EventType, EffectContext);
     void addTrigger(EventType eventType, std::vector<std::shared_ptr<IEffect>> effects);
+    void jouer(Partie* partie);
 
     // Getters
     inline Joueur* getJoueur() const { return _joueur; } 
