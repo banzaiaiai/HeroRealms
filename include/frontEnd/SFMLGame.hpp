@@ -7,8 +7,11 @@
 #include "backEnd/Partie.hpp"
 #include "CarteGraphique.hpp"
 #include "GestionnaireZones.hpp"
+#include "frontEnd/Button.hpp"
 #include "frontEnd/ZoneCarte.hpp"
 #include "frontEnd/Overlay.hpp"
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <vector>
 #include <memory>
 #include <map>
@@ -28,6 +31,13 @@ private:
     Overlay _overlay;
     bool _isOverlay;
 
+    sf::Font _font;
+    sf::Text _textJoueur1;
+    sf::Text _textJoueur2;
+
+    Button _buttonAtacker;
+    Button _buttonFinTour;
+
 public:
     SFMLGame(Partie* partie = nullptr);
     ~SFMLGame();
@@ -36,6 +46,7 @@ public:
     void gameLoop();
 
     void setIsOverlay(bool isOverlay) { _isOverlay = isOverlay; }
+    void rendertext();
 
 private:
     void processEvents();

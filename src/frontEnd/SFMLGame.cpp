@@ -2,6 +2,7 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Partie.hpp"
 #include "frontEnd/ZoneCarte.hpp"
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/System/String.hpp>
 #include <cstring>
 #include <iostream>
@@ -13,7 +14,9 @@ SFMLGame::SFMLGame(Partie* partie)
     : _window(sf::VideoMode(1200, 800), "Jeu de Cartes", sf::Style::Titlebar | sf::Style::Close),
       _partie(partie),
       _carteSelectionnee(nullptr),
-      _zoneSource(nullptr) {
+      _zoneSource(nullptr),
+      _buttonAtacker("attaque", sf::Vector2f (40,650), sf::Vector2f (100,100)),
+      _buttonFinTour("fin de tour", sf::Vector2f (920,370), sf::Vector2f (200,50)){
     
     std::cout << "SFMLGame construit" << std::endl;
     
@@ -26,10 +29,27 @@ SFMLGame::SFMLGame(Partie* partie)
 
     _overlay = Overlay();
     _isOverlay = false;
+    _font.loadFromFile("arial.ttf");
+    if (!_font.loadFromFile("arial.ttf")) {
+        std::cerr << "Erreur lors du chargement de la police" << std::endl;
+    }
+    rendertext();
 }
 
 SFMLGame::~SFMLGame() {
     std::cout << "SFMLGame détruit" << std::endl;
+}
+
+void SFMLGame::rendertext(){
+    _textJoueur1.setFont(_font);
+    _textJoueur1.setCharacterSize(24);
+    _textJoueur1.setFillColor(sf::Color::Red);
+    _textJoueur1.setPosition(10.f, 10.f);
+
+    _textJoueur2.setFont(_font);
+    _textJoueur2.setCharacterSize(24);
+    _textJoueur2.setFillColor(sf::Color::Red);
+    _textJoueur2.setPosition(10.f, 40.f);
 }
 
 void SFMLGame::setPartie(Partie* partie) {
@@ -171,6 +191,10 @@ void SFMLGame::update() {
             }
         }
     }
+    _textJoueur1.setString("Joueur 1 - Or: " + std::to_string(_partie->getJoueurActuelle()->getOr()) + " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv()));
+    _textJoueur2.setString("Joueur 2 - Or: " + std::to_string(_partie->getJoueurActuelle()->getOr()) + " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv()));
+    _buttonAtacker.update(_window);
+    _buttonFinTour.update(_window);
 }
 
 void SFMLGame::render() {
@@ -188,8 +212,17 @@ void SFMLGame::render() {
         _window.draw(_overlay._background);
         _overlay._zoneCarte.dessiner(_window);
     }
-    
+
+    _window.draw(_textJoueur1);
+    _window.draw(_textJoueur2);
+
+
+    _buttonAtacker.draw(_window);
+    _buttonFinTour.draw(_window);
+
+
     _window.display();
+
 }
 
 bool SFMLGame::deplacementValide(ZoneCarte* source, ZoneCarte* cible, Carte* carte) {
