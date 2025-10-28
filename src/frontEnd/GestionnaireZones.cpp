@@ -17,7 +17,7 @@ void GestionnaireZones::creerZonesStandard() {
     _zones.push_back(std::make_unique<ZoneCarte>(1060, 20, 80, 120, "pioche_joueur2", sf::Color(255, 200, 0, 50)));
     _zones.push_back(std::make_unique<ZoneCarte>(960, 20, 80, 120, "defausse_joueur2", sf::Color(200, 0, 0, 50)));
     
-    _zones.push_back(std::make_unique<ZoneCarte>(400, 330, 500, 145, "marche0", sf::Color(255, 165, 0, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(400, 330, 500, 145, "marche", sf::Color(255, 165, 0, 50)));
     
     // Mettre à jour la map de recherche
     for (auto& zone : _zones) {
@@ -25,6 +25,7 @@ void GestionnaireZones::creerZonesStandard() {
     }
 }
 
+// inutilee dans cette version
 void GestionnaireZones::lierPartie(Partie* partie) {
     if (!partie) return;
     mettreAJourZones(partie);
@@ -33,51 +34,66 @@ void GestionnaireZones::lierPartie(Partie* partie) {
 void GestionnaireZones::mettreAJourZones(Partie* partie) {
     if (!partie) return;
     
-    // Vider toutes les zones
+    // Vider toutes les zones d'observation
     for (auto& zone : _zones) {
         zone->viderCartes();
     }
     
-    // Remplir avec les cartes de la partie
-    // NOTE: Tu devras adapter cette partie selon ta structure exacte
+    // Récupérer les joueurs
     auto& joueurs = partie->getListJoueur();
     
+    // Synchroniser les zones de chaque joueur
     for (size_t i = 0; i < joueurs.size(); i++) {
         std::string suffixe = "_joueur" + std::to_string(i + 1);
         
-        // Exemple d'utilisation (à adapter selon tes méthodes)
-        
+        // MAIN
         auto zoneMain = getZoneParNom("main" + suffixe);
         if (zoneMain) {
-            for (auto& carte : joueurs[i].getMain()) {
-                zoneMain->ajouterCarteLogique(&carte);
+            // Obtenir les pointeurs const vers les cartes
+            auto cartesMain = joueurs[i].getMain();
+            for (const Carte* carte : cartesMain) {
+                zoneMain->observerCarte(carte);
             }
         }
         
-        auto zoneTerrain = getZoneParNom("plateau" +suffixe);
-        if (zoneTerrain) {
-            for (auto& carte : joueurs[i].getPlateau()) {
-                zoneTerrain->ajouterCarteLogique(&carte);
+        // PLATEAU
+        auto zonePlateau = getZoneParNom("plateau" + suffixe);
+        if (zonePlateau) {
+            auto cartesPlateau = joueurs[i].getPlateau();
+            for (const Carte* carte : cartesPlateau) {
+                zonePlateau->observerCarte(carte);
             }
         }
         
-        auto zoneMarche = getZoneParNom("marche0");
-        if (zoneMarche) {
-            for (auto& carte : partie->getRiviere()) {
-                zoneMarche->ajouterCarteLogique(&carte);
+        // PIOCHE
+        auto zonePioche = getZoneParNom("pioche" + suffixe);
+        if (zonePioche) {
+            auto cartesPioche = joueurs[i].getPioche();
+            // Afficher seulement le dos de la dernière carte
+            if (!cartesPioche.empty()) {
+                zonePioche->observerCarte(cartesPioche.back());
             }
         }
-        auto zoneDefausse = getZoneParNom("defausse" +suffixe);
+        
+        // DEFAUSSE
+        auto zoneDefausse = getZoneParNom("defausse" + suffixe);
         if (zoneDefausse) {
-            auto & carte = joueurs[i].getDefausse().back();
-            zoneDefausse->viderCartes();
-            zoneDefausse->ajouterCarteLogique(&carte);
+            auto cartesDefausse = joueurs[i].getDefausse();
+            // Afficher seulement la dernière carte
+            if (!cartesDefausse.empty()) {
+                zoneDefausse->observerCarte(cartesDefausse.back());
+            }
         }
-      
-        
     }
     
-    //std::cout << "Zones mises à jour avec la partie" << std::endl;
+    // MARCHE (rivière commune)
+    auto zoneMarche = getZoneParNom("marche");
+    if (zoneMarche) {
+        auto cartesRiviere = partie->getRiviere();
+        for (const Carte* carte : cartesRiviere) {
+            zoneMarche->observerCarte(carte);
+        }
+    }
 }
 
 ZoneCarte* GestionnaireZones::getZoneContenant(const sf::Vector2f& point) {
@@ -98,4 +114,8 @@ void GestionnaireZones::dessinerZones(sf::RenderWindow& window) {
     for (auto& zone : _zones) {
         zone->dessiner(window);
     }
+}
+
+const std::vector<std::unique_ptr<ZoneCarte>>& GestionnaireZones::getZones() const {
+    return _zones;
 }

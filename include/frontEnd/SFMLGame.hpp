@@ -1,66 +1,123 @@
-#ifndef SFMLGAME_H
-#define SFMLGAME_H
+#ifndef SFMLGAME_HPP
+#define SFMLGAME_HPP
 
 #include <SFML/Graphics.hpp>
-#include "backEnd/Carte/Carte.hpp"
-#include "backEnd/Joueur.hpp"
-#include "backEnd/Partie.hpp"
-#include "CarteGraphique.hpp"
-#include "GestionnaireZones.hpp"
-#include "frontEnd/Button.hpp"
-#include "frontEnd/ZoneCarte.hpp"
-#include "frontEnd/Overlay.hpp"
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <vector>
 #include <memory>
 #include <map>
+#include "frontEnd/GestionnaireZones.hpp"
+#include "frontEnd/CarteGraphique.hpp"
+#include "frontEnd/Overlay.hpp"
+#include "frontEnd/Button.hpp"
 
+class Partie;
+class Carte;
+class ZoneCarte;
+
+/**
+ * SFMLGame - Interface graphique du jeu
+ * Observe l'état de la partie et affiche les cartes par ID
+ * NE POSSÈDE PAS les cartes logiques, seulement leur représentation graphique
+ */
 class SFMLGame {
 private:
-    sf::RenderWindow _window;
-    Partie* _partie;  // Référence vers la logique du jeu
-    
+    Partie* _partie;  // Pointeur non-owning vers la partie
     GestionnaireZones _zones;
-    std::map<Carte*, std::unique_ptr<CarteGraphique>> _cartesGraphiques;
     
+    // Carte graphiques indexées par l'ID de la carte logique
+    std::map<int, std::unique_ptr<CarteGraphique>> _cartesGraphiques;
+    
+    // Gestion de la sélection (par ID)
     CarteGraphique* _carteSelectionnee;
-    ZoneCarte* _zoneSource;
+    int _carteSelectionneeId;
     sf::Vector2f _positionOriginale;
-
+    ZoneCarte* _zoneSource;
+    
+    // UI
     Overlay _overlay;
     bool _isOverlay;
+    Button _buttonAtacker;
+    Button _buttonFinTour;
 
+    sf::RenderWindow _window;
     sf::Font _font;
     sf::Text _textJoueur1;
     sf::Text _textJoueur2;
 
-    Button _buttonAtacker;
-    Button _buttonFinTour;
-
 public:
-    SFMLGame(Partie* partie = nullptr);
+    /**
+     * Constructeur
+     * @param partie Pointeur non-owning vers la partie
+     */
+    SFMLGame(Partie* partie);
+    
+    /**
+     * Destructeur
+     */
     ~SFMLGame();
-
+    
+    /**
+     * Change la partie observée
+     */
     void setPartie(Partie* partie);
+    
+    /**
+     * Boucle principale du jeu
+     */
     void gameLoop();
 
-    void setIsOverlay(bool isOverlay) { _isOverlay = isOverlay; }
-    void rendertext();
-
 private:
+    /**
+     * Synchronise l'affichage avec l'état logique de la partie
+     * Crée/détruit les CarteGraphique selon les cartes existantes
+     */
+    void synchroniserAffichage();
+    
+    /**
+     * Crée une carte graphique pour une carte logique
+     */
+    void creerCarteGraphique( const Carte* carte);
+    
+    /**
+     * Traite les événements SFML
+     */
     void processEvents();
+    
+    /**
+     * Gère le clic de souris
+     */
     void handleMouseClick(int mouseX, int mouseY);
+    
+    /**
+     * Gère le relâchement de la souris (fin du drag & drop)
+     */
     void handleMouseRelease(int mouseX, int mouseY);
+    
+    /**
+     * Met à jour l'état du jeu
+     */
     void update();
+    
+    /**
+     * Affiche le jeu
+     */
     void render();
     
-    void synchroniserAffichage();  // Met à jour l'affichage depuis la logique
-    void creerCarteGraphique(Carte* carte);
-    void supprimerCarteGraphique(Carte* carte);
+    /**
+     * Initialise les textes
+     */
+    void rendertext();
     
-    bool deplacementValide(ZoneCarte* source, ZoneCarte* cible, Carte* carte);
-    void appliquerDeplacementLogique(Carte* carte, ZoneCarte* source, ZoneCarte* cible);
+    /**
+     * Vérifie si un déplacement est valide selon les règles
+     * @param carteId ID de la carte à déplacer
+     */
+    bool deplacementValide(ZoneCarte* source, ZoneCarte* cible, int carteId);
+    
+    /**
+     * Applique le déplacement dans la logique métier
+     * @param carteId ID de la carte à déplacer
+     */
+    void appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneCarte* cible);
 };
 
-#endif
+#endif // SFMLGAME_HPP

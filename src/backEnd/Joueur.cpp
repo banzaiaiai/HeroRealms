@@ -1,162 +1,202 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Carte/Carte.hpp"
-#include "backEnd/Partie.hpp"  // Inclure le header complet
-#include "backEnd/Carte/NonPermanent.hpp"
+#include "backEnd/Partie.hpp"
 #include <iostream>
-#include <iterator>
-#include <list>
-#include <random>
-#include <typeinfo>
-#include <vector>
 #include <algorithm>
 
-Joueur::Joueur(int id, Partie& partie, std::string name,std::vector<Carte> deck) 
-    : _id(id), _partie(partie), _name(name), _nbCarteCte(5), _or(0), _degat(0), _pv(50),_pioche(deck){
-    _main.clear();
-    _defausse.clear();
-    _plateau.clear();
-    
-    // Piocher les cartes initiales
-    
-    melanger();
-    piocher(_nbCarteCte);
+Joueur::Joueur(int id, Partie& partie, const std::string& nom)
+    : _id(id),
+      _pv(20),
+      _or(0),
+      _degat(0),
+      _nom(nom),
+      _partie(&partie)
+
+{
+    std::cout << "Joueur " << _nom << " créé avec ID " << _id << std::endl;
 }
 
 Joueur::~Joueur() {
-    // Libérer la mémoire si nécessaire
+    // Les unique_ptr se détruisent automatiquement
+    std::cout << "Joueur " << _nom << " détruit avec ID " << _id << std::endl;
 }
 
-// Implémentation des méthode de fonctionnement 
+// === ACCÈS EN LECTURE SEULE ===
 
-void Joueur::piocher(int nbCarte){
-    for (int i=0; i<nbCarte ; i++){
-        // Si la pioche est vide la remélange
-        if(_pioche.empty()){
-           melanger(); 
-        }
-        mouve(_pioche, _main);
+std::vector<const Carte*> Joueur::getPioche() const {
+    std::vector<const Carte*> result;
+    result.reserve(_pioche.size());
+    for (const auto& carte : _pioche) {
+        result.push_back(carte.get());
     }
+    return result;
 }
 
-void Joueur::finDeTour(){
-    // vide la main 
-    for (Carte carte : _main){
-        mouve(carte,_main,_defausse);
+std::vector<const Carte*> Joueur::getMain() const {
+    std::vector<const Carte*> result;
+    result.reserve(_main.size());
+    for (const auto& carte : _main) {
+        result.push_back(carte.get());
     }
-    // vide les caractéristique du joueur
-    setDegat(0);
-    setOr(0);
+    return result;
+}
 
-    // repioche la main
-    piocher(_nbCarteCte);
+std::vector<const Carte*> Joueur::getPlateau() const {
+    std::vector<const Carte*> result;
+    result.reserve(_plateau.size());
+    for (const auto& carte : _plateau) {
+        result.push_back(carte.get());
+    }
+    return result;
+}
+
+std::vector<const Carte*> Joueur::getDefausse() const {
+    std::vector<const Carte*> result;
+    result.reserve(_defausse.size());
+    for (const auto& carte : _defausse) {
+        result.push_back(carte.get());
+    }
+    return result;
+}
+
+const Carte* Joueur::getCarteById(int carteId) const {
+    // Chercher dans toutes les zones
+    for (const auto& carte : _pioche) {
+        if (carte->getId() == carteId) return carte.get();
+    }
+    for (const auto& carte : _main) {
+        if (carte->getId() == carteId) return carte.get();
+    }
+    for (const auto& carte : _plateau) {
+        if (carte->getId() == carteId) return carte.get();
+    }
+    for (const auto& carte : _defausse) {
+        if (carte->getId() == carteId) return carte.get();
+    }
+    return nullptr;
+}
+
+// === HELPERS PRIVÉS ===
+
+std::vector<std::unique_ptr<Carte>>& Joueur::getZone(ZoneType type) {
+    switch (type) {
+        case ZoneType::Pioche: return _pioche;
+        case ZoneType::Main: return _main;
+        case ZoneType::Plateau: return _plateau;
+        case ZoneType::Defausse: return _defausse;
+    }
+    return _pioche; // Fallback
+}
+
+const std::vector<std::unique_ptr<Carte>>& Joueur::getZone(ZoneType type) const {
+    switch (type) {
+        case ZoneType::Pioche: return _pioche;
+        case ZoneType::Main: return _main;
+        case ZoneType::Plateau: return _plateau;
+        case ZoneType::Defausse: return _defausse;
+    }
+    return _pioche; // Fallback
+}
+
+std::vector<std::unique_ptr<Carte>>::iterator 
+Joueur::trouverCarte(int carteId, std::vector<std::unique_ptr<Carte>>& zone) {
+    return std::find_if(zone.begin(), zone.end(),
+        [carteId](const std::unique_ptr<Carte>& carte) {
+            return carte && carte->getId() == carteId;
+        });
+}
+
+// === GESTION DES CARTES ===
+
+void Joueur::ajouterCarte(std::unique_ptr<Carte> carte, ZoneType zone) {
+    if (!carte) return;
+    getZone(zone).push_back(std::move(carte));
+}
+
+std::unique_ptr<Carte> Joueur::retirerCarte(int carteId, ZoneType zone) {
+    auto& zoneRef = getZone(zone);
+    auto it = trouverCarte(carteId, zoneRef);
     
-    viderPlateau();
+    if (it != zoneRef.end()) {
+        // Extraction de la carte
+        std::unique_ptr<Carte> carte = std::move(*it);
+        zoneRef.erase(it);
+        return carte;
+    }
+    
+    return nullptr; // Carte non trouvée
 }
 
-void Joueur::melanger(){
-    for(Carte carte : _defausse){
-        mouve(carte,_defausse,_pioche);
+bool Joueur::deplacerCarte(int carteId, ZoneType source, ZoneType destination) {
+    // Validation
+    if (source == destination) return false;
+    
+    // Retirer de la zone source
+    auto carte = retirerCarte(carteId, source);
+    if (!carte) {
+        std::cerr << "Carte " << carteId << " non trouvée dans la zone source" << std::endl;
+        return false;
     }
+    
+    // Ajouter à la zone destination
+    ajouterCarte(std::move(carte), destination);
+    
+    std::cout << "Carte " << carteId << " déplacée avec succès" << std::endl;
+    return true;
+}
+
+void Joueur::piocher(int nombre) {
+    for (int i = 0; i < nombre; i++) {
+        if (_pioche.empty()) {
+            std::cout << "Pioche vide, impossible de piocher" << std::endl;
+            break;
+            /* To Do 
+            Ajouter la logique de remélange de la défausse dans la pioche ici
+            */
+        }
+        
+        // Déplacer la dernière carte de la pioche vers la main
+        _main.push_back(std::move(_pioche.back()));
+        _pioche.pop_back();
+    }
+}
+
+bool Joueur::jouerCarte(int carteId) {
+    // Trouver la carte dans la main
+    auto it = trouverCarte(carteId, _main);
+    if (it == _main.end()) {
+        std::cerr << "Carte " << carteId << " non trouvée dans la main" << std::endl;
+        return false;
+    }
+    // Déplacer vers le plateau
+    _plateau.push_back(std::move(*it));
+    _main.erase(it);
+    
+    std::cout << "Carte jouée avec succès" << std::endl;
+    return true;
+}
+
+void Joueur::defausserCarte(int carteId, ZoneType source) {
+    deplacerCarte(carteId, source, ZoneType::Defausse);
+}
+
+void Joueur::initialiserDeck(std::vector<std::unique_ptr<Carte>> deck) {
+    _pioche = std::move(deck);
+    // Mélanger le deck ici si nécessaire
     std::random_device rd ;
     std::mt19937 g(rd());
 
     std::shuffle(_pioche.begin(), _pioche.end(), g);
 }
 
-// CORRECTION : Méthodes de déplacement
-void Joueur::mouve(std::vector<Carte>& source, std::vector<Carte>& destination) {
-    if (!source.empty()) {
-        destination.push_back(source.back());
-        source.pop_back();
+/* 
+Achat de carte
+// Vérifier le coût
+    if (_or < (*it)->getCoupOr()) {
+        std::cerr << "Pas assez d'or pour jouer cette carte" << std::endl;
+        return false;
     }
-}
-
-void Joueur::mouve(Carte& carte, std::vector<Carte>& source, std::vector<Carte>& destination) {
-    // Recherche de la carte dans le vecteur source
-    auto it = std::find(source.begin(), source.end(), carte);
-    if (it != source.end()) {
-        destination.push_back(*it);
-        source.erase(it);
-    }
-}
-
-void Joueur::mouve(Carte* carte, std::vector<Carte>& source, std::vector<Carte>& destination) {
-    // Recherche de la carte dans le vecteur source
-    auto it = std::find(source.begin(), source.end(), carte);
-    if (it != source.end()) {
-        destination.push_back(*it);
-        source.erase(it);
-    }
-}
-
-
-
-
-void Joueur::viderPlateau(){
-    for(Carte carte : _plateau) {
-        if (typeid(carte)==typeid(NonPermanent)) // faux le changer pour les non permanent
-        {
-            mouve(carte,_plateau,_defausse);
-        }
-    }
-}
-
-void Joueur::jouerUneCarte(Carte carte){
-    mouve(carte,_main,_plateau);
-    GLOBALJoueurActif=this;
-    GLOBALCarteActif=&carte;
-}
-
-void Joueur::defausser(Carte carte){
-    mouve(carte,_main,_defausse);
-}
-
-void Joueur::acheterUneCarte(Carte & carte){
-    if(carte.getCoupOr()>=this->getOr()){
-        this->setOr(this->getOr()-carte.getCoupOr());
-        mouve(carte,_partie.getRiviere(),_defausse);
-    }
-}
-
-// Il faut compléter & changer. Uniquement fait pour la phase de test
-void Joueur::attaque(Joueur joueur){
-    joueur.setPv(joueur.getPv()-this->getDegat());
-}
-// NOUVELLES méthodes graphiques
-void Joueur::creerCarteGraphique(Carte& carte, float x, float y) {
-        _cartesGraphiques.emplace_back(x, y, 80.f, 120.f, &carte);
-        carte.setCarteGraphique(&_cartesGraphiques.back());  // Adresse stable !
-}
-
-void Joueur::dessinerCartes(sf::RenderWindow& window) {
-        for (auto& carteGraphique : _cartesGraphiques) {
-            carteGraphique.draw(window);
-        }
-}
-
-// Méthode pour supprimer une carte graphique si besoin
-void Joueur::supprimerCarteGraphique(CarteGraphique* carte) {
-    _cartesGraphiques.remove_if([carte](const CarteGraphique& c) {
-        return &c == carte;
-    });
-}
-
-
-void Joueur::mettreAJourPositionsCartes() {
-    // Réorganise les cartes de la main
-    float startX = 50.f;
-    float y = 400.f;
-    float espacement = 90.f;
     
-    int index = 0;
-    for (auto& carteGraphique : _cartesGraphiques) {
-        // Trouver la carte logique associée
-        Carte* carteLogique = carteGraphique.getCarteLogique();
-        
-        // Vérifier si la carte est dans la main
-        if (carteLogique && std::find(_main.begin(), _main.end(), *carteLogique) != _main.end()) {
-            carteGraphique.setPosition(startX + index * espacement, y);
-            index++;
-        }
-    }
-}
+    // Payer le coût
+    _or -= (*it)->getCoupOr();
+*/

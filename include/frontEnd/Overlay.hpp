@@ -13,7 +13,7 @@ class Overlay{
     friend class SFMLGame;
 private:
     sf::RectangleShape _background;
-    ZoneCarte _zoneCarte = ZoneCarte(100, 100, 1000, 600, "Overlay");
+    ZoneCarte _zoneCarte = ZoneCarte(100, 100, 1000, 600, "Overlay",sf::Color(0, 0, 255, 50));
 
 public:
     Overlay();
