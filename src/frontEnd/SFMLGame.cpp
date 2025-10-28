@@ -13,17 +13,18 @@ SFMLGame::SFMLGame(Partie* partie)
       _partie(partie),
       _carteSelectionnee(nullptr),
       _zoneSource(nullptr),
-      _overlay(_zones.getZoneParNom("overlay")){
+      _overlay(nullptr){
     
     std::cout << "SFMLGame construit" << std::endl;
     
     _zones.creerZonesStandard();
     
+    _overlay._zoneCarte = _zones.getZoneParNom("overlay");
+    
     if (_partie) {
         _zones.lierPartie(_partie);
         synchroniserAffichage();
     }
-
 }
 
 SFMLGame::~SFMLGame() {
@@ -186,7 +187,7 @@ void SFMLGame::render() {
 
     if (_overlay.getIsOverlay()) {
         _window.draw(_overlay._background);
-        //_overlay._zoneCarte->dessiner(_window);
+        _overlay._zoneCarte->dessiner(_window);
     }
     
     _window.display();
