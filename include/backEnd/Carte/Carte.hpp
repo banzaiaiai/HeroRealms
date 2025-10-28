@@ -1,6 +1,7 @@
 #ifndef CARTE_HPP
 #define CARTE_HPP
 
+#include "backEnd/Partie.hpp"
 #include <string>
 #include <vector>
 #include <map>
@@ -41,6 +42,9 @@ private:
     std::map<EventType, std::vector<std::shared_ptr<IEffect>>> _trigger;
 
 public:
+    // methode metier
+
+    void jouer(Partie *partie);
     // Constructeur par défaut
     Carte();
     
