@@ -34,7 +34,6 @@ private:
     
     // UI
     Overlay _overlay;
-    bool _isOverlay;
     Button _buttonAtacker;
     Button _buttonFinTour;
 

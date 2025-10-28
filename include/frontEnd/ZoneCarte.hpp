@@ -13,6 +13,8 @@ class Carte;
  * Utilise des pointeurs const pour lecture seule
  */
 class ZoneCarte {
+    friend class Overlay;
+    friend class SFMLGame;
 private:
     float _x, _y, _width, _height;
     std::string _nom;

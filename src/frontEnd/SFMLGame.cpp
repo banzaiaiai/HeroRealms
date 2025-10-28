@@ -12,6 +12,7 @@ SFMLGame::SFMLGame(Partie* partie)
       _carteSelectionnee(nullptr),
       _carteSelectionneeId(-1),
       _zoneSource(nullptr),
+      _overlay(nullptr),
       _buttonAtacker("attaque", sf::Vector2f(40, 650), sf::Vector2f(100, 100)),
       _buttonFinTour("fin de tour", sf::Vector2f(920, 370), sf::Vector2f(200, 50))
 {
@@ -19,13 +20,13 @@ SFMLGame::SFMLGame(Partie* partie)
     
     _zones.creerZonesStandard();
     
+    _overlay._zoneCarte = _zones.getZoneParNom("overlay");
+    
     if (_partie) {
         _zones.lierPartie(_partie);
         synchroniserAffichage();
     }
 
-    _overlay = Overlay();
-    _isOverlay = false;
     _font.loadFromFile("arial.ttf");
     if (!_font.loadFromFile("arial.ttf")) {
         std::cerr << "Erreur lors du chargement de la police" << std::endl;
@@ -231,15 +232,10 @@ void SFMLGame::render() {
     
     // Dessiner les zones
     _zones.dessinerZones(_window);
-    
+
     // Dessiner les cartes graphiques
     for (auto& [carteId, carteGraphique] : _cartesGraphiques) {
         carteGraphique->draw(_window);
-    }
-
-    if (_isOverlay) {
-        _window.draw(_overlay._background);
-        _overlay._zoneCarte.dessiner(_window);
     }
 
     _window.draw(_textJoueur1);
@@ -247,6 +243,11 @@ void SFMLGame::render() {
 
     _buttonAtacker.draw(_window);
     _buttonFinTour.draw(_window);
+
+    if (_overlay.getIsOverlay()) {
+        _overlay._zoneCarte->dessiner(_window);
+        _window.draw(_overlay._background);
+    }
 
     _window.display();
 }
