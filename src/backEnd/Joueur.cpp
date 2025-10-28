@@ -175,7 +175,7 @@ bool Joueur::jouerCarte(int carteId) {
     std::cout << "Carte jouée avec succès" << std::endl;
 
     // apliquer l'effet 
-    _plateau.back()->jouer(this);
+    //_plateau.back()->jouer(this);
     
     return true;
 }
