@@ -7,6 +7,7 @@
 class Carte;
 class Joueur;
 
+extern Joueur* GLOBALjoeurActuelle;
 /**
  * Classe Partie - Gère l'état global du jeu
  * Possède la rivière (marché) et coordonne les joueurs

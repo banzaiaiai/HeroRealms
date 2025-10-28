@@ -4,6 +4,8 @@
 #include <iostream>
 #include <algorithm>
 
+Joueur *GLOBALjoeurActuelle=nullptr;
+
 Partie::Partie()
     : _joueurActuelIndex(0),
       _tour(1)
@@ -21,6 +23,9 @@ Partie::~Partie() {
 void Partie::ajouterJoueur(Joueur&& joueur) {
     _joueurs.push_back(std::move(joueur));
     std::cout << "Joueur ajouté à la partie. Total: " << _joueurs.size() << std::endl;
+    if(_joueurs.empty()){
+        GLOBALjoeurActuelle=&joueur;
+    }
 }
 
 Joueur* Partie::getJoueurActuelle() {
@@ -62,6 +67,8 @@ void Partie::passerAuJoueurSuivant() {
     }
     
     std::cout << "C'est au tour de " << getJoueurActuelle()->getNom() << std::endl;
+
+    GLOBALjoeurActuelle=getJoueurParId(_joueurActuelIndex);
 }
 
 // === GESTION DE LA RIVIÈRE ===

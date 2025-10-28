@@ -6,6 +6,8 @@
 #include <iostream>
 #include <set>
 
+
+
 SFMLGame::SFMLGame(Partie* partie) 
     : _window(sf::VideoMode(1200, 800), "Jeu de Cartes", sf::Style::Titlebar | sf::Style::Close),
       _partie(partie),

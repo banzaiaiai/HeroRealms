@@ -95,6 +95,7 @@ int main() {
     
     std::cout << "Marché: " << partie.getRiviere().size() << " cartes" << std::endl;
     
+    GLOBALjoeurActuelle=&joueur1;
     // Test de déplacement de carte
     std::cout << "\n=== Test de déplacement ===" << std::endl;
     auto mainJ1 = partie.getJoueurParId(0)->getMain();

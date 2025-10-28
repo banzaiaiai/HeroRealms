@@ -174,8 +174,11 @@ bool Joueur::jouerCarte(int carteId) {
 
     std::cout << "Carte jouée avec succès" << std::endl;
 
-    // apliquer l'effet 
-    //_plateau.back()->jouer(this);
+    // apliquer l'effet
+    std::cout << "Application effet sur " << this << " (joueur)" << std::endl;
+    std::cout << "Carte courante: " << _plateau.back().get() << std::endl;
+
+    _plateau.back()->jouer(this);
     
     return true;
 }
