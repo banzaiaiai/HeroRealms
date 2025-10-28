@@ -135,7 +135,7 @@ void SFMLGame::handleMouseClick(int mouseX, int mouseY) {
     if (_carteSelectionnee) {
         _carteSelectionnee->setSelected(false);
         // Je pense pas utile
-        // _carteSelectionnee = nullptr;
+        _carteSelectionnee = nullptr;
         _carteSelectionneeId = -1;
     }
     
@@ -165,7 +165,8 @@ void SFMLGame::handleMouseClick(int mouseX, int mouseY) {
 }
 
 void SFMLGame::handleMouseRelease(int mouseX, int mouseY) {
-    if (!_carteSelectionnee || !_zoneSource || _carteSelectionneeId == -1) return;
+    if (!_carteSelectionnee || !_zoneSource || _carteSelectionneeId == -1) 
+        return;
     
     sf::Vector2f mousePos = _window.mapPixelToCoords(sf::Vector2i(mouseX, mouseY));
     ZoneCarte* zoneCible = _zones.getZoneContenant(mousePos);
@@ -186,7 +187,7 @@ void SFMLGame::handleMouseRelease(int mouseX, int mouseY) {
     
     _carteSelectionnee->setSelected(false);
     // Je pense pas utile
-    // _carteSelectionnee = nullptr;
+    _carteSelectionnee = nullptr;
     _carteSelectionneeId = -1;
     _zoneSource = nullptr;
 }
@@ -253,9 +254,16 @@ void SFMLGame::render() {
     _window.display();
 }
 
+
+// Erreur ici 
+/**
+    To DO :
+    Corriger le deplacementValide pour qu'il prenne en compte les règles du jeu.
+**/
 bool SFMLGame::deplacementValide(ZoneCarte* source, ZoneCarte* cible, int carteId) {
-    if (!source || !cible || carteId == -1 || !_partie) return false;
-    
+    if (!source || !cible || carteId == -1 || !_partie) 
+        return false;
+    /*
     std::string sourceNom = source->getNom();
     std::string cibleNom = cible->getNom();
     
@@ -300,6 +308,8 @@ bool SFMLGame::deplacementValide(ZoneCarte* source, ZoneCarte* cible, int carteI
     }
     
     return false;
+    */
+    return true;
 }
 
 void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneCarte* cible) {
@@ -329,7 +339,7 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
         // Récupérer la carte depuis la rivière (Partie)
         auto carte = _partie->retirerCarteRiviere(carteId);
         if (carte) {
-            joueur->ajouterCarte(std::move(carte), ZoneType::Main);
+            joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
             std::cout << "Carte achetée depuis le marché" << std::endl;
         }
     }

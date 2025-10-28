@@ -171,10 +171,18 @@ bool Joueur::jouerCarte(int carteId) {
     // Déplacer vers le plateau
     _plateau.push_back(std::move(*it));
     _main.erase(it);
-    
+
     std::cout << "Carte jouée avec succès" << std::endl;
+
+    // apliquer l'effet 
+    //_plateau.back()->jouer();
+    
     return true;
 }
+
+ 
+
+
 
 void Joueur::defausserCarte(int carteId, ZoneType source) {
     deplacerCarte(carteId, source, ZoneType::Defausse);

@@ -1,4 +1,6 @@
 #include "backEnd/Carte/Carte.hpp"
+#include "backEnd/Partie.hpp"
+#include "backEnd/Effect/IEffect.hpp"
 
 // Initialisation du compteur d'IDs
 int Carte::_nextId = 0;
@@ -57,4 +59,14 @@ const std::vector<std::shared_ptr<IEffect>>* Carte::getEffects(EventType eventTy
         return &(it->second);
     }
     return nullptr;
+}
+
+void Carte::jouer(Partie * partie)
+{
+    auto it = _trigger.find(EventType::OnPlay);
+    if (it != _trigger.end()) {
+        for (const auto& effect : it->second) {
+            //effect->;
+        }
+    }
 }
