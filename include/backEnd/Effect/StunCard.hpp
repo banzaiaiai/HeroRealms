@@ -10,7 +10,7 @@ private:
 public:
     StunCard(int duration=0);
     ~StunCard();
-    void applyEffect() override;
+    void applyEffect(Partie *partie) override;
 
     // Getters
     inline int getDuration() const { return _duration; }

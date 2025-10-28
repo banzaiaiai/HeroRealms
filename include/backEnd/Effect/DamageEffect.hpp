@@ -11,7 +11,7 @@ public:
     DamageEffect(int damage = 0);
     ~DamageEffect() override = default;
     
-    void applyEffect() override;  // Implémentation
+    void applyEffect(Partie *partie) override;  // Implémentation
 
     // Getters et setters...
     inline int getDamage() const { return _damage; }

@@ -11,7 +11,7 @@ public:
     GainGold(int gold = 0);
     ~GainGold() override = default;
     
-    void applyEffect() override;
+    void applyEffect(Partie *_partie) override;
 
     inline int getGold() const { return _gold; }
     inline void setGold(int gold) { _gold = gold; }

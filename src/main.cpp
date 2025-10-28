@@ -5,51 +5,119 @@
 #include "backEnd/Partie.hpp"
 #include "frontEnd/SFMLGame.hpp"
 #include <SFML/Graphics.hpp>
-#include "frontEnd/SFMLGame.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
-int main()
-{
-  // Création d'une carte qui ajoute 5 de dégat 
-  Carte cDegat1 = Carte();
-  std::shared_ptr<IEffect> seDegat1(new DamageEffect(5));
-  std::vector<std::shared_ptr<IEffect>> vDegat1;
-  cDegat1.setName("le bonheur");
-  vDegat1.push_back(seDegat1);
-  cDegat1.addTrigger(OnPlay, vDegat1);
 
+/**
+ * Fonction utilitaire pour créer une carte avec des effets
+ */
+std::unique_ptr<Carte> creerCarteDegat(const std::string& nom, int degats, int cout) {
+    auto carte = std::make_unique<Carte>(nom, cout, Faction::Neutre);
+    
+    // Créer l'effet de dégâts
+    std::shared_ptr<IEffect> effetDegat = std::make_shared<DamageEffect>(degats);
+    std::vector<std::shared_ptr<IEffect>> effets;
+    effets.push_back(effetDegat);
+    
+    carte->addTrigger(EventType::OnPlay, effets);
+    
+    return carte;
+}
 
-  // Création d'une partie
-  std::vector<Carte> deck1 ;
-  std::vector<Carte> deck2 ;
-  for(int i=0;i<20;i++){
-    deck1.push_back(cDegat1);
-    deck2.push_back(cDegat1);
-  }
-  
+/**
+ * Crée un deck de cartes pour un joueur
+ */
+std::vector<std::unique_ptr<Carte>> creerDeck(int tailleDeck) {
+    std::vector<std::unique_ptr<Carte>> deck;
+    deck.reserve(tailleDeck);
+    
+    for (int i = 0; i < tailleDeck; i++) {
+        // Créer des cartes variées
+        if (i % 3 == 0) {
+            deck.push_back(creerCarteDegat("Épée", 5, 2));
+        } else if (i % 3 == 1) {
+            deck.push_back(creerCarteDegat("Lance", 3, 1));
+        } else {
+            deck.push_back(creerCarteDegat("Arc", 7, 3));
+        }
+    }
+    
+    return deck;
+}
 
-  Partie partie1 = Partie(deck1);
-  Joueur joueur1 = Joueur(0,partie1,"teste1",deck1);
-  Joueur joueur2 = Joueur(1,partie1,"teste2",deck2);
-  
-  // début des teste 
-  /* tous est OK 
-  std::cout<<"Taille des decks" << joueur1.getPioche().size()<<" "<<joueur2.getPioche().size()<< "\n";
-  std::cout<<"Taille des mains" << joueur1.getMain().size()<<" "<<joueur2.getMain().size()<< "\n";
-  joueur1.piocher(1);
-  std::cout<<"Taille des decks" << joueur1.getPioche().size()<<" "<<joueur2.getPioche().size()<< "\n";
-  std::cout<<"Taille des mains" << joueur1.getMain().size()<<" "<<joueur2.getMain().size()<< "\n";
-  std::cout<<"Taille de la riviére" << partie1.getRiviere().size()<<"\n";
-  */
-
-  // SFML teste
-  SFMLGame test(&partie1);
-
-  auto vecTest = std::vector<Carte*>(5, &cDegat1);
-  test._overlay.openOverlay(vecTest);
-
-  test.gameLoop();
-
-  return 0;
+int main() {
+    std::cout << "=== Initialisation du jeu ===" << std::endl;
+    
+    // Créer une partie
+    Partie partie = Partie();
+    
+    // Créer les decks des joueurs
+    auto deck1 = creerDeck(20);
+    auto deck2 = creerDeck(20);
+    
+    std::cout << "Decks créés: " << deck1.size() << " et " << deck2.size() << " cartes" << std::endl;
+    
+    // Créer les joueurs
+    Joueur joueur1(0, partie, "Alice");
+    Joueur joueur2(1, partie, "Bob");
+    
+    // Initialiser les decks des joueurs (transfert de propriété)
+    joueur1.initialiserDeck(std::move(deck1));
+    joueur2.initialiserDeck(std::move(deck2));
+    
+    // Ajouter les joueurs à la partie
+    partie.ajouterJoueur(std::move(joueur1));
+    partie.ajouterJoueur(std::move(joueur2));
+    
+    // Piocher les mains de départ
+    std::cout << "Pioche des mains de départ..." << std::endl;
+    partie.getJoueurParId(0)->piocher(5);
+    partie.getJoueurParId(1)->piocher(5);
+    
+    // Initialiser le marché
+    std::cout << "Initialisation du marché..." << std::endl;
+    for (int i = 0; i < 5; i++) {
+        partie.ajouterCarteRiviere(creerCarteDegat("Marché Carte " + std::to_string(i), 4, 2));
+    }
+    
+    // Tests de vérification
+    std::cout << "\n=== État initial ===" << std::endl;
+    std::cout << "Joueur 1:" << std::endl;
+    std::cout << "  - Pioche: " << partie.getJoueurParId(0)->getPioche().size() << " cartes" << std::endl;
+    std::cout << "  - Main: " << partie.getJoueurParId(0)->getMain().size() << " cartes" << std::endl;
+    std::cout << "  - Or: " << partie.getJoueurParId(0)->getOr() << std::endl;
+    
+    std::cout << "Joueur 2:" << std::endl;
+    std::cout << "  - Pioche: " << partie.getJoueurParId(1)->getPioche().size() << " cartes" << std::endl;
+    std::cout << "  - Main: " << partie.getJoueurParId(1)->getMain().size() << " cartes" << std::endl;
+    std::cout << "  - Or: " << partie.getJoueurParId(1)->getOr() << std::endl;
+    
+    std::cout << "Marché: " << partie.getRiviere().size() << " cartes" << std::endl;
+    
+    // Test de déplacement de carte
+    std::cout << "\n=== Test de déplacement ===" << std::endl;
+    auto mainJ1 = partie.getJoueurParId(0)->getMain();
+    if (!mainJ1.empty()) {
+        int carteId = mainJ1[0]->getId();
+        std::cout << "Tentative de jouer la carte ID " << carteId << std::endl;
+        
+        // Donner de l'or au joueur pour qu'il puisse jouer
+        partie.getJoueurParId(0)->setOr(10);
+        
+        if (partie.getJoueurParId(0)->jouerCarte(carteId)) {
+            std::cout << "✓ Carte jouée avec succès" << std::endl;
+            std::cout << "  - Main: " << partie.getJoueurParId(0)->getMain().size() << " cartes" << std::endl;
+            std::cout << "  - Plateau: " << partie.getJoueurParId(0)->getPlateau().size() << " cartes" << std::endl;
+        } else {
+            std::cout << "✗ Échec de jouer la carte" << std::endl;
+        }
+    }
+    
+    // Lancer l'interface SFML
+    std::cout << "\n=== Lancement de l'interface graphique ===" << std::endl;
+    SFMLGame jeu(&partie);
+    jeu.gameLoop();
+    
+    return 0;
 }

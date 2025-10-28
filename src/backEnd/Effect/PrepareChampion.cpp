@@ -3,7 +3,7 @@
 
 PrepareChampion::PrepareChampion(Champion* champion) : _champion(champion) {}
 
-void PrepareChampion::applyEffect() {
+void PrepareChampion::applyEffect(Partie *partie) {
     if (_champion) {
         // Implémentation de la préparation du champion
     }

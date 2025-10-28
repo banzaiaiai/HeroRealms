@@ -10,7 +10,7 @@ private:
 public:
     DrawCard(int count=0);
     ~DrawCard() override = default;
-    void applyEffect() override;
+    void applyEffect(Partie * partie) override;
 
     // Getters
     inline int getCount() const { return _count; }

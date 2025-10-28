@@ -2,6 +2,6 @@
 
 GainGold::GainGold(int gold) : _gold(gold) {}
 
-void GainGold::applyEffect() {
+void GainGold::applyEffect(Partie *partie) {
     // Implémentation gain d'or
 }

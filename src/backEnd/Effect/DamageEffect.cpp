@@ -4,6 +4,6 @@
 
 DamageEffect::DamageEffect(int damage) : _damage(damage) {}
 
-void DamageEffect::applyEffect() {
-    GLOBALJoueurActif->setDegat(_damage);
+void DamageEffect::applyEffect(Partie *partie) {
+    partie->getJoueurActuelle()->setDegat(_damage);
 }

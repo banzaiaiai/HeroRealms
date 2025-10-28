@@ -1,6 +1,6 @@
 #include "frontEnd/CarteGraphique.hpp"
 
-CarteGraphique::CarteGraphique(float x, float y, float width, float height, Carte* carteLogique)
+CarteGraphique::CarteGraphique(float x, float y, float width, float height, const Carte* carteLogique)
     :  _isSelected(false) ,_carteLogique(carteLogique)
     
     {
@@ -12,7 +12,7 @@ CarteGraphique::CarteGraphique(float x, float y, float width, float height, Cart
     _shape.setOutlineThickness(2.f);
 }
 
-CarteGraphique::CarteGraphique(float width, float height, Carte* carteLogique)
+CarteGraphique::CarteGraphique(float width, float height, const Carte* carteLogique)
     :  _isSelected(false) ,_carteLogique(carteLogique)
     
     {

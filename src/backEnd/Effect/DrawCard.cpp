@@ -2,6 +2,6 @@
 
 DrawCard::DrawCard(int count) : _count(count) {}
 
-void DrawCard::applyEffect(){
+void DrawCard::applyEffect(Partie *partie){
 
 }

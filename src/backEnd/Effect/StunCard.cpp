@@ -6,4 +6,4 @@ StunCard::StunCard(int duration) : _duration(duration)
 
 }
 StunCard::~StunCard() {}
-void StunCard::applyEffect(){}
+void StunCard::applyEffect(Partie *partie){}

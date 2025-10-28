@@ -1,53 +1,137 @@
 #include "backEnd/Partie.hpp"
+#include "backEnd/Joueur.hpp"
 #include "backEnd/Carte/Carte.hpp"
-#include "backEnd/Joueur.hpp"  // Inclure le header complet
 #include <iostream>
-#include <vector>
+#include <algorithm>
 
-
-std::vector<Carte>* GLOBALRiviere = nullptr;
-Joueur* GLOBALJoueurActif = nullptr;
-Joueur* GLOBALJoueurCible = nullptr;
-Carte* GLOBALCarteActif = nullptr;
-
-
-Partie::Partie(std::vector<Carte> deck,int nbjoueur) : _tour(0) {
-    // Créer les joueurs
-    
-    for (int i = 0; i < nbjoueur; ++i) {
-        _listJoueur.push_back( Joueur(i, *this, "Joueur " + std::to_string(i),deck));
-    }
-    setJoueurActuelle(_listJoueur[0]);
-    setMarche(&deck);
-    setRiviere(new std::vector<Carte>());
-    for(int i = 0; i < 5 ; ++i){
-      mouve(_marche,_riviere);
-    }
-
-
-
-    // Initialisation dans un .cpp
-    std::vector<Carte>* GLOBALRiviere = _riviere;
-    Joueur* GLOBALJoueurActif = _joueurActuelle;
-    Joueur* GLOBALJoueurCible = nullptr;
-    Carte* GLOBALCarteActif = nullptr;
+Partie::Partie()
+    : _joueurActuelIndex(0),
+      _tour(1)
+{
+  std::cout << "Création d'une nouvelle partie" << std::endl;
 }
 
 Partie::~Partie() {
-    
+    // Destruction automatique grâce aux smart pointers
+    std::cout << "Destruction de la partie" << std::endl;
 }
 
-// Implémentation des méthodes de fonctionement
-bool Partie::victoireDefaite(Joueur* joueur)
-{
-  if(joueur->getPv()==0){
-    return true ;
-  }
-  return false;
+// === GESTION DES JOUEURS ===
+
+void Partie::ajouterJoueur(Joueur&& joueur) {
+    _joueurs.push_back(std::move(joueur));
+    std::cout << "Joueur ajouté à la partie. Total: " << _joueurs.size() << std::endl;
 }
-void Partie::mouve(std::vector<Carte>* source, std::vector<Carte>* destination) {
-    if (!source->empty()) {
-        destination->push_back(source->back());
-        source->pop_back();
+
+Joueur* Partie::getJoueurActuelle() {
+    if (_joueurs.empty()) return nullptr;
+    return &_joueurs[_joueurActuelIndex];
+}
+
+const Joueur* Partie::getJoueurActuelle() const {
+    if (_joueurs.empty()) return nullptr;
+    return &_joueurs[_joueurActuelIndex];
+}
+
+Joueur* Partie::getJoueurParId(int id) {
+    for (auto& joueur : _joueurs) {
+        if (joueur.getId() == id) {
+            return &joueur;
+        }
     }
+    return nullptr;
+}
+
+const Joueur* Partie::getJoueurParId(int id) const {
+    for (const auto& joueur : _joueurs) {
+        if (joueur.getId() == id) {
+            return &joueur;
+        }
+    }
+    return nullptr;
+}
+
+void Partie::passerAuJoueurSuivant() {
+    if (_joueurs.empty()) return;
+    
+    _joueurActuelIndex = (_joueurActuelIndex + 1) % _joueurs.size();
+    
+    if (_joueurActuelIndex == 0) {
+        _tour++;
+        std::cout << "=== Tour " << _tour << " ===" << std::endl;
+    }
+    
+    std::cout << "C'est au tour de " << getJoueurActuelle()->getNom() << std::endl;
+}
+
+// === GESTION DE LA RIVIÈRE ===
+
+std::vector<const Carte*> Partie::getRiviere() const {
+    std::vector<const Carte*> result;
+    result.reserve(_riviere.size());
+    
+    for (const auto& carte : _riviere) {
+        result.push_back(carte.get());
+    }
+    
+    return result;
+}
+
+void Partie::ajouterCarteRiviere(std::unique_ptr<Carte> carte) {
+    if (!carte) return;
+    
+    _riviere.push_back(std::move(carte));
+    std::cout << "Carte ajoutée à la rivière. Total: " << _riviere.size() << std::endl;
+}
+
+std::unique_ptr<Carte> Partie::retirerCarteRiviere(int carteId) {
+    auto it = std::find_if(_riviere.begin(), _riviere.end(),
+        [carteId](const std::unique_ptr<Carte>& carte) {
+            return carte && carte->getId() == carteId;
+        });
+    
+    if (it != _riviere.end()) {
+        std::unique_ptr<Carte> carte = std::move(*it);
+        _riviere.erase(it);
+        std::cout << "Carte " << carteId << " retirée de la rivière" << std::endl;
+        return carte;
+    }
+    
+    std::cerr << "Carte " << carteId << " non trouvée dans la rivière" << std::endl;
+    return nullptr;
+}
+
+void Partie::remplirRiviere(int nombreCartes) {
+    // Cette méthode pourrait piocher depuis un deck commun
+    // Pour l'instant, c'est juste un placeholder
+    std::cout << "Remplissage de la rivière (à implémenter)" << std::endl;
+}
+
+// === GESTION DU JEU ===
+
+void Partie::demarrer() {
+    std::cout << "=== Début de la partie ===" << std::endl;
+    std::cout << "Nombre de joueurs: " << _joueurs.size() << std::endl;
+    
+    if (!_joueurs.empty()) {
+        std::cout << "Premier joueur: " << getJoueurActuelle()->getNom() << std::endl;
+    }
+}
+
+void Partie::finDeTour() {
+    std::cout << "Fin du tour de " << getJoueurActuelle()->getNom() << std::endl;
+    
+    // Logique de fin de tour (défausser la main, piocher, etc.)
+    Joueur* joueur = getJoueurActuelle();
+    if (joueur) {
+        // Exemple: remettre l'or à une valeur de base
+        joueur->setOr(joueur->getOr() + 1);
+        
+        // Piocher des cartes si la main est vide
+        if (joueur->getMain().empty()) {
+            joueur->piocher(5);
+        }
+    }
+    
+    passerAuJoueurSuivant();
 }

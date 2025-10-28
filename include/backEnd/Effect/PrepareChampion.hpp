@@ -14,7 +14,7 @@ public:
     PrepareChampion(Champion* champion = nullptr);
     ~PrepareChampion() override = default;
     
-    void applyEffect() override;
+    void applyEffect(Partie *partie) override;
 
     inline Champion* getChampion() const { return _champion; }
     inline void setChampion(Champion* champion) { _champion = champion; }

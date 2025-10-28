@@ -11,12 +11,12 @@ private:
     sf::Text _texteNom;
     sf::Text _texteCout;
     bool _isSelected;
-    Carte* _carteLogique;  // Référence vers la logique métier
+    const Carte* _carteLogique;  // Référence vers la logique métier
     
 public:
     // Le constructeur doit matcher exactement l'appel
-    CarteGraphique(float x, float y, float width, float height, Carte* carteLogique);
-    CarteGraphique(float width, float height, Carte* carteLogique);
+    CarteGraphique(float x, float y, float width, float height, const Carte* carteLogique);
+    CarteGraphique(float width, float height, const Carte* carteLogique);
     // Méthodes graphiques
     bool contains(const sf::Vector2f& point) const;
     void setSelected(bool selected);
@@ -26,7 +26,7 @@ public:
     sf::Vector2f getSize() const { return _shape.getSize(); }
     
     // Lien avec la logique
-    Carte* getCarteLogique() const { return _carteLogique; }
+    const Carte* getCarteLogique() const { return _carteLogique; }
     void updateAppearance(); // Met à jour l'apparence selon l'état logique
     sf::FloatRect getGlobalBounds() const {
         return _shape.getGlobalBounds();
