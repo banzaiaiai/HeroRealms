@@ -1,6 +1,7 @@
 #ifndef CARTE_HPP
 #define CARTE_HPP
 
+#include "backEnd/Joueur.hpp"
 #include "backEnd/Partie.hpp"
 #include <string>
 #include <vector>
@@ -44,7 +45,7 @@ private:
 public:
     // methode metier
 
-    void jouer(Partie *partie);
+    void jouer(Joueur *joueur);
     // Constructeur par défaut
     Carte();
     

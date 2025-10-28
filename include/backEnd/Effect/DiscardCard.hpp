@@ -2,6 +2,7 @@
 #define DISCARDCARD_H
 
 #include "backEnd/Effect/IEffect.hpp"
+#include "backEnd/Joueur.hpp"
 
 class DiscardCard : public IEffect {
 private:
@@ -10,7 +11,7 @@ private:
 public:
     DiscardCard(int count=0);
     ~DiscardCard();
-    void applyEffect(Partie *partie) override;
+    void applyEffect(Joueur *jouer) override;
 
     // Getters
     inline int getCount() const { return _count; }

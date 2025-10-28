@@ -1,7 +1,8 @@
 #include "backEnd/Effect/DrawCard.hpp"
+#include "backEnd/Joueur.hpp"
 
 DrawCard::DrawCard(int count) : _count(count) {}
 
-void DrawCard::applyEffect(Partie *partie){
+void DrawCard::applyEffect(Joueur *joeur){
 
 }

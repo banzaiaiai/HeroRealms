@@ -2,6 +2,7 @@
 #define DAMAGEEFFECT_H
 
 #include "backEnd/Effect/IEffect.hpp"
+#include "backEnd/Joueur.hpp"
 
 class DamageEffect : public IEffect {
 private:
@@ -11,7 +12,7 @@ public:
     DamageEffect(int damage = 0);
     ~DamageEffect() override = default;
     
-    void applyEffect(Partie *partie) override;  // Implémentation
+    void applyEffect(Joueur *joueur) override;  // Implémentation
 
     // Getters et setters...
     inline int getDamage() const { return _damage; }

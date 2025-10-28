@@ -10,7 +10,7 @@ private:
 public:
     HealEffect(int heal = 0);
     ~HealEffect() override = default;
-    void applyEffect(Partie *partie) override;
+    void applyEffect(Joueur *joueur) override;
     void applyEffect(Partie *partie, Joueur *joueurCible) ;
 
     inline int getHeal() const { return _heal; }

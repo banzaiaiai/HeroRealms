@@ -1,4 +1,5 @@
 #include "backEnd/Carte/Carte.hpp"
+#include "backEnd/Joueur.hpp"
 #include "backEnd/Partie.hpp"
 #include "backEnd/Effect/IEffect.hpp"
 
@@ -61,12 +62,12 @@ const std::vector<std::shared_ptr<IEffect>>* Carte::getEffects(EventType eventTy
     return nullptr;
 }
 
-void Carte::jouer(Partie * partie)
+void Carte::jouer(Joueur* joueur)
 {
     auto it = _trigger.find(EventType::OnPlay);
     if (it != _trigger.end()) {
         for (const auto& effect : it->second) {
-            //effect->;
+            effect->applyEffect(joueur);
         }
     }
 }

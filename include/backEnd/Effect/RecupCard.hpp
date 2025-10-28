@@ -2,6 +2,7 @@
 #define RECUPCARD_H
 
 #include "backEnd/Effect/IEffect.hpp"
+#include "backEnd/Joueur.hpp"
 
 class RecupCard : public IEffect {
 private:
@@ -10,7 +11,7 @@ private:
 public:
     RecupCard(int count=0);
     ~RecupCard();
-    void applyEffect(Partie *partie) override;
+    void applyEffect(Joueur *joueur) override;
 
     // Getters
     inline int getCount() const { return _count; }

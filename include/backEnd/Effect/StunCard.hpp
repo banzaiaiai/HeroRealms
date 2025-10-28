@@ -2,6 +2,7 @@
 #define STUNCARD_H
 
 #include "backEnd/Effect/IEffect.hpp"
+#include "backEnd/Joueur.hpp"
 
 class StunCard : public IEffect {
 private:
@@ -10,7 +11,7 @@ private:
 public:
     StunCard(int duration=0);
     ~StunCard();
-    void applyEffect(Partie *partie) override;
+    void applyEffect(Joueur *joueur) override;
 
     // Getters
     inline int getDuration() const { return _duration; }
