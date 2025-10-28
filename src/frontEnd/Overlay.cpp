@@ -12,9 +12,8 @@ Overlay::Overlay(ZoneCarte* zoneCarte) {
 Carte* Overlay::openOverlay(std::vector<Carte*> listCarte) {
     _isOverlay = true;
     for (auto carte : listCarte) {
-        _zoneCarte->ajouterCarteLogique(carte);
+        _zoneCarte->observerCarte(carte);
     }
-    std::cout << _zoneCarte->getCartesLogiques().size() << std::endl;
     return listCarte.back();
 }
 

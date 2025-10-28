@@ -19,7 +19,7 @@ void GestionnaireZones::creerZonesStandard() {
     
     _zones.push_back(std::make_unique<ZoneCarte>(400, 330, 500, 145, "marche", sf::Color(255, 165, 0, 50)));
 
-    _zones.push_back(std::make_unique<ZoneCarte>(100, 100, 1000, 600, "overlay"));
+    _zones.push_back(std::make_unique<ZoneCarte>(100, 100, 1000, 600, "overlay", sf::Color(255, 255, 255, 50)));
     
     // Mettre à jour la map de recherche
     for (auto& zone : _zones) {
