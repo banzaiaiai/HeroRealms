@@ -102,8 +102,16 @@ std::unique_ptr<Carte> Partie::retirerCarteRiviere(int carteId) {
         std::unique_ptr<Carte> carte = std::move(*it);
         _riviere.erase(it);
         std::cout << "Carte " << carteId << " retirée de la rivière" << std::endl;
-        ajouterCarteRiviere(std::move(_marcher.back()));
-        _marcher.pop_back();
+
+        if (!_marcher.empty()) {
+            // Replace the removed river card with the last card from the marcher
+            ajouterCarteRiviere(std::move(_marcher.back()));
+            _marcher.pop_back();
+        } else {
+            // Defensive: avoid calling back() on an empty vector
+            std::cerr << "Attention: le marcher est vide, impossible de remplacer la carte retirée" << std::endl;
+        }
+
         return carte;
     }
     
