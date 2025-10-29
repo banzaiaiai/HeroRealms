@@ -16,6 +16,7 @@ class Partie {
 private:
     std::vector<Joueur> _joueurs;
     std::vector<std::unique_ptr<Carte>> _riviere;  // Le marché commun
+    std::vector<std::unique_ptr<Carte>> _marcher;
     int _joueurActuelIndex;
     int _tour;
 
@@ -79,7 +80,7 @@ public:
      * Remplit la rivière jusqu'à avoir N cartes
      */
     void remplirRiviere(int nombreCartes);
-    
+    void setMarcher(std::vector<std::unique_ptr<Carte>> marcher);
     // === GESTION DU JEU ===
     
     /**

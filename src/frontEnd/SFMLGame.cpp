@@ -265,52 +265,44 @@ void SFMLGame::render() {
 bool SFMLGame::deplacementValide(ZoneCarte* source, ZoneCarte* cible, int carteId) {
     if (!source || !cible || carteId == -1 || !_partie) 
         return false;
-    /*
+    
     std::string sourceNom = source->getNom();
     std::string cibleNom = cible->getNom();
     
-    // Extraire le type de zone et le joueur
-    auto extraireInfo = [](const std::string& nom) -> std::pair<std::string, int> {
-        size_t pos = nom.find_last_of("_");
-        if (pos != std::string::npos && pos + 1 < nom.size()) {
-            std::string type = nom.substr(0, pos);
-            int joueur = std::stoi(nom.substr(pos + 1)) - 1;
-            return {type, joueur};
+    Joueur* joueur = _partie->getJoueurActuelle();
+    
+    std::cout << " Tente le deplacement Déplacement: " << sourceNom << " -> " << cibleNom 
+              << " (Carte ID: " << carteId << ")" << std::endl;
+    if (!joueur) return false;
+    // RÈGLE 1: Marché → Main ou Défausse
+    cibleNom = cibleNom.substr(0,cibleNom.size()-1); // enlever le _X à la fin
+    // On va chercher la carte dans le vecteur de cartes du marcher
+    // Pour en extraire le coup en or
+    // Normalement ce n'est que de la lecture pas de probléme
+    int coupOr=0;
+    auto cartes = source->_cartesObservees;
+        for (auto carte : cartes){
+        coupOr=carte->getCoupOr();
+    }
+    
+    if (sourceNom == "marche" &&
+        (cibleNom == "main_joueur" || cibleNom == "defausse_joueur")) {
+        
+        if(coupOr==-1){
+            std::cout<<"Probléme d'achat"<<std::endl;
+            return false;
         }
-        return {nom, -1};
-    };
-    
-    auto [typeSource, joueurSource] = extraireInfo(sourceNom);
-    auto [typeCible, joueurCible] = extraireInfo(cibleNom);
-    
-    int joueurActuel = _partie->getJoueurActuelle()->getId();
-    
-    // RÈGLE 1: Main → Plateau (même joueur)
-    if (typeSource == "main_joueur" && typeCible == "plateau_joueur" && 
-        joueurSource == joueurActuel && joueurCible == joueurActuel) {
-        // Vérifier le coût en or
-        const Carte* carte = _partie->getJoueurActuelle()->getCarteById(carteId);
-        if (carte) {
-            return _partie->getJoueurActuelle()->getOr() >= carte->getCoupOr();
+        if (coupOr && (joueur->getOr() >= coupOr)){
+            joueur->setOr(joueur->getOr() - coupOr);
+            std::cout << "Or suffisant pour acheter la carte" << std::endl;
+            return true;
         }
-        return false;
-    }
-    
-    // RÈGLE 2: Marché → Main ou Défausse
-    if (sourceNom == "marche" && 
-        (typeCible == "main_joueur" || typeCible == "defausse_joueur") &&
-        joueurCible == joueurActuel) {
-        return true;
-    }
-    
-    // RÈGLE 3: Plateau → Défausse (pour défausser une carte jouée)
-    if (typeSource == "plateau_joueur" && typeCible == "defausse_joueur" &&
-        joueurSource == joueurActuel && joueurCible == joueurActuel) {
-        return true;
-    }
-    
-    return false;
-    */
+        else {
+            std::cout << "Or insuffisant pour acheter la carte" << std::endl;
+            std::cout<< "Cout de la carte: " << coupOr << ", Or du joueur: " << joueur->getOr() << std::endl;
+            return false;
+        }
+    }   
     return true;
 }
 
@@ -350,7 +342,8 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
         auto carte = _partie->retirerCarteRiviere(carteId);
         if (carte) {
             joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
-            std::cout << "Carte défaussée depuis le marché" << std::endl;
+            std::cout << "Carte acheter depuis le marché" << std::endl;
+            
         }
     }
     // CASE 4: Plateau → Défausse

@@ -54,6 +54,7 @@ int main() {
     // Créer les decks des joueurs
     auto deck1 = creerDeck(20);
     auto deck2 = creerDeck(20);
+    auto deck3 = creerDeck(50);
     
     std::cout << "Decks créés: " << deck1.size() << " et " << deck2.size() << " cartes" << std::endl;
     
@@ -68,6 +69,7 @@ int main() {
     // Ajouter les joueurs à la partie
     partie.ajouterJoueur(std::move(joueur1));
     partie.ajouterJoueur(std::move(joueur2));
+    partie.setMarcher(std::move(deck3));
     
     // Piocher les mains de départ
     std::cout << "Pioche des mains de départ..." << std::endl;
@@ -101,8 +103,7 @@ int main() {
         int carteId = mainJ1[0]->getId();
         std::cout << "Tentative de jouer la carte ID " << carteId << std::endl;
         
-        // Donner de l'or au joueur pour qu'il puisse jouer
-        partie.getJoueurParId(0)->setOr(10);
+        // Donner de l'or au joueur pour qu'il puisse joue
         
         if (partie.getJoueurParId(0)->jouerCarte(carteId)) {
             std::cout << "✓ Carte jouée avec succès" << std::endl;

@@ -70,7 +70,7 @@ void GestionnaireZones::mettreAJourZones(Partie* partie) {
         // PIOCHE
         auto zonePioche = getZoneParNom("pioche" + suffixe);
         if (zonePioche) {
-            auto cartesPioche = joueurs[i].getPioche();
+            const auto cartesPioche = joueurs[i].getPioche();
             // Afficher seulement le dos de la dernière carte
             if (!cartesPioche.empty()) {
                 zonePioche->observerCarte(cartesPioche.back());

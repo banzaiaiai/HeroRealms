@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <ostream>
+#include <utility>
 
 Joueur *GLOBALjoeurActuelle=nullptr;
 
@@ -90,6 +91,7 @@ void Partie::ajouterCarteRiviere(std::unique_ptr<Carte> carte) {
     std::cout << "Carte ajoutée à la rivière. Total: " << _riviere.size() << std::endl;
 }
 
+
 std::unique_ptr<Carte> Partie::retirerCarteRiviere(int carteId) {
     auto it = std::find_if(_riviere.begin(), _riviere.end(),
         [carteId](const std::unique_ptr<Carte>& carte) {
@@ -100,6 +102,8 @@ std::unique_ptr<Carte> Partie::retirerCarteRiviere(int carteId) {
         std::unique_ptr<Carte> carte = std::move(*it);
         _riviere.erase(it);
         std::cout << "Carte " << carteId << " retirée de la rivière" << std::endl;
+        ajouterCarteRiviere(std::move(_marcher.back()));
+        _marcher.pop_back();
         return carte;
     }
     
@@ -111,6 +115,10 @@ void Partie::remplirRiviere(int nombreCartes) {
     // Cette méthode pourrait piocher depuis un deck commun
     // Pour l'instant, c'est juste un placeholder
     std::cout << "Remplissage de la rivière (à implémenter)" << std::endl;
+}
+
+void Partie::setMarcher(std::vector<std::unique_ptr<Carte>> marcher) {
+    _marcher = std::move(marcher);
 }
 
 // === GESTION DU JEU ===
