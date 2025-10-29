@@ -6,6 +6,7 @@
 
 class Carte;
 class Joueur;
+class Overlay;
 
 extern Joueur* GLOBALjoeurActuelle;
 /**
@@ -20,6 +21,9 @@ private:
     int _tour;
 
 public:
+    Overlay* overlay = nullptr;
+    void setOverlay(Overlay* o) { overlay = o; };
+
     Partie();
     ~Partie();
     

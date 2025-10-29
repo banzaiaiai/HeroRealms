@@ -20,7 +20,7 @@ public:
     ~Overlay() {};
     bool getIsOverlay() { return _isOverlay; };
 
-    Carte* openOverlay(std::vector<Carte*> listCarte);
+    const Carte* openOverlay(std::vector<const Carte*> listCarte);
 
 };
 

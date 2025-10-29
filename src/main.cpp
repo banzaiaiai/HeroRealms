@@ -116,6 +116,9 @@ int main() {
     // Lancer l'interface SFML
     std::cout << "\n=== Lancement de l'interface graphique ===" << std::endl;
     SFMLGame jeu(&partie);
+
+    partie.overlay->openOverlay(partie.getRiviere());
+
     jeu.gameLoop();
     
     return 0;

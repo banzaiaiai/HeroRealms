@@ -114,7 +114,9 @@ ZoneCarte* GestionnaireZones::getZoneParNom(const std::string& nom) {
 
 void GestionnaireZones::dessinerZones(sf::RenderWindow& window) {
     for (auto& zone : _zones) {
-        zone->dessiner(window);
+        if (zone->getNom() != "overlay"){
+            zone->dessiner(window);
+        }
     }
 }
 

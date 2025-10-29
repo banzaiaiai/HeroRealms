@@ -23,6 +23,7 @@ SFMLGame::SFMLGame(Partie* partie)
     _zones.creerZonesStandard();
     
     _overlay._zoneCarte = _zones.getZoneParNom("overlay");
+    partie->setOverlay(&_overlay);
     
     if (_partie) {
         _zones.lierPartie(_partie);
@@ -249,8 +250,8 @@ void SFMLGame::render() {
     _buttonFinTour.draw(_window);
 
     if (_overlay.getIsOverlay()) {
-        _overlay._zoneCarte->dessiner(_window);
         _window.draw(_overlay._background);
+        _overlay._zoneCarte->dessiner(_window);
     }
 
     _window.display();
