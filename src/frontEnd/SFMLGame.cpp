@@ -14,7 +14,7 @@ SFMLGame::SFMLGame(Partie* partie)
       _carteSelectionnee(nullptr),
       _carteSelectionneeId(-1),
       _zoneSource(nullptr),
-      _overlay(nullptr),
+      _overlay(),
       _buttonAtacker("attaque", sf::Vector2f(40, 650), sf::Vector2f(100, 100)),
       _buttonFinTour("fin de tour", sf::Vector2f(920, 370), sf::Vector2f(200, 50))
 {
@@ -22,7 +22,6 @@ SFMLGame::SFMLGame(Partie* partie)
     
     _zones.creerZonesStandard();
     
-    _overlay._zoneCarte = _zones.getZoneParNom("overlay");
     partie->setOverlay(&_overlay);
     
     if (_partie) {
@@ -248,11 +247,6 @@ void SFMLGame::render() {
 
     _buttonAtacker.draw(_window);
     _buttonFinTour.draw(_window);
-
-    if (_overlay.getIsOverlay()) {
-        _window.draw(_overlay._background);
-        _overlay._zoneCarte->dessiner(_window);
-    }
 
     _window.display();
 }

@@ -31,10 +31,10 @@ void ZoneCarte::observerCarte(const Carte* carte) {
     if (!carte) return;
     
     // Vérifier qu'elle n'est pas déjà observée
-    auto it = std::find(_cartesObservees.begin(), _cartesObservees.end(), carte);
-    if (it == _cartesObservees.end()) {
+    //auto it = std::find(_cartesObservees.begin(), _cartesObservees.end(), carte);
+    //if (it == _cartesObservees.end()) {
         _cartesObservees.push_back(carte);
-    }
+    //}
 }
 
 void ZoneCarte::arreterObserver(const Carte* carte) {
