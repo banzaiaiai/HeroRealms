@@ -66,14 +66,30 @@ const std::vector<std::shared_ptr<IEffect>>* Carte::getEffects(EventType eventTy
 
 void Carte::jouer(Joueur* joueur)
 {
-    auto it = _trigger.find(EventType::OnPlay);
+    std::cout << "Carte '" << _name << "' jouée par " << joueur->getNom() << std::endl;
+    declencherEffets(EventType::OnPlay, joueur);
+}
+
+void Carte::declencherEffets(EventType eventType, Joueur* joueur) {
+    if (!joueur) {
+        std::cerr << "Erreur: joueur nullptr dans declencherEffets" << std::endl;
+        return;
+    }
+    
+    auto it = _trigger.find(eventType);
     if (it != _trigger.end()) {
+        std::cout << "Déclenchement de " << it->second.size() 
+                  << " effet(s) pour la carte " << _name << std::endl;
+        
         for (const auto& effect : it->second) {
-            
-            if(effect){
-                std::cout<<"Effet existe"<<std::endl;
+            if (effect) {
                 effect->applyEffect(joueur);
+            } else {
+                std::cerr << "Effet nullptr trouvé!" << std::endl;
             }
         }
+    } else {
+        std::cout << "Aucun effet trouvé pour cet événement" << std::endl;
     }
 }
+

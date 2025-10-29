@@ -172,14 +172,19 @@ bool Joueur::jouerCarte(int carteId) {
     _plateau.push_back(std::move(*it));
     _main.erase(it);
 
-    std::cout << "Carte jouée avec succès" << std::endl;
-
-    // apliquer l'effet
-    std::cout << "Application effet sur " << this << " (joueur)" << std::endl;
-    std::cout << "Carte courante: " << _plateau.back().get() << std::endl;
-
-    _plateau.back()->jouer(this);
+    // La carte est maintenant sur le plateau (dernière carte ajoutée)
+    Carte* carteJouee = _plateau.back().get();
     
+    if (carteJouee) {
+        std::cout << "Carte jouée: " << carteJouee->getName() 
+                  << " (ID: " << carteJouee->getId() << ")" << std::endl;
+        
+        // Déclencher l'effet OnPlay
+        carteJouee->jouer(this);  // IMPORTANT: passer 'this' (le joueur actuel)
+    }
+    
+    std::cout << "Carte jouée avec succès" << std::endl;
+    return true;
     return true;
 }
 

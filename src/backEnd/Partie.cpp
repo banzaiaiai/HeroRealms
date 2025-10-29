@@ -3,6 +3,7 @@
 #include "backEnd/Carte/Carte.hpp"
 #include <iostream>
 #include <algorithm>
+#include <ostream>
 
 Joueur *GLOBALjoeurActuelle=nullptr;
 
@@ -23,9 +24,7 @@ Partie::~Partie() {
 void Partie::ajouterJoueur(Joueur&& joueur) {
     _joueurs.push_back(std::move(joueur));
     std::cout << "Joueur ajouté à la partie. Total: " << _joueurs.size() << std::endl;
-    if(_joueurs.empty()){
-        GLOBALjoeurActuelle=&joueur;
-    }
+    
 }
 
 Joueur* Partie::getJoueurActuelle() {
@@ -117,6 +116,10 @@ void Partie::remplirRiviere(int nombreCartes) {
 // === GESTION DU JEU ===
 
 void Partie::demarrer() {
+    if(!_joueurs.empty()){
+        GLOBALjoeurActuelle=getJoueurParId(0);
+        std::cout<<getJoueurParId(0)<<"joueur actuelle"<<std::endl;
+    }
     std::cout << "=== Début de la partie ===" << std::endl;
     std::cout << "Nombre de joueurs: " << _joueurs.size() << std::endl;
     

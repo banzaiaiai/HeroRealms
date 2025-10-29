@@ -46,6 +46,7 @@ public:
     // methode metier
 
     void jouer(Joueur *joueur);
+    void declencherEffets(EventType eventType, Joueur* joueur);
     // Constructeur par défaut
     Carte();
     

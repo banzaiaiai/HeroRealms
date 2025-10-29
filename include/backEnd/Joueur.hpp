@@ -1,6 +1,7 @@
 #ifndef JOUEUR_HPP
 #define JOUEUR_HPP
 
+#include <iostream>
 #include <vector>
 #include <memory>
 #include <string>
@@ -71,7 +72,9 @@ public:
     // === SETTERS ===
     void setPv(int pv) { _pv = pv; }
     void setOr(int or_) { _or = or_; }
-    int setDegat(int degat) { _degat = degat; }
+    void setDegat(int degat) {
+          std::cout << "setDegat appelé avec " << degat << std::endl;
+            _degat = degat; }
     void ajouterOr(int montant) { _or += montant; }
     void retirerOr(int montant) { _or -= montant; }
     

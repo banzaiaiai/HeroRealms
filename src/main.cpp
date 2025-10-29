@@ -16,9 +16,8 @@ std::unique_ptr<Carte> creerCarteDegat(const std::string& nom, int degats, int c
     auto carte = std::make_unique<Carte>(nom, cout, Faction::Neutre);
     
     // Créer l'effet de dégâts
-    std::shared_ptr<IEffect> effetDegat = std::make_shared<DamageEffect>(degats);
     std::vector<std::shared_ptr<IEffect>> effets;
-    effets.push_back(effetDegat);
+    effets.push_back(std::make_shared<DamageEffect>(degats));
     
     carte->addTrigger(EventType::OnPlay, effets);
     
@@ -95,7 +94,6 @@ int main() {
     
     std::cout << "Marché: " << partie.getRiviere().size() << " cartes" << std::endl;
     
-    GLOBALjoeurActuelle=&joueur1;
     // Test de déplacement de carte
     std::cout << "\n=== Test de déplacement ===" << std::endl;
     auto mainJ1 = partie.getJoueurParId(0)->getMain();
