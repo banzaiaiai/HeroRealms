@@ -219,10 +219,12 @@ void SFMLGame::update() {
     if (_partie && _partie->getJoueurActuelle()) {
         _textJoueur1.setString("Joueur 1 - Or: " + 
             std::to_string(_partie->getJoueurActuelle()->getOr()) + 
-            " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv()));
+            " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+
+            " Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
         _textJoueur2.setString("Joueur 2 - Or: " + 
             std::to_string(_partie->getJoueurActuelle()->getOr()) + 
-            " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv()));
+            " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+
+            " Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
     }
     
     _buttonAtacker.update(_window);
