@@ -3,6 +3,7 @@
 #include "backEnd/Partie.hpp"
 #include <iostream>
 #include <algorithm>
+#include <tuple>
 
 Joueur::Joueur(int id, Partie& partie, const std::string& nom)
     : _id(id),
@@ -160,7 +161,10 @@ void Joueur::piocher(int nombre) {
         _pioche.pop_back();
     }
 }
-
+/**
+    TO DO 
+    implémenter l'event des diférente famile
+*/
 bool Joueur::jouerCarte(int carteId) {
     // Trouver la carte dans la main
     auto it = trouverCarte(carteId, _main);
@@ -182,14 +186,53 @@ bool Joueur::jouerCarte(int carteId) {
         // Déclencher l'effet OnPlay
         carteJouee->jouer(this);  // IMPORTANT: passer 'this' (le joueur actuel)
     }
+
+    effetfamille(carteJouee);
     
     std::cout << "Carte jouée avec succès" << std::endl;
     return true;
     return true;
 }
 
+/*
+isVert = false
+1er carte verte : isVert non => autreVerte non => applique pas
+2e carte verte : isVert non => autreVerte oui => applique sois même et la 1er carte
+3e carte verte : isVert oui => applique sois même
+fin de tour isVert = false
+debut de tour : si plusieur carte verte : isVert = true et active vert des carte vertes 
+*/
  
-
+void Joueur::effetfamille(Carte* carteJouee) {
+    // TO DO
+    Faction faction = carteJouee->getFaction();
+    auto etatinitial=_partie->getetatFaction();
+    auto etat =_partie->getetatFaction()[faction];
+    if(std::get<0>(etat)==false){
+        if(std::get<1>(etat)==false){
+            std::cout<<"applique pas"<<std::endl;
+            
+            etatinitial[faction]=std::make_tuple(false,true);
+            _partie->getetatFaction()[faction]=etatinitial[faction];
+            return;
+        }
+        else {
+            //applique sois même et autre carte
+            for(auto& carte : _plateau){
+                if(carte->getFaction()==faction){
+                    // aplique effect faction 
+                    carteJouee->jouerFaction(this);
+                }
+            }
+            etatinitial[faction]=std::make_tuple(true,true);
+            _partie->getetatFaction()[faction]=etatinitial[faction];
+            return;
+        }
+    }
+    else{
+        // aplique sois même
+    }
+}
 
 
 void Joueur::defausserCarte(int carteId, ZoneType source) {

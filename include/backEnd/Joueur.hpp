@@ -107,6 +107,12 @@ public:
      * @return true si la carte a pu être jouée
      */
     bool jouerCarte(int carteId);
+
+    /**
+     * Gère les effets de famille lors du jeu d'une carte
+     * TO DO: implémenter les effets spécifiques
+     */
+    void effetfamille(Carte* carteJouee);
     
     /**
      * Défausse une carte depuis n'importe quelle zone
@@ -126,6 +132,8 @@ public:
     }
 
     void defausserCarte();
+
+    
 
 private:
     // Méthodes helper
