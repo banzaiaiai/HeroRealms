@@ -126,7 +126,7 @@ int main() {
         rawDeck.push_back(c.get());
 
     // Appel de la fonction avec les pointeurs bruts
-    partie.overlay->openOverlay(rawDeck);
+    auto carte = partie.overlay->openOverlay(rawDeck);
 
     jeu.gameLoop();
     

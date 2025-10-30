@@ -3,7 +3,7 @@
 #include <string>
 
 Overlay::Overlay(): _zoneCarte(0, 0, 1000, 600, "overlay",
-                               sf::Color(0, 255, 0, 50)) {}
+                               sf::Color(100, 255, 100, 100)) {}
 
 const Carte* Overlay::openOverlay(std::vector<const Carte*> listCarte,
                                   std::string titre) {
