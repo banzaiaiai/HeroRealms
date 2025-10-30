@@ -13,7 +13,7 @@
  * Fonction utilitaire pour créer une carte avec des effets
  */
 std::unique_ptr<Carte> creerCarteDegat(const std::string& nom, int degats, int cout) {
-    auto carte = std::make_unique<Carte>(nom, cout, Faction::Neutre, "assets/carte/hero_realms_back.png");
+    auto carte = std::make_unique<Carte>(nom, cout, Faction::Neutre, "assets/carte/hero_realms_back.jpg");
     
     // Créer l'effet de dégâts
     std::vector<std::shared_ptr<IEffect>> effets;
@@ -50,29 +50,6 @@ int main() {
     
     // Créer une partie
     Partie partie = Partie();
-    
-    // Créer les decks des joueurs
-    auto deck1 = creerDeck(20);
-    auto deck2 = creerDeck(20);
-    
-    std::cout << "Decks créés: " << deck1.size() << " et " << deck2.size() << " cartes" << std::endl;
-    
-    // Créer les joueurs
-    Joueur joueur1(0, partie, "Alice");
-    Joueur joueur2(1, partie, "Bob");
-    
-    // Initialiser les decks des joueurs (transfert de propriété)
-    joueur1.initialiserDeck(std::move(deck1));
-    joueur2.initialiserDeck(std::move(deck2));
-    
-    // Ajouter les joueurs à la partie
-    partie.ajouterJoueur(std::move(joueur1));
-    partie.ajouterJoueur(std::move(joueur2));
-    
-    // Piocher les mains de départ
-    std::cout << "Pioche des mains de départ..." << std::endl;
-    partie.getJoueurParId(0)->piocher(5);
-    partie.getJoueurParId(1)->piocher(5);
     
     // Initialiser le marché
     std::cout << "Initialisation du marché..." << std::endl;
@@ -117,6 +94,8 @@ int main() {
     std::cout << "\n=== Lancement de l'interface graphique ===" << std::endl;
     SFMLGame jeu(&partie);
 
+    //partie.overlay->openOverlay("test", creerDeck(40)); // test de l'overlay
+    
     jeu.gameLoop();
     
     return 0;

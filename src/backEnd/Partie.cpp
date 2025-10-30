@@ -1,5 +1,6 @@
 #include "backEnd/Partie.hpp"
 #include "backEnd/Joueur.hpp"
+#include "backEnd/InitCarte.hpp"
 #include "backEnd/Carte/Carte.hpp"
 #include <iostream>
 #include <algorithm>
@@ -11,7 +12,24 @@ Partie::Partie()
     : _joueurActuelIndex(0),
       _tour(1)
 {
-  std::cout << "Création d'une nouvelle partie" << std::endl;
+    std::cout << "Création d'une nouvelle partie" << std::endl;
+
+    // Créer les joueurs
+    Joueur joueur1(0, this, "Alice");
+    Joueur joueur2(1, this, "Bob");
+    
+    // Initialiser les decks des joueurs (transfert de propriété)
+    joueur1.initialiserDeck(std::move(InitCarte::deckDeBase()));
+    joueur2.initialiserDeck(std::move(InitCarte::deckDeBase()));
+    
+    // Ajouter les joueurs à la partie
+    ajouterJoueur(std::move(joueur1));
+    ajouterJoueur(std::move(joueur2));
+
+    // Piocher les mains de départ
+    std::cout << "Pioche des mains de départ..." << std::endl;
+    getJoueurParId(0)->piocher(3);
+    getJoueurParId(1)->piocher(5);
 }
 
 Partie::~Partie() {

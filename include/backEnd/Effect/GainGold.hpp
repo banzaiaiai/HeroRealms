@@ -12,7 +12,7 @@ public:
     GainGold(int gold = 0);
     ~GainGold() override = default;
     
-    void applyEffect(Joueur *jouer) override;
+    void applyEffect(Joueur *joueur) override;
 
     inline int getGold() const { return _gold; }
     inline void setGold(int gold) { _gold = gold; }

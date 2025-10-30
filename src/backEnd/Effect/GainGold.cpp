@@ -3,6 +3,7 @@
 
 GainGold::GainGold(int gold) : _gold(gold) {}
 
-void GainGold::applyEffect(Joueur *joeur) {
-    // Implémentation gain d'or
+void GainGold::applyEffect(Joueur *joueur) {
+    int montant = _gold;
+    joueur->ajouterOr(montant);
 }

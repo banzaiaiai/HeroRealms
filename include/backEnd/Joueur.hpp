@@ -40,7 +40,7 @@ private:
 
 public:
     // Constructeur
-    Joueur(int id, Partie& partie, const std::string& nom);
+    Joueur(int id, Partie* partie, const std::string& nom);
     
     // Destructeur
     ~Joueur();

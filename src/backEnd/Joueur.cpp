@@ -4,13 +4,13 @@
 #include <iostream>
 #include <algorithm>
 
-Joueur::Joueur(int id, Partie& partie, const std::string& nom)
+Joueur::Joueur(int id, Partie* partie, const std::string& nom)
     : _id(id),
       _pv(20),
       _or(0),
       _degat(0),
       _nom(nom),
-      _partie(&partie)
+      _partie(partie)
 
 {
     std::cout << "Joueur " << _nom << " créé avec ID " << _id << std::endl;
