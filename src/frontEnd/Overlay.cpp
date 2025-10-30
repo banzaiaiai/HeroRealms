@@ -5,7 +5,7 @@
 Overlay::Overlay(): _zoneCarte(0, 0, 1000, 600, "overlay",
                                sf::Color(100, 255, 100, 100)) {}
 
-const Carte* Overlay::openOverlay(std::vector<const Carte*> listCarte,
+const int Overlay::openOverlay(std::vector<const Carte*> listCarte,
                                   std::string titre) {
     _listCarte = listCarte;
     
@@ -63,7 +63,7 @@ const Carte* Overlay::openOverlay(std::vector<const Carte*> listCarte,
                         for (auto& carteGraphique : _listCarteGraphique) {
                             if (carteGraphique.contains(mousePos)) {
                                 _window.close();
-                                return carteGraphique.getCarteLogique();
+                                return carteGraphique.getCarteLogique()->getId();
                             }
                         }
                     }
@@ -79,7 +79,7 @@ const Carte* Overlay::openOverlay(std::vector<const Carte*> listCarte,
         _window.display();
     }
     
-    return nullptr;
+    return -1;
 }
 
 void Overlay::render() {

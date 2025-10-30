@@ -117,17 +117,6 @@ int main() {
     std::cout << "\n=== Lancement de l'interface graphique ===" << std::endl;
     SFMLGame jeu(&partie);
 
-    std::vector<std::unique_ptr<Carte>> deck = creerDeck(34);
-
-    // Créer un vecteur de pointeurs bruts (lecture seule)
-    std::vector<const Carte*> rawDeck;
-    rawDeck.reserve(deck.size());
-    for (const auto& c : deck)
-        rawDeck.push_back(c.get());
-
-    // Appel de la fonction avec les pointeurs bruts
-    auto carte = partie.overlay->openOverlay(rawDeck);
-
     jeu.gameLoop();
     
     return 0;

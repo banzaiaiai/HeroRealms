@@ -22,8 +22,22 @@ public:
     Overlay();
     ~Overlay() {};
 
-    const Carte* openOverlay(std::vector<const Carte*> listCarte,
-                             std::string titre = "overlay");
+    const int openOverlay(std::vector<const Carte*> listCarte,
+                             std::string titre);
+
+    template<typename... Vecs>
+    const int openOverlay(std::string titre, const Vecs&... vecs) {
+        std::vector<const Carte*> toutesCartes;
+        toutesCartes.reserve((vecs.size() + ...)); // C++17 fold expression
+        (appendRawPtrs(toutesCartes, vecs), ...);  // append chaque vecteur
+        return openOverlay(toutesCartes, titre);   // version existante
+    }
+
+private:
+    template<typename T>
+    void appendRawPtrs(std::vector<const T*>& dest, const std::vector<std::unique_ptr<T>>& src) {
+        for (auto& c : src) dest.push_back(c.get());
+    }
 
 };
 
