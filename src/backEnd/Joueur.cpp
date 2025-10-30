@@ -252,7 +252,13 @@ void Joueur::defausserCarte() {
     */
     while (!_plateau.empty()) {
         int carteId = _plateau.back()->getId();
-        // deplacerCarte will remove the card from _main and push it to _defausse
+        const Carte* c = getCarteById(carteId);
+        if (!c) continue;
+
+        if (c->estChampion()) {
+            continue;
+        }
+
         deplacerCarte(carteId, ZoneType::Plateau, ZoneType::Defausse);
     }
 }

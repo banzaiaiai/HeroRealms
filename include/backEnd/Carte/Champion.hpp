@@ -25,6 +25,8 @@ public:
     inline void setPvTotal(int pvTotal) { _pvTotal = pvTotal; }
     inline void setGardien(bool gardien) { _gardien = gardien; }
     inline void setActiver(bool activer) { _activer = activer; }
+
+    bool estChampion() const override { return true; }
 };
 
 #endif // CHAMPION_H

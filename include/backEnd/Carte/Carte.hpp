@@ -83,6 +83,9 @@ public:
     // Comparaison par ID uniquement
     bool operator==(const Carte& other) const { return _id == other._id; }
     bool operator!=(const Carte& other) const { return _id != other._id; }
+
+    // methode de verification 
+    virtual bool estChampion() const  { return false; }
 };
 
 #endif // CARTE_HPP
