@@ -17,12 +17,15 @@ Carte::Carte()
     std::cout << "Creation carte par defaut" << std::endl;    
 }
 
-Carte::Carte(const std::string& name, int coupOr, Faction faction)
+Carte::Carte(const std::string& name, int coupOr, Faction faction, std::string imagePath)
     : _id(_nextId++),
       _name(name),
       _coupOr(coupOr),
       _faction(faction)
 {
+    if (!_texture.loadFromFile(imagePath)) {
+        std::cerr << "Erreur : impossible de charger l'image " << imagePath << std::endl;
+    }
     std::cout << "Creation carte avec paramètres" << std::endl;
 }
 

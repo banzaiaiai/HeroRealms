@@ -6,10 +6,7 @@
 
 class CarteGraphique {
 private:
-    sf::RectangleShape _shape;
-    sf::Texture _texture;
-    sf::Text _texteNom;
-    sf::Text _texteCout;
+    sf::Sprite _sprite;
     bool _isSelected;
     const Carte* _carteLogique;  // Référence vers la logique métier
     
@@ -23,13 +20,13 @@ public:
     void draw(sf::RenderWindow& window) const;
     void setPosition(float x, float y);
     sf::Vector2f getPosition() const;
-    sf::Vector2f getSize() const { return _shape.getSize(); }
+    sf::Vector2f getSize() const;
     
     // Lien avec la logique
     const Carte* getCarteLogique() const { return _carteLogique; }
     void updateAppearance(); // Met à jour l'apparence selon l'état logique
     sf::FloatRect getGlobalBounds() const {
-        return _shape.getGlobalBounds();
+        return _sprite.getGlobalBounds();
     }
 };
 

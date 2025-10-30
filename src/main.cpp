@@ -13,7 +13,7 @@
  * Fonction utilitaire pour créer une carte avec des effets
  */
 std::unique_ptr<Carte> creerCarteDegat(const std::string& nom, int degats, int cout) {
-    auto carte = std::make_unique<Carte>(nom, cout, Faction::Neutre);
+    auto carte = std::make_unique<Carte>(nom, cout, Faction::Neutre, "assets/carte/hero_realms_back.png");
     
     // Créer l'effet de dégâts
     std::vector<std::shared_ptr<IEffect>> effets;

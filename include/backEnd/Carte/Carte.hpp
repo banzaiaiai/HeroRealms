@@ -8,6 +8,7 @@
 #include <map>
 #include <memory>
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 // Forward declaration
 class IEffect;
@@ -41,6 +42,7 @@ private:
     int _coupOr;
     Faction _faction;
     std::map<EventType, std::vector<std::shared_ptr<IEffect>>> _trigger;
+    sf::Texture _texture;
 
 public:
     // methode metier
@@ -51,7 +53,7 @@ public:
     Carte();
     
     // Constructeur avec paramètres
-    Carte(const std::string& name, int coupOr, Faction faction = Faction::Neutre);
+    Carte(const std::string& name, int coupOr, Faction faction, std::string imagePath);
     
     // Destructeur
     ~Carte();
@@ -69,6 +71,7 @@ public:
     std::string getName() const { return _name; }
     int getCoupOr() const { return _coupOr; }
     Faction getFaction() const { return _faction; }
+    const sf::Texture& getTexture() const { return _texture; }
     
     // Setters
     void setName(const std::string& name) { _name = name; }
