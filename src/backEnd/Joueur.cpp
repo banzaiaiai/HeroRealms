@@ -196,6 +196,25 @@ void Joueur::defausserCarte(int carteId, ZoneType source) {
     deplacerCarte(carteId, source, ZoneType::Defausse);
 }
 
+void Joueur::defausserCarte() {
+    // Move cards from hand to discard until the hand is empty.
+    // Use deplacerCarte which removes from the source and adds to the destination.
+    while (!_main.empty()) {
+        int carteId = _main.back()->getId();
+        // deplacerCarte will remove the card from _main and push it to _defausse
+        deplacerCarte(carteId, ZoneType::Main, ZoneType::Defausse);
+    }
+    /* TO DO
+    Il faut diférencer les champions et les autres cartes
+    */
+    while (!_plateau.empty()) {
+        int carteId = _plateau.back()->getId();
+        // deplacerCarte will remove the card from _main and push it to _defausse
+        deplacerCarte(carteId, ZoneType::Plateau, ZoneType::Defausse);
+    }
+}
+
+
 void Joueur::initialiserDeck(std::vector<std::unique_ptr<Carte>> deck) {
     _pioche = std::move(deck);
     // Mélanger le deck ici si nécessaire

@@ -113,7 +113,11 @@ void SFMLGame::processEvents() {
                 break;
                 
             case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Left) {
+                if(_buttonFinTour.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
+                    std::cout << "Fin du tour cliquée" << std::endl;
+                    finDeTour();
+                }
+                else if (event.mouseButton.button == sf::Mouse::Left) {
                     handleMouseClick(event.mouseButton.x, event.mouseButton.y);
                 }
                 break;
@@ -128,6 +132,11 @@ void SFMLGame::processEvents() {
                 break;
         }
     }
+}
+void SFMLGame::finDeTour() {
+    _partie->getJoueurActuelle()->resetAll();
+    _partie->getJoueurActuelle()->defausserCarte();
+    _partie->passerAuJoueurSuivant();
 }
 
 void SFMLGame::handleMouseClick(int mouseX, int mouseY) {

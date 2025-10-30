@@ -82,6 +82,10 @@ private:
     void processEvents();
     
     /**
+    *Fin de Tour
+    */
+    void finDeTour();
+    /**
      * Gère le clic de souris
      */
     void handleMouseClick(int mouseX, int mouseY);

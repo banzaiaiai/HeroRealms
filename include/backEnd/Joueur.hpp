@@ -119,6 +119,14 @@ public:
      */
     void initialiserDeck(std::vector<std::unique_ptr<Carte>> deck);
 
+    // FIn de tour reset
+    void resetAll(){
+        _degat=0;
+        _or=0;
+    }
+
+    void defausserCarte();
+
 private:
     // Méthodes helper
     std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type);
