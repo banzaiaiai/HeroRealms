@@ -1,6 +1,9 @@
 #ifndef PARTIE_HPP
 #define PARTIE_HPP
 
+#include "backEnd/Carte/Carte.hpp"
+#include <map>
+#include <tuple>
 #include <vector>
 #include <memory>
 
@@ -17,8 +20,10 @@ class Partie {
 private:
     std::vector<Joueur> _joueurs;
     std::vector<std::unique_ptr<Carte>> _riviere;  // Le marché commun
+    std::vector<std::unique_ptr<Carte>> _marcher;
     int _joueurActuelIndex;
     int _tour;
+    std::map<Faction,std::tuple<bool,bool>> _etatFaction;
 
 public:
     Overlay* overlay = nullptr;
@@ -83,7 +88,7 @@ public:
      * Remplit la rivière jusqu'à avoir N cartes
      */
     void remplirRiviere(int nombreCartes);
-    
+    void setMarcher(std::vector<std::unique_ptr<Carte>> marcher);
     // === GESTION DU JEU ===
     
     /**
@@ -100,6 +105,14 @@ public:
      * Retourne le numéro du tour actuel
      */
     int getTour() const { return _tour; }
+
+    std::map<Faction,std::tuple<bool,bool>> getetatFaction(){ return _etatFaction; };
+    void setetatFaction(std::map<Faction,std::tuple<bool,bool>> etatfaction){ _etatFaction=etatfaction; };
+    void resetetatFaction(){
+        for(auto& pair : _etatFaction){
+            pair.second=std::make_tuple(false,false);
+        }
+    }
 };
 
 #endif // PARTIE_HPP

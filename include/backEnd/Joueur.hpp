@@ -107,6 +107,12 @@ public:
      * @return true si la carte a pu être jouée
      */
     bool jouerCarte(int carteId);
+
+    /**
+     * Gère les effets de famille lors du jeu d'une carte
+     * TO DO: implémenter les effets spécifiques
+     */
+    void effetfamille(Carte* carteJouee);
     
     /**
      * Défausse une carte depuis n'importe quelle zone
@@ -118,6 +124,16 @@ public:
      * Transfert de propriété depuis un vecteur externe
      */
     void initialiserDeck(std::vector<std::unique_ptr<Carte>> deck);
+
+    // FIn de tour reset
+    void resetAll(){
+        _degat=0;
+        _or=0;
+    }
+
+    void defausserCarte();
+
+    
 
 private:
     // Méthodes helper

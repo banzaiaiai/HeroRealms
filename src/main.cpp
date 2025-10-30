@@ -78,8 +78,7 @@ int main() {
         int carteId = mainJ1[0]->getId();
         std::cout << "Tentative de jouer la carte ID " << carteId << std::endl;
         
-        // Donner de l'or au joueur pour qu'il puisse jouer
-        partie.getJoueurParId(0)->setOr(10);
+        // Donner de l'or au joueur pour qu'il puisse joue
         
         if (partie.getJoueurParId(0)->jouerCarte(carteId)) {
             std::cout << "✓ Carte jouée avec succès" << std::endl;

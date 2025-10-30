@@ -3,11 +3,12 @@
 #include "backEnd/Partie.hpp"
 #include <iostream>
 #include <algorithm>
+#include <tuple>
 
 Joueur::Joueur(int id, Partie* partie, const std::string& nom)
     : _id(id),
       _pv(20),
-      _or(0),
+      _or(50),
       _degat(0),
       _nom(nom),
       _partie(partie)
@@ -160,7 +161,10 @@ void Joueur::piocher(int nombre) {
         _pioche.pop_back();
     }
 }
-
+/**
+    TO DO 
+    implémenter l'event des diférente famile
+*/
 bool Joueur::jouerCarte(int carteId) {
     // Trouver la carte dans la main
     auto it = trouverCarte(carteId, _main);
@@ -182,19 +186,83 @@ bool Joueur::jouerCarte(int carteId) {
         // Déclencher l'effet OnPlay
         carteJouee->jouer(this);  // IMPORTANT: passer 'this' (le joueur actuel)
     }
+
+    effetfamille(carteJouee);
     
     std::cout << "Carte jouée avec succès" << std::endl;
     return true;
     return true;
 }
 
+/*
+isVert = false
+1er carte verte : isVert non => autreVerte non => applique pas
+2e carte verte : isVert non => autreVerte oui => applique sois même et la 1er carte
+3e carte verte : isVert oui => applique sois même
+fin de tour isVert = false
+debut de tour : si plusieur carte verte : isVert = true et active vert des carte vertes 
+*/
  
-
+void Joueur::effetfamille(Carte* carteJouee) {
+    // TO DO
+    Faction faction = carteJouee->getFaction();
+    auto etatinitial=_partie->getetatFaction();
+    auto etat =_partie->getetatFaction()[faction];
+    if(std::get<0>(etat)==false){
+        if(std::get<1>(etat)==false){
+            std::cout<<"applique pas"<<std::endl;
+            
+            etatinitial[faction]=std::make_tuple(false,true);
+            _partie->getetatFaction()[faction]=etatinitial[faction];
+            return;
+        }
+        else {
+            //applique sois même et autre carte
+            for(auto& carte : _plateau){
+                if(carte->getFaction()==faction){
+                    // aplique effect faction 
+                    carteJouee->jouerFaction(this);
+                }
+            }
+            etatinitial[faction]=std::make_tuple(true,true);
+            _partie->getetatFaction()[faction]=etatinitial[faction];
+            return;
+        }
+    }
+    else{
+        // aplique sois même
+    }
+}
 
 
 void Joueur::defausserCarte(int carteId, ZoneType source) {
     deplacerCarte(carteId, source, ZoneType::Defausse);
 }
+
+void Joueur::defausserCarte() {
+    // Move cards from hand to discard until the hand is empty.
+    // Use deplacerCarte which removes from the source and adds to the destination.
+    while (!_main.empty()) {
+        int carteId = _main.back()->getId();
+        // deplacerCarte will remove the card from _main and push it to _defausse
+        deplacerCarte(carteId, ZoneType::Main, ZoneType::Defausse);
+    }
+    /* TO DO
+    Il faut diférencer les champions et les autres cartes
+    */
+    while (!_plateau.empty()) {
+        int carteId = _plateau.back()->getId();
+        const Carte* c = getCarteById(carteId);
+        if (!c) continue;
+
+        if (c->estChampion()) {
+            continue;
+        }
+
+        deplacerCarte(carteId, ZoneType::Plateau, ZoneType::Defausse);
+    }
+}
+
 
 void Joueur::initialiserDeck(std::vector<std::unique_ptr<Carte>> deck) {
     _pioche = std::move(deck);

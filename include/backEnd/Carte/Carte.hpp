@@ -2,7 +2,7 @@
 #define CARTE_HPP
 
 #include "backEnd/Joueur.hpp"
-#include "backEnd/Partie.hpp"
+
 #include <string>
 #include <vector>
 #include <map>
@@ -12,7 +12,7 @@
 
 // Forward declaration
 class IEffect;
-
+class Partie;
 enum class EventType {
     OnPlay,
     OnTurnStart,
@@ -48,6 +48,7 @@ public:
     // methode metier
 
     void jouer(Joueur *joueur);
+    void jouerFaction(Joueur *joueur);
     void declencherEffets(EventType eventType, Joueur* joueur);
     // Constructeur par défaut
     Carte();
@@ -85,6 +86,9 @@ public:
     // Comparaison par ID uniquement
     bool operator==(const Carte& other) const { return _id == other._id; }
     bool operator!=(const Carte& other) const { return _id != other._id; }
+
+    // methode de verification 
+    virtual bool estChampion() const  { return false; }
 };
 
 #endif // CARTE_HPP
