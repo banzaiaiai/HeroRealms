@@ -81,7 +81,7 @@ void Carte::jouerFaction(Joueur* joueur)
 void Carte::jouerEngager(Joueur* joueur)
 {
     std::cout << "Carte '" << _name << "' jouée par " << joueur->getNom() << std::endl;
-    declencherEffets(EventType::OnEngenge, joueur);
+    declencherEffets(EventType::OnEngage, joueur);
 }
 
 void Carte::declencherEffets(EventType eventType, Joueur* joueur) {
