@@ -140,5 +140,73 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<HealEffect>(6)} }
                     });
 
+
+    addChampion(    res, 1, "Borg, Ogre Mercenary", 6, Faction::Guilde,
+                    "assets/carte/BAS-EN-021-borg-ogre-mercenary.jpg",
+                    6, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(4)} }
+                    });
+
+    addNonPermanent(res, 2, "Intimidation", 2, Faction::Guilde,
+                    "assets/carte/BAS-EN-029-intimidation.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {std::make_shared<DamageEffect>(5)} },
+                        {EventType::OnAllyEnter, {std::make_shared<GainGold>(2)} }
+                    });
+
+    addChampion(    res, 1, "Myros, Guild Mage", 5, Faction::Guilde,
+                    "assets/carte/BAS-EN-031-myros-guild-mage.jpg",
+                    3, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<GainGold>(3)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
+                    });
+
+    addNonPermanent(res, 3, "Profit", 1, Faction::Guilde,
+                    "assets/carte/BAS-EN-033-profit.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {std::make_shared<GainGold>(2)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
+                    });
+
+    addChampion(    res, 2, "Death Cultist", 2, Faction::Necros,
+                    "assets/carte/BAS-EN-045-death-cultist.jpg",
+                    3, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(2)} },
+                    });
+    
+    addNonPermanent(res, 3, "Influence", 2, Faction::Necros,
+                    "assets/carte/BAS-EN-051-influence.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {std::make_shared<GainGold>(3)} },
+                        {EventType::OnDelete, {std::make_shared<DamageEffect>(3)} }
+                    });
+
+    addChampion(    res, 1, "Dire Wolf", 5, Faction::Sauvage,
+                    "assets/carte/BAS-EN-063-dire-wolf.jpg",
+                    5, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(3)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
+                    });
+
+    addChampion(    res, 2, "Wolf Shaman", 2, Faction::Sauvage,
+                    "assets/carte/BAS-EN-079-wolf-shaman.jpg",
+                    4, false,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(2, OccurenceType::CarteSauvage, 1)} }
+                    });
+
+
+
+
+
+
+
     return res;
 }
