@@ -2,11 +2,20 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Partie.hpp"
 
-HealEffect::HealEffect(int heal) : _heal(heal) {}
-
 void HealEffect::applyEffect(Joueur *joueur) {
-    // Implémentation de l'effet de soin
-}
-void HealEffect::applyEffect(Partie *partie, Joueur *joueurCible) {
-    // Implémentation de l'effet de soin
+    joueur->ajouterPV(_heal);
+
+    switch (_occurenceType) {
+        case OccurenceType::Champion: {
+            for (const auto& carte : joueur->getPlateau()) {
+                if (carte->estChampion()) {
+                    joueur->ajouterPV(_valueByOccurence);
+                }
+            }
+            break;
+        }
+
+        default:
+            break;
+    };
 }

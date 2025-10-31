@@ -57,38 +57,6 @@ int main() {
         partie.ajouterCarteRiviere(creerCarteDegat("Marché Carte " + std::to_string(i), 4, 2));
     }
     
-    // Tests de vérification
-    std::cout << "\n=== État initial ===" << std::endl;
-    std::cout << "Joueur 1:" << std::endl;
-    std::cout << "  - Pioche: " << partie.getJoueurParId(0)->getPioche().size() << " cartes" << std::endl;
-    std::cout << "  - Main: " << partie.getJoueurParId(0)->getMain().size() << " cartes" << std::endl;
-    std::cout << "  - Or: " << partie.getJoueurParId(0)->getOr() << std::endl;
-    
-    std::cout << "Joueur 2:" << std::endl;
-    std::cout << "  - Pioche: " << partie.getJoueurParId(1)->getPioche().size() << " cartes" << std::endl;
-    std::cout << "  - Main: " << partie.getJoueurParId(1)->getMain().size() << " cartes" << std::endl;
-    std::cout << "  - Or: " << partie.getJoueurParId(1)->getOr() << std::endl;
-    
-    std::cout << "Marché: " << partie.getRiviere().size() << " cartes" << std::endl;
-    
-    // Test de déplacement de carte
-    std::cout << "\n=== Test de déplacement ===" << std::endl;
-    auto mainJ1 = partie.getJoueurParId(0)->getMain();
-    if (!mainJ1.empty()) {
-        int carteId = mainJ1[0]->getId();
-        std::cout << "Tentative de jouer la carte ID " << carteId << std::endl;
-        
-        // Donner de l'or au joueur pour qu'il puisse joue
-        
-        if (partie.getJoueurParId(0)->jouerCarte(carteId)) {
-            std::cout << "✓ Carte jouée avec succès" << std::endl;
-            std::cout << "  - Main: " << partie.getJoueurParId(0)->getMain().size() << " cartes" << std::endl;
-            std::cout << "  - Plateau: " << partie.getJoueurParId(0)->getPlateau().size() << " cartes" << std::endl;
-        } else {
-            std::cout << "✗ Échec de jouer la carte" << std::endl;
-        }
-    }
-    
     // Lancer l'interface SFML
     std::cout << "\n=== Lancement de l'interface graphique ===" << std::endl;
     SFMLGame jeu(&partie);

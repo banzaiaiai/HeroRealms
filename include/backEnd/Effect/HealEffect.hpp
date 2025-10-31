@@ -6,15 +6,18 @@
 class HealEffect : public IEffect {
 private:
     int _heal;
+    OccurenceType _occurenceType;
+    int _valueByOccurence;
 
 public:
-    HealEffect(int heal = 0);
+    HealEffect(int heal, OccurenceType occurenceType = OccurenceType::None,
+                 int valueByOccurence = 0):
+        _heal(heal),
+        _occurenceType(occurenceType),
+        _valueByOccurence(valueByOccurence) {};
     ~HealEffect() override = default;
-    void applyEffect(Joueur *joueur) override;
-    void applyEffect(Partie *partie, Joueur *joueurCible) ;
 
-    inline int getHeal() const { return _heal; }
-    inline void setHeal(int heal) { _heal = heal; }
+    void applyEffect(Joueur *joueur) override;
 };
 
 #endif // HEALEFFECT_H

@@ -31,6 +31,11 @@ Partie::Partie()
     std::cout << "Pioche des mains de départ..." << std::endl;
     getJoueurParId(0)->piocher(3);
     getJoueurParId(1)->piocher(5);
+
+
+    // La Pioche
+    _marcher = std::move(InitCarte::marcher()); 
+    remplirRiviere(5);
 }
 
 Partie::~Partie() {
