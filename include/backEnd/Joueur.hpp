@@ -132,6 +132,8 @@ public:
      */
     void initialiserDeck(std::vector<std::unique_ptr<Carte>> deck);
 
+    bool possedeGardien() const;
+
     // FIn de tour reset
     void resetAll(){
         _degat=0;

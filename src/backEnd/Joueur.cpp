@@ -1,6 +1,8 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Carte/Carte.hpp"
+#include "backEnd/Carte/Champion.hpp"
 #include "backEnd/Partie.hpp"
+#include <climits>
 #include <iostream>
 #include <algorithm>
 #include <tuple>
@@ -314,14 +316,14 @@ void Joueur::initialiserDeck(std::vector<std::unique_ptr<Carte>> deck) {
     std::shuffle(_pioche.begin(), _pioche.end(), g);
 }
 
-/* 
-Achat de carte
-// Vérifier le coût
-    if (_or < (*it)->getCoupOr()) {
-        std::cerr << "Pas assez d'or pour jouer cette carte" << std::endl;
-        return false;
+bool Joueur::possedeGardien() const {
+    for (const auto& carte : _plateau) {
+        if (carte && carte->estChampion()) {
+            Champion* champion = dynamic_cast<Champion*>(carte.get());
+            if (champion && champion->getGardien()){
+                return true;
+            }
+        }
     }
-    
-    // Payer le coût
-    _or -= (*it)->getCoupOr();
-*/
+    return false;
+}

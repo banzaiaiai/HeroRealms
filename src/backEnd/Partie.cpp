@@ -229,16 +229,25 @@ bool Partie::attaque(int idCarteSelect){
         std::cerr << "La carte ciblée n'est pas un Champion" << std::endl;
         return false;
     }
+
     int degat = joueurActuelle->getDegat();
-    joueurActuelle->setDegat(degat-cartecible->getPvTotal()); // Réinitialiser les dégâts après l'attaque
-    cartecible->recevoirDegat(degat);
-    if(cartecible->getPvTotal()<=0){
-        std::cout << cartecible->getName() << " est détruit!" << std::endl;
-        // Déplacer la carte vers la défausse de l'autre joueur
-        if(!autreJoueur->deplacerCarte(idCarteSelect, ZoneType::Plateau, ZoneType::Defausse)){
-            std::cerr<<"Erreur lors du déplacement de la carte détruite vers la défausse"<<std::endl;
+    if(!autreJoueur->possedeGardien() || cartecible->getGardien()){
+        joueurActuelle->setDegat(degat-cartecible->getPvTotal()); // Réinitialiser les dégâts après l'attaque
+        cartecible->recevoirDegat(degat);
+        if(cartecible->getPvTotal()<=0){
+            std::cout << cartecible->getName() << " est détruit!" << std::endl;
+            // Déplacer la carte vers la défausse de l'autre joueur
+            if(!autreJoueur->deplacerCarte(idCarteSelect, ZoneType::Plateau, ZoneType::Defausse)){
+                std::cerr<<"Erreur lors du déplacement de la carte détruite vers la défausse"<<std::endl;
+            }
         }
+        std::cout << cartecible->getName() << " a reçu " << degat << " dégats." << std::endl;
     }
-    std::cout << cartecible->getName() << " a reçu " << degat << " dégats." << std::endl;
+    else {
+        std::cout<<"Le joueur posséde un gariden, vous ataquer une carte qui n'est pas gardient"<<std::endl;
+        return false;
+    }
+    
     return true;
 }
+
