@@ -78,6 +78,12 @@ void Carte::jouerFaction(Joueur* joueur)
     declencherEffets(EventType::OnAllyEnter, joueur);
 }
 
+void Carte::jouerEngager(Joueur* joueur)
+{
+    std::cout << "Carte '" << _name << "' jouée par " << joueur->getNom() << std::endl;
+    declencherEffets(EventType::OnEngenge, joueur);
+}
+
 void Carte::declencherEffets(EventType eventType, Joueur* joueur) {
     if (!joueur) {
         std::cerr << "Erreur: joueur nullptr dans declencherEffets" << std::endl;

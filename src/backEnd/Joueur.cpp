@@ -191,7 +191,6 @@ bool Joueur::jouerCarte(int carteId) {
     
     std::cout << "Carte jouée avec succès" << std::endl;
     return true;
-    return true;
 }
 
 /*
@@ -234,6 +233,31 @@ void Joueur::effetfamille(Carte* carteJouee) {
     }
 }
 
+bool Joueur::engagerCarte(int carteId){
+    // Trouver la carte sur le plateau (vector<std::unique_ptr<Carte>>)
+    auto it = trouverCarte(carteId, _plateau);
+    if (it == _plateau.end()) {
+        std::cerr << "Carte " << carteId << " non trouvée sur le plateau" << std::endl;
+        return false;
+    }
+
+    // it est un iterator vers std::unique_ptr<Carte>
+    Carte* carteJouee = it->get();
+
+    if (!carteJouee) {
+        std::cerr << "Erreur: pointeur de carte nul pour id=" << carteId << std::endl;
+        return false;
+    }
+
+    std::cout << "Carte engagée: " << carteJouee->getName()
+              << " (ID: " << carteJouee->getId() << ")" << std::endl;
+
+    // Déclencher l'effet associé à l'engagement (ou autre logique)
+    carteJouee->jouerEngager(this);  // IMPORTANT: passer 'this' (le joueur actuel)
+
+    std::cout << "Carte engagée avec succès" << std::endl;
+    return true;
+}
 
 void Joueur::defausserCarte(int carteId, ZoneType source) {
     deplacerCarte(carteId, source, ZoneType::Defausse);

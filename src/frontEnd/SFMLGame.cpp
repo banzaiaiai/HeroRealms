@@ -165,6 +165,18 @@ void SFMLGame::handleMouseClick(int mouseX, int mouseY) {
                 if (zone->contient(_positionOriginale)) {
                     _zoneSource = zone.get();
                     std::cout << "Zone source: " << _zoneSource->getNom() << std::endl;
+
+                    // ajout de la logique pour engager une carte
+                    if(_zoneSource){
+                        std::string name=_zoneSource->getNom().substr(0,_zoneSource->getNom().size()-1);   
+                        if(name=="plateau_joueur"){
+                            std::cout<<"réussi"<<std::endl;
+                            Joueur* joueur=_partie->getJoueurActuelle();
+                            if(!joueur->engagerCarte(_carteSelectionneeId)){
+                                std::cout<<"erreur ppour engager la carte"<<std::endl;
+                            }
+                        }
+                    }
                     break;
                 }
             }
@@ -260,8 +272,6 @@ void SFMLGame::render() {
     _window.display();
 }
 
-
-// Erreur ici 
 /**
     To DO :
     Corriger le deplacementValide pour qu'il prenne en compte les règles du jeu.

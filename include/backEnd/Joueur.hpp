@@ -116,6 +116,10 @@ public:
     void effetfamille(Carte* carteJouee);
     
     /**
+    * Permet d'engager une carte et de faire son effet
+    */
+    bool engagerCarte(int carteID);
+    /**
      * Défausse une carte depuis n'importe quelle zone
      */
     void defausserCarte(int carteId, ZoneType source);
