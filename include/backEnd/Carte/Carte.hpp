@@ -16,7 +16,8 @@ enum class EventType {
     OnPlay,
     OnTurnStart,
     OnAllyEnter,
-    OnDelete
+    OnDelete,
+    OnEngenge
 };
 
 enum class Faction {
@@ -47,6 +48,7 @@ public:
 
     void jouer(Joueur *joueur);
     void jouerFaction(Joueur *joueur);
+    void jouerEngager(Joueur* joueur);
     void declencherEffets(EventType eventType, Joueur* joueur);
     // Constructeur par défaut
     Carte();
