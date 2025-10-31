@@ -35,7 +35,11 @@ Partie::Partie()
 
     // La Pioche
     _marcher = std::move(InitCarte::marcher()); 
-    remplirRiviere(5);
+
+    for (int i = 0; i < 5; i++) {
+        ajouterCarteRiviere(std::move(_marcher.back()));
+        _marcher.pop_back();
+    }
 }
 
 Partie::~Partie() {

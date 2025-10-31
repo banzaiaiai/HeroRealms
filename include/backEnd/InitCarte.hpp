@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <memory>
+#include <algorithm>
+#include <random>
 #include "backEnd/Carte/Carte.hpp"
 #include "backEnd/Carte/Champion.hpp"
 #include "backEnd/Carte/NonPermanent.hpp"

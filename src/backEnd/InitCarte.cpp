@@ -207,6 +207,8 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
 
 
 
+    auto rng = std::default_random_engine {};
+    std::shuffle(std::begin(res), std::end(res), rng);
 
     return res;
 }

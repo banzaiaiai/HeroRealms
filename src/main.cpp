@@ -51,12 +51,6 @@ int main() {
     // Créer une partie
     Partie partie = Partie();
     
-    // Initialiser le marché
-    std::cout << "Initialisation du marché..." << std::endl;
-    for (int i = 0; i < 5; i++) {
-        partie.ajouterCarteRiviere(creerCarteDegat("Marché Carte " + std::to_string(i), 4, 2));
-    }
-    
     // Lancer l'interface SFML
     std::cout << "\n=== Lancement de l'interface graphique ===" << std::endl;
     SFMLGame jeu(&partie);
