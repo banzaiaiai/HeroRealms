@@ -119,13 +119,18 @@ void SFMLGame::processEvents() {
                 }
                 if(_buttonAtacker.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "Attaque cliquée" << std::endl;
-                    auto idCarteSelect=_overlay.openOverlay( _partie->getJoueurActuelle()->getMain(),"test");
-                    if(idCarteSelect!=-1){
-                        std::cout<<"carte selectionné id="<<idCarteSelect<<std::endl;
-                        if(!_partie->getJoueurActuelle()->deplacerCarte(idCarteSelect, ZoneType::Main, ZoneType::Defausse)){
-                            std::cout<<"erreur pour jouer la carte"<<std::endl;
+                    if(_partie->getJoueurActuelle()->getDegat()>0 && _partie->getAutreJoueurActuelle()->getPlateau().size()>0){
+                        auto idCarteSelect=_overlay.openOverlay( _partie->getAutreJoueurActuelle()->getPlateau(),"test");
+                        if(_partie->attaque(idCarteSelect)){
+                            std::cout<<"carte selectionné id="<<idCarteSelect<<std::endl;
+                            if(!_partie->getAutreJoueurActuelle()->deplacerCarte(idCarteSelect, ZoneType::Plateau, ZoneType::Defausse)){
+                                std::cout<<"erreur pour jouer la carte"<<std::endl;
+                            }
                         }
                     }
+                    else {
+                        std::cout<<"vous n'avez pas de dégât pour attaquer"<<std::endl;
+                    } 
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     handleMouseClick(event.mouseButton.x, event.mouseButton.y);

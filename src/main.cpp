@@ -74,6 +74,7 @@ int main() {
     // Test de déplacement de carte
     std::cout << "\n=== Test de déplacement ===" << std::endl;
     auto mainJ1 = partie.getJoueurParId(0)->getMain();
+    auto mainJ2 = partie.getJoueurParId(1)->getMain();
     if (!mainJ1.empty()) {
         int carteId = mainJ1[0]->getId();
         std::cout << "Tentative de jouer la carte ID " << carteId << std::endl;
@@ -84,6 +85,20 @@ int main() {
             std::cout << "✓ Carte jouée avec succès" << std::endl;
             std::cout << "  - Main: " << partie.getJoueurParId(0)->getMain().size() << " cartes" << std::endl;
             std::cout << "  - Plateau: " << partie.getJoueurParId(0)->getPlateau().size() << " cartes" << std::endl;
+        } else {
+            std::cout << "✗ Échec de jouer la carte" << std::endl;
+        }
+    }
+    if (!mainJ2.empty()) {
+        int carteId = mainJ2[0]->getId();
+        std::cout << "Tentative de jouer la carte ID " << carteId << std::endl;
+        
+        // Donner de l'or au joueur pour qu'il puisse joue
+        
+        if (partie.getJoueurParId(1)->jouerCarte(carteId)) {
+            std::cout << "✓ Carte jouée avec succès" << std::endl;
+            std::cout << "  - Main: " << partie.getJoueurParId(1)->getMain().size() << " cartes" << std::endl;
+            std::cout << "  - Plateau: " << partie.getJoueurParId(1)->getPlateau().size() << " cartes" << std::endl;
         } else {
             std::cout << "✗ Échec de jouer la carte" << std::endl;
         }

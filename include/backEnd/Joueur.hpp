@@ -68,6 +68,8 @@ public:
     
     // Accès par ID
     const Carte* getCarteById(int carteId) const;
+    // mutable access (cherche dans les zones et retourne un pointeur modifiable)
+    Carte* getCarteById(int carteId);
     
     // === SETTERS ===
     void setPv(int pv) { _pv = pv; }

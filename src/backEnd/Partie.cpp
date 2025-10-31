@@ -1,4 +1,5 @@
 #include "backEnd/Partie.hpp"
+#include "backEnd/Carte/Champion.hpp"
 #include "backEnd/Joueur.hpp"
 #include "backEnd/InitCarte.hpp"
 #include "backEnd/Carte/Carte.hpp"
@@ -55,6 +56,14 @@ const Joueur* Partie::getJoueurActuelle() const {
     if (_joueurs.empty()) return nullptr;
     return &_joueurs[_joueurActuelIndex];
 }
+Joueur * Partie::getAutreJoueurActuelle() {
+    if (_joueurs.empty()) return nullptr;
+    return &_joueurs[(_joueurActuelIndex + 1) % _joueurs.size()];
+}
+const Joueur* Partie::getAutreJoueurActuelle() const {
+    if (_joueurs.empty()) return nullptr;
+    return &_joueurs[(_joueurActuelIndex + 1) % _joueurs.size()];
+}
 
 Joueur* Partie::getJoueurParId(int id) {
     for (auto& joueur : _joueurs) {
@@ -68,6 +77,23 @@ Joueur* Partie::getJoueurParId(int id) {
 const Joueur* Partie::getJoueurParId(int id) const {
     for (const auto& joueur : _joueurs) {
         if (joueur.getId() == id) {
+            return &joueur;
+        }
+    }
+    return nullptr;
+}
+
+Joueur* Partie::getAutreJoueurParId(int id) {
+    for (auto& joueur : _joueurs) {
+        if (joueur.getId() != id) {
+            return &joueur;
+        }
+    }
+    return nullptr;
+}
+const Joueur* Partie::getAutreJoueurParId(int id) const {
+    for (const auto& joueur : _joueurs) {
+        if (joueur.getId() != id) {
             return &joueur;
         }
     }
@@ -178,4 +204,41 @@ void Partie::finDeTour() {
     }
     
     passerAuJoueurSuivant();
+}
+/**
+    Attaque une carte avec son id
+
+*/
+bool Partie::attaque(int idCarteSelect){
+    Joueur* joueurActuelle=getJoueurActuelle();
+    Joueur* autreJoueur=getAutreJoueurActuelle();
+    if(!joueurActuelle || !autreJoueur){
+        std::cerr<<"Probléme de joueur dans l'attaque"<<std::endl;
+        return false;
+    }
+    // Chercher la carte cible (mutable) dans le plateau de l'autre joueur
+    Carte* carteModifiable = autreJoueur->getCarteById(idCarteSelect);
+    if (!carteModifiable) {
+        std::cerr << "Probléme de carte dans l'attaque: id introuvable sur le plateau adversaire" << std::endl;
+        return false;
+    }
+
+    // Vérifier que la carte est un Champion via dynamic_cast
+    Champion* cartecible = dynamic_cast<Champion*>(carteModifiable);
+    if (!cartecible) {
+        std::cerr << "La carte ciblée n'est pas un Champion" << std::endl;
+        return false;
+    }
+    int degat = joueurActuelle->getDegat();
+    joueurActuelle->setDegat(degat-cartecible->getPvTotal()); // Réinitialiser les dégâts après l'attaque
+    cartecible->recevoirDegat(degat);
+    if(cartecible->getPvTotal()<=0){
+        std::cout << cartecible->getName() << " est détruit!" << std::endl;
+        // Déplacer la carte vers la défausse de l'autre joueur
+        if(!autreJoueur->deplacerCarte(idCarteSelect, ZoneType::Plateau, ZoneType::Defausse)){
+            std::cerr<<"Erreur lors du déplacement de la carte détruite vers la défausse"<<std::endl;
+        }
+    }
+    std::cout << cartecible->getName() << " a reçu " << degat << " dégats." << std::endl;
+    return true;
 }

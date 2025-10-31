@@ -6,3 +6,9 @@ Champion::Champion(const std::string& name, int coupOr, Faction faction,
       _pvTotal(pvTotal), _gardien(gardien), _activer(false) {};
 
 Champion::~Champion() {}
+
+void Champion::recevoirDegat(int degat) {
+  _pvTotal -= degat;
+  if (_pvTotal < 0) _pvTotal = 0;
+  std::cout << "Champion " << getName() << " reçoit " << degat << " dégâts (PV restants: " << _pvTotal << ")" << std::endl;
+}

@@ -48,13 +48,22 @@ public:
      */
     Joueur* getJoueurActuelle();
     const Joueur* getJoueurActuelle() const;
-    
+    /**
+     * Retourne l'autre joueur (celui qui ne joue pas)
+     */
+    Joueur * getAutreJoueurActuelle();
+    const Joueur* getAutreJoueurActuelle() const;
     /**
      * Retourne un joueur par son ID
      */
     Joueur* getJoueurParId(int id);
     const Joueur* getJoueurParId(int id) const;
     
+    /**
+     * Retourne l'autre joueur par son ID
+     */
+    Joueur* getAutreJoueurParId(int id);
+    const Joueur* getAutreJoueurParId(int id) const;
     /**
      * Retourne la liste de tous les joueurs
      */
@@ -113,6 +122,10 @@ public:
             pair.second=std::make_tuple(false,false);
         }
     }
+
+    // Gestion de l'attaque
+    
+    bool attaque(int idCarteSelect);
 };
 
 #endif // PARTIE_HPP

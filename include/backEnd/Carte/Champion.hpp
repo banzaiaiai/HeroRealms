@@ -25,6 +25,8 @@ public:
     inline void setActiver(bool activer) { _activer = activer; }
 
     bool estChampion() const override { return true; }
+    // Apply damage to the champion
+    void recevoirDegat(int degat);
 };
 
 #endif // CHAMPION_H

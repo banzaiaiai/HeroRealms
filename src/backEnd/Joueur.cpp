@@ -77,6 +77,23 @@ const Carte* Joueur::getCarteById(int carteId) const {
     return nullptr;
 }
 
+// Non-const overload: retourne un pointeur modifiable vers la carte si trouvée
+Carte* Joueur::getCarteById(int carteId) {
+    for (auto& carte : _pioche) {
+        if (carte->getId() == carteId) return carte.get();
+    }
+    for (auto& carte : _main) {
+        if (carte->getId() == carteId) return carte.get();
+    }
+    for (auto& carte : _plateau) {
+        if (carte->getId() == carteId) return carte.get();
+    }
+    for (auto& carte : _defausse) {
+        if (carte->getId() == carteId) return carte.get();
+    }
+    return nullptr;
+}
+
 // === HELPERS PRIVÉS ===
 
 std::vector<std::unique_ptr<Carte>>& Joueur::getZone(ZoneType type) {
