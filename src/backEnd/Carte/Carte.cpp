@@ -26,7 +26,6 @@ Carte::Carte(const std::string& name, int coupOr, Faction faction, std::string i
     if (!_texture.loadFromFile(imagePath)) {
         std::cerr << "Erreur : impossible de charger l'image " << imagePath << std::endl;
     }
-    std::cout << "Creation carte avec paramètres" << std::endl;
 }
 
 Carte::~Carte() {

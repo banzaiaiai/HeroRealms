@@ -4,6 +4,13 @@
 class Joueur;
 class Partie;
 
+enum class OccurenceType {
+    None,
+    Champion,
+    CarteSauvage,
+    Guard
+};
+
 /**
  * Interface pour tous les effets de cartes
  * Les effets peuvent affecter:

@@ -2,10 +2,6 @@
 #include "backEnd/Joueur.hpp"
 #include <iostream>
 
-DamageEffect::DamageEffect(int damage) : _damage(damage) 
-{
-    std::cout << "DamageEffect créé avec degat " <<_damage << std::endl;
-}
 
 void DamageEffect::applyEffect(Joueur *joueur) {
     if (!joueur) {
@@ -16,13 +12,43 @@ void DamageEffect::applyEffect(Joueur *joueur) {
     std::cout << "DamageEffect appliqué sur " << joueur->getNom() 
               << " (" << _damage << " dégâts)" << std::endl;
     
-    // Appliquer les dégâts au joueur
-    int degatActuelle = joueur->getDegat();
-    int nouveauxDegat = degatActuelle + _damage;
-    std::cout << "  degat avant: " << degatActuelle << std::endl;
-    joueur->setDegat(nouveauxDegat);
-    //std::cout << "  degat après: " << joueur->getDegat() << std::endl;
-    
-    // OU si tu veux augmenter les dégâts du joueur (attaque):
-    // joueur->setDegat(joueur->getDegat() + _damage);*/
-}
+    // Appliquer les dégâts de base
+    joueur->ajouterDegat(_damage);
+
+    // Bonus selon le type d’occurrence
+    switch (_occurenceType) {
+        case OccurenceType::Champion: {
+            for (const auto& carte : joueur->getPlateau()) {
+                if (carte->estChampion()) {
+                    joueur->ajouterDegat(_valueByOccurence);
+                }
+            }
+            break;
+        }
+
+        case OccurenceType::Guard: {
+            for (const auto& carte : joueur->getPlateau()) {
+                if (carte->estChampion()) {
+                    const Champion* champ = static_cast<const Champion*>(carte);
+                    if (champ->getGardien()) {
+                        joueur->ajouterDegat(_valueByOccurence);
+                    }
+                }
+            }
+            break;
+        }
+
+        case OccurenceType::CarteSauvage: {
+            for (const auto& carte : joueur->getPlateau()) {
+                if (carte->getFaction() == Faction::Sauvage) {
+                    joueur->ajouterDegat(_valueByOccurence);
+                }
+            }
+            break;
+        }
+
+        default:
+            break;
+    }}
+
+

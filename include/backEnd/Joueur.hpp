@@ -73,6 +73,7 @@ public:
     void setPv(int pv) { _pv = pv; }
     void setOr(int or_) { _or = or_; }
     void setDegat(int degat) {_degat = degat; }
+    void ajouterDegat(int degat) { _degat += degat; }
     void ajouterOr(int montant) { _or += montant; }
     void retirerOr(int montant) { _or -= montant; }
     
