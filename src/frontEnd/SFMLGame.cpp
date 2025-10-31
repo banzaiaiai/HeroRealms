@@ -117,6 +117,16 @@ void SFMLGame::processEvents() {
                     std::cout << "Fin du tour cliquée" << std::endl;
                     finDeTour();
                 }
+                if(_buttonAtacker.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
+                    std::cout << "Attaque cliquée" << std::endl;
+                    auto idCarteSelect=_overlay.openOverlay( _partie->getJoueurActuelle()->getMain(),"test");
+                    if(idCarteSelect!=-1){
+                        std::cout<<"carte selectionné id="<<idCarteSelect<<std::endl;
+                        if(!_partie->getJoueurActuelle()->deplacerCarte(idCarteSelect, ZoneType::Main, ZoneType::Defausse)){
+                            std::cout<<"erreur pour jouer la carte"<<std::endl;
+                        }
+                    }
+                }
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     handleMouseClick(event.mouseButton.x, event.mouseButton.y);
                 }
