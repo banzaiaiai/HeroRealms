@@ -350,12 +350,12 @@ void SFMLGame::update() {
     
     // Mise à jour des textes
     if (_partie && _partie->getJoueurActuelle()) {
-        _textJoueur1.setString("J1 :\nOr: "+std::to_string(_partie->getJoueurActuelle()->getOr()) + "\n"+
-            "Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+"\n"+
-            "Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
-        _textJoueur2.setString("J2 :\nOr: "+std::to_string(_partie->getAutreJoueurActuelle()->getOr()) + "\n"+
-            "Vie: " + std::to_string(_partie->getAutreJoueurActuelle()->getPv())+ "\n"+
-            "Degat: " + std::to_string(_partie->getAutreJoueurActuelle()->getDegat()));
+        _textJoueur1.setString("J1 :\nOr: "+std::to_string(_partie->getJoueurParId(0)->getOr()) + "\n"+
+            "Vie: " + std::to_string(_partie->getJoueurParId(0)->getPv())+"\n"+
+            "Degat: " + std::to_string(_partie->getJoueurParId(0)->getDegat()));
+        _textJoueur2.setString("J2 :\nOr: "+std::to_string(_partie->getJoueurParId(1)->getOr()) + "\n"+
+            "Vie: " + std::to_string(_partie->getJoueurParId(1)->getPv())+ "\n"+
+            "Degat: " + std::to_string(_partie->getJoueurParId(1)->getDegat()));
     }
     
     _buttonAtacker.update(_window);
