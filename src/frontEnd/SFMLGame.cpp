@@ -395,11 +395,12 @@ void SFMLGame::render() {
     _buttonAtacker.draw(_window);
     _buttonFinTour.draw(_window);
 
+    _window.draw(_backCarteHaut);
+    _window.draw(_backCarteBas);
+
     if (_carteAgrandi) {
         _carteAgrandi->draw(_window);
     }
-    _window.draw(_backCarteHaut);
-    _window.draw(_backCarteBas);
 
     _window.display();
 }
