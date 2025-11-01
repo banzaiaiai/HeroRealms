@@ -30,7 +30,6 @@ Partie::Partie()
     // Piocher les mains de départ
     std::cout << "Pioche des mains de départ..." << std::endl;
     getJoueurParId(0)->piocher(3);
-    getJoueurParId(1)->piocher(5);
 
 
     // La Pioche
@@ -96,6 +95,8 @@ void Partie::passerAuJoueurSuivant() {
     std::cout << "C'est au tour de " << getJoueurActuelle()->getNom() << std::endl;
 
     GLOBALjoeurActuelle=getJoueurParId(_joueurActuelIndex);
+
+    GLOBALjoeurActuelle->piocher(5);
 }
 
 // === GESTION DE LA RIVIÈRE ===
