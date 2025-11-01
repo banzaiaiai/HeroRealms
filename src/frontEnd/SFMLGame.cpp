@@ -119,7 +119,7 @@ void SFMLGame::processEvents() {
                 }
                 if(_buttonAtacker.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "Attaque cliquée" << std::endl;
-                    if(_partie->getJoueurActuelle()->getDegat()>0 && _partie->getAutreJoueurActuelle()->getPlateau().size()>0){
+                    if(_partie->getJoueurActuelle()->getDegat()>0 && _partie->getAutreJoueurActuelle()->getPlateau().size()>=0){
                         const Carte jouerCible = Carte("Joueur",0,Faction::Neutre,"assets/alternative_carte/none.jpg");
                         std::vector<const Carte*> cible;
                         cible.push_back(&jouerCible);
@@ -261,11 +261,11 @@ void SFMLGame::update() {
     
     // Mise à jour des textes
     if (_partie && _partie->getJoueurActuelle()) {
-        _textJoueur1.setString("Joueur 1 - Or: " + 
+        _textJoueur1.setString("Joueur actuelle - Or: " + 
             std::to_string(_partie->getJoueurActuelle()->getOr()) + 
             " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+
             " Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
-        _textJoueur2.setString("Joueur 2 - Or: " + 
+        _textJoueur2.setString("Autre joueur - Or: " + 
             std::to_string(_partie->getAutreJoueurActuelle()->getOr()) + 
             " Vie: " + std::to_string(_partie->getAutreJoueurActuelle()->getPv())+
             " Degat: " + std::to_string(_partie->getAutreJoueurActuelle()->getDegat()));
