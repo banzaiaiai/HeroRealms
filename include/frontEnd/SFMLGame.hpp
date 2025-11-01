@@ -37,6 +37,8 @@ private:
     Button _buttonAtacker;
     Button _buttonFinTour;
 
+    std::unique_ptr<CarteGraphique> _carteAgrandi;
+
     sf::RenderWindow _window;
     sf::Font _font;
     sf::Text _textJoueur1;

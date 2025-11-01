@@ -2,7 +2,8 @@
 #include "frontEnd/CarteGraphique.hpp"
 
 CarteGraphique::CarteGraphique(float x, float y, float width, float height, const Carte* carteLogique)
-    :  _isSelected(false) ,_carteLogique(carteLogique)
+    :  _isSelected(false),
+       _carteLogique(carteLogique)
 {
     if (_carteLogique) {
         std::cerr << "Texture de " << _carteLogique->getName() << " "
@@ -25,10 +26,12 @@ bool CarteGraphique::contains(const sf::Vector2f& point) const {
 void CarteGraphique::setSelected(bool selected) {
     _isSelected = selected;
     // Tu peux changer la couleur du sprite si sélectionné
-    if (selected)
+    if (selected) {
         _sprite.setColor(sf::Color(255, 255, 150)); // léger surlignage
-    else
+    }
+    else {
         _sprite.setColor(sf::Color::White);
+    }
 }
 
 void CarteGraphique::draw(sf::RenderWindow& window) const {
