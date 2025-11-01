@@ -194,6 +194,23 @@ std::unique_ptr<Carte> Partie::retirerCarteRiviere(int carteId) {
     return nullptr;
 }
 
+std::unique_ptr<Carte> Partie::retirerGemmeFeu(int carteId) {
+    auto it = std::find_if(_gemmeFeu.begin(), _gemmeFeu.end(),
+        [carteId](const std::unique_ptr<Carte>& carte) {
+            return carte && carte->getId() == carteId;
+        });
+
+    if (it != _gemmeFeu.end()) {
+        std::unique_ptr<Carte> carte = std::move(*it);
+        _gemmeFeu.erase(it);
+        std::cout << "Gemme feu " << carte->getId() << " retirée" << std::endl;
+        return carte;
+    }
+
+    std::cerr << "Gemme feu id " << carteId << " introuvable" << std::endl;
+    return nullptr;
+}
+
 void Partie::remplirRiviere(int nombreCartes) {
     // Cette méthode pourrait piocher depuis un deck commun
     // Pour l'instant, c'est juste un placeholder

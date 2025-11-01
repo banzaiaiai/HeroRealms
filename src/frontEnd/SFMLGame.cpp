@@ -350,12 +350,12 @@ void SFMLGame::update() {
     
     // Mise à jour des textes
     if (_partie && _partie->getJoueurActuelle()) {
-        _textJoueur1.setString("J1 :\nOr: "+std::to_string(_partie->getJoueurActuelle()->getOr()) + "\n"+
-            "Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+"\n"+
-            "Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
-        _textJoueur2.setString("J2 :\nOr: "+std::to_string(_partie->getAutreJoueurActuelle()->getOr()) + "\n"+
-            "Vie: " + std::to_string(_partie->getAutreJoueurActuelle()->getPv())+ "\n"+
-            "Degat: " + std::to_string(_partie->getAutreJoueurActuelle()->getDegat()));
+        _textJoueur1.setString("J1 :\nOr: "+std::to_string(_partie->getJoueurParId(0)->getOr()) + "\n"+
+            "Vie: " + std::to_string(_partie->getJoueurParId(0)->getPv())+"\n"+
+            "Degat: " + std::to_string(_partie->getJoueurParId(0)->getDegat()));
+        _textJoueur2.setString("J2 :\nOr: "+std::to_string(_partie->getJoueurParId(1)->getOr()) + "\n"+
+            "Vie: " + std::to_string(_partie->getJoueurParId(1)->getPv())+ "\n"+
+            "Degat: " + std::to_string(_partie->getJoueurParId(1)->getDegat()));
     }
     
     _buttonAtacker.update(_window);
@@ -429,11 +429,13 @@ bool SFMLGame::deplacementValide(ZoneCarte* source, ZoneCarte* cible, int carteI
     int coupOr=0;
     auto cartes = source->_cartesObservees;
         for (auto carte : cartes){
-        coupOr=carte->getCoupOr();
+        if(carte->getId()==carteId){coupOr=carte->getCoupOr();};
     }
     
-    if (sourceNom == "marche" &&
-        (cibleNom == "main_joueur" || cibleNom == "defausse_joueur")) {
+    if ((sourceNom == "marche" &&
+        (cibleNom == "main_joueur" || cibleNom == "defausse_joueur")) ||
+        (sourceNom == "fire gem" && 
+        (cibleNom == "main_joueur" || cibleNom == "defausse_joueur"))) {
         
         if(coupOr==-1){
             std::cout<<"Probléme d'achat"<<std::endl;
@@ -484,6 +486,14 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
             std::cout << "Carte achetée depuis le marché" << std::endl;
         }
     }
+    // CASE 2b: Fire gem → Main
+    else if (sourceNom == "fire gem" && cibleNom.find("main_joueur") != std::string::npos) {
+        auto carte = _partie->retirerGemmeFeu(carteId);
+        if (carte) {
+            joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
+            std::cout << "Carte achetée depuis la gemme feu" << std::endl;
+        }
+    }
     // CASE 3: Marché → Défausse
     else if (sourceNom == "marche" && cibleNom.find("defausse_joueur") != std::string::npos) {
         auto carte = _partie->retirerCarteRiviere(carteId);
@@ -491,6 +501,14 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
             joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
             std::cout << "Carte acheter depuis le marché" << std::endl;
             
+        }
+    }
+    // CASE 3b: Fire gem → Défausse
+    else if (sourceNom == "fire gem" && cibleNom.find("defausse_joueur") != std::string::npos) {
+        auto carte = _partie->retirerGemmeFeu(carteId);
+        if (carte) {
+            joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
+            std::cout << "Carte achetée depuis la gemme feu" << std::endl;
         }
     }
     // CASE 4: Plateau → Défausse

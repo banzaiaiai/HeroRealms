@@ -94,6 +94,11 @@ public:
      * Transfère la propriété à l'appelant
      */
     std::unique_ptr<Carte> retirerCarteRiviere(int carteId);
+    /**
+     * Retire une carte de la pile de gemmes feu par ID.
+     * Transfère la propriété à l'appelant.
+     */
+    std::unique_ptr<Carte> retirerGemmeFeu(int carteId);
     
     /**
      * Remplit la rivière jusqu'à avoir N cartes
