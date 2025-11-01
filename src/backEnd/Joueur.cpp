@@ -293,16 +293,29 @@ void Joueur::defausserCarte() {
     /* TO DO
     Il faut diférencer les champions et les autres cartes
     */
-    while (!_plateau.empty()) {
-        int carteId = _plateau.back()->getId();
-        const Carte* c = getCarteById(carteId);
-        if (!c) continue;
-
-        if (c->estChampion()) {
+    // Défausser les cartes non-champion du plateau.
+    // Ne pas itérer en retirant depuis back() car si la carte du back() est
+    // un champion on risquait une boucle infinie (on ne retirait rien).
+    // Itérer par index et n'incrémenter l'indice que lorsqu'on conserve la carte
+    // permet de supprimer les éléments en place en toute sécurité.
+    size_t i = 0;
+    while (i < _plateau.size()) {
+        Carte* c = _plateau[i].get();
+        if (!c) {
+            ++i;
             continue;
         }
 
-        deplacerCarte(carteId, ZoneType::Plateau, ZoneType::Defausse);
+        if (c->estChampion()) {
+            // Conserver les champions sur le plateau
+            ++i;
+        } else {
+            int carteId = c->getId();
+            // deplacerCarte retirera l'élément courant et le mettra en défausse.
+            // Après l'appel, l'élément à l'indice 'i' est le suivant, on ne
+            // doit donc pas incrémenter i dans ce cas.
+            deplacerCarte(carteId, ZoneType::Plateau, ZoneType::Defausse);
+        }
     }
 }
 
