@@ -275,7 +275,7 @@ bool Joueur::engagerCarte(int carteId){
         std::cerr << "La carte ciblée est déjà engagée" << std::endl;
         return false;
     }
-
+    ch->setActiver(true);
     std::cout << "Carte engagée: " << carteJouee->getName()
               << " (ID: " << carteJouee->getId() << ")" << std::endl;
 
@@ -298,14 +298,6 @@ void Joueur::defausserCarte() {
         // deplacerCarte will remove the card from _main and push it to _defausse
         deplacerCarte(carteId, ZoneType::Main, ZoneType::Defausse);
     }
-    /* TO DO
-    Il faut diférencer les champions et les autres cartes
-    */
-    // Défausser les cartes non-champion du plateau.
-    // Ne pas itérer en retirant depuis back() car si la carte du back() est
-    // un champion on risquait une boucle infinie (on ne retirait rien).
-    // Itérer par index et n'incrémenter l'indice que lorsqu'on conserve la carte
-    // permet de supprimer les éléments en place en toute sécurité.
     size_t i = 0;
     while (i < _plateau.size()) {
         Carte* c = _plateau[i].get();
@@ -316,6 +308,8 @@ void Joueur::defausserCarte() {
 
         if (c->estChampion()) {
             // Conserver les champions sur le plateau
+            Champion* ch = dynamic_cast<Champion*>(c);
+            ch->setActiver(false); // Désengager le champion
             ++i;
         } else {
             int carteId = c->getId();

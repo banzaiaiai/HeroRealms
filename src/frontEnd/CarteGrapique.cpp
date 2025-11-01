@@ -53,7 +53,7 @@ void CarteGraphique::updateAppearance() {
     const Champion* ch = dynamic_cast<const Champion*>(_carteLogique);
     if (ch) {
         // ch est un Champion réel -> appeler méthode du Champion
-        if (!ch->getActiver()) {
+        if (ch->getActiver()) {
             _sprite.setColor(sf::Color(150,150,150));
         } else {
             _sprite.setColor(sf::Color::White);
