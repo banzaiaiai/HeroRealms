@@ -84,6 +84,14 @@ void Carte::jouerEngager(Joueur* joueur)
     declencherEffets(EventType::OnEngage, joueur);
 }
 
+bool Carte::jouerSacrifice(Joueur* joueur)
+{
+    std::cout << "Carte '" << _name << "' jouée par " << joueur->getNom() << std::endl;
+    declencherEffets(EventType::OnDelete, joueur);
+    if(this->getEffects(EventType::OnDelete)->size()>0){
+        return true;
+    }
+}
 void Carte::declencherEffets(EventType eventType, Joueur* joueur) {
     if (!joueur) {
         std::cerr << "Erreur: joueur nullptr dans declencherEffets" << std::endl;

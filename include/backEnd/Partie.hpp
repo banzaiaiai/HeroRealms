@@ -21,6 +21,8 @@ private:
     std::vector<Joueur> _joueurs;
     std::vector<std::unique_ptr<Carte>> _riviere;  // Le marché commun
     std::vector<std::unique_ptr<Carte>> _marcher;
+    std::vector<std::unique_ptr<Carte>> _defausseCommune;
+    std::vector<std::unique_ptr<Carte>> _gemmeFeu;
     int _joueurActuelIndex;
     int _tour;
     std::map<Faction,std::tuple<bool,bool>> _etatFaction;
@@ -126,6 +128,19 @@ public:
     // Gestion de l'attaque
     
     bool attaque(int idCarteSelect);
+
+    // Mélange un vecteur de pointeurs vers Carte (utile pour shuffle des vues)
+    void melangerCartes(std::vector<const Carte*>& cartes);
+
+
+    void setGemmeFeu(std::vector<std::unique_ptr<Carte>> gemmeFeu);
+    std::vector<const Carte*> getGemmeFeu() const;
+
+    void setDefausseCommune(std::vector<std::unique_ptr<Carte>> defausseCommune);
+    std::vector<const Carte*> getDefausseCommune() const;
+
+    std::vector<std::unique_ptr<Carte>>& getDefausseCommuneModifiable()
+    {return _defausseCommune;};
 };
 
 #endif // PARTIE_HPP

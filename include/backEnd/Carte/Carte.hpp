@@ -51,6 +51,7 @@ public:
     void jouer(Joueur *joueur);
     void jouerFaction(Joueur *joueur);
     void jouerEngager(Joueur* joueur);
+    bool jouerSacrifice(Joueur* joueur);
     void declencherEffets(EventType eventType, Joueur* joueur);
     // Constructeur par défaut
     Carte();

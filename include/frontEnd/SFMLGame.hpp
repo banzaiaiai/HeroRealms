@@ -2,6 +2,7 @@
 #define SFMLGAME_HPP
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <memory>
 #include <map>
 #include "frontEnd/GestionnaireZones.hpp"
@@ -38,11 +39,26 @@ private:
     Button _buttonFinTour;
 
     std::unique_ptr<CarteGraphique> _carteAgrandi;
+    Button _buttonDefausse1;
+    Button _buttonDefausse2;
+
+    Button _buttonpioche1;
+    Button _buttonpioche2;
+
+    Button _buttondeffausse;
 
     sf::RenderWindow _window;
     sf::Font _font;
     sf::Text _textJoueur1;
     sf::Text _textJoueur2;
+
+    sf::RectangleShape _rectangeHaut;
+    sf::RectangleShape _rectangeBas;
+
+    sf::RectangleShape _backCarteHaut;
+    sf::RectangleShape _backCarteBas;
+    // Textures must outlive the shapes that reference them
+    sf::Texture _backCarteTexture;
 
 public:
     /**

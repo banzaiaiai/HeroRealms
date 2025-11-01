@@ -104,6 +104,7 @@ std::vector<std::unique_ptr<Carte>>& Joueur::getZone(ZoneType type) {
         case ZoneType::Main: return _main;
         case ZoneType::Plateau: return _plateau;
         case ZoneType::Defausse: return _defausse;
+        case ZoneType::DefausseCommune: return _partie->getDefausseCommuneModifiable();
     }
     return _pioche; // Fallback
 }
@@ -114,6 +115,7 @@ const std::vector<std::unique_ptr<Carte>>& Joueur::getZone(ZoneType type) const 
         case ZoneType::Main: return _main;
         case ZoneType::Plateau: return _plateau;
         case ZoneType::Defausse: return _defausse;
+        case ZoneType::DefausseCommune: return _partie->getDefausseCommuneModifiable();
     }
     return _pioche; // Fallback
 }
@@ -224,12 +226,12 @@ void Joueur::effetfamille(Carte* carteJouee) {
     Faction faction = carteJouee->getFaction();
     auto etatinitial=_partie->getetatFaction();
     auto etat =_partie->getetatFaction()[faction];
-    if(std::get<0>(etat)==false){
-        if(std::get<1>(etat)==false){
+    if(!std::get<0>(etat)){
+        if(!std::get<1>(etat)){
             std::cout<<"applique pas"<<std::endl;
             
             etatinitial[faction]=std::make_tuple(false,true);
-            _partie->getetatFaction()[faction]=etatinitial[faction];
+            _partie->setetatFaction(etatinitial);
             return;
         }
         else {
@@ -237,16 +239,18 @@ void Joueur::effetfamille(Carte* carteJouee) {
             for(auto& carte : _plateau){
                 if(carte->getFaction()==faction){
                     // aplique effect faction 
-                    carteJouee->jouerFaction(this);
+                    carte->jouerFaction(this);
                 }
             }
             etatinitial[faction]=std::make_tuple(true,true);
-            _partie->getetatFaction()[faction]=etatinitial[faction];
+            _partie->setetatFaction(etatinitial);
             return;
         }
     }
     else{
         // aplique sois même
+        carteJouee->jouerFaction(this);
+        return;
     }
 }
 
@@ -265,7 +269,10 @@ bool Joueur::engagerCarte(int carteId){
         std::cerr << "Erreur: pointeur de carte nul pour id=" << carteId << std::endl;
         return false;
     }
-
+    if(carteJouee->jouerSacrifice(this)){
+        deplacerCarte(carteId, ZoneType::Plateau,ZoneType::DefausseCommune);
+        return true;
+    }
     Champion* ch = dynamic_cast<Champion*>(carteJouee);
     if (!ch) {
         std::cerr << "La carte ciblée n'est pas un Champion" << std::endl;
@@ -281,6 +288,7 @@ bool Joueur::engagerCarte(int carteId){
 
     // Déclencher l'effet associé à l'engagement (ou autre logique)
     carteJouee->jouerEngager(this);  // IMPORTANT: passer 'this' (le joueur actuel)
+    
 
     std::cout << "Carte engagée avec succès" << std::endl;
     return true;
@@ -328,6 +336,13 @@ void Joueur::initialiserDeck(std::vector<std::unique_ptr<Carte>> deck) {
     std::random_device rd ;
     std::mt19937 g(rd());
 
+    std::shuffle(_pioche.begin(), _pioche.end(), g);
+}
+
+void Joueur::melangerPioche() {
+    if (_pioche.empty()) return;
+    std::random_device rd;
+    std::mt19937 g(rd());
     std::shuffle(_pioche.begin(), _pioche.end(), g);
 }
 
