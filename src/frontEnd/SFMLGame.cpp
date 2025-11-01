@@ -120,13 +120,21 @@ void SFMLGame::processEvents() {
                 if(_buttonAtacker.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "Attaque cliquée" << std::endl;
                     if(_partie->getJoueurActuelle()->getDegat()>0 && _partie->getAutreJoueurActuelle()->getPlateau().size()>0){
-                        auto idCarteSelect=_overlay.openOverlay( _partie->getAutreJoueurActuelle()->getPlateau(),"test");
-                        if(_partie->attaque(idCarteSelect)){
-                            std::cout<<"carte selectionné id="<<idCarteSelect<<std::endl;
-                            if(!_partie->getAutreJoueurActuelle()->deplacerCarte(idCarteSelect, ZoneType::Plateau, ZoneType::Defausse)){
-                                std::cout<<"erreur pour jouer la carte"<<std::endl;
-                            }
+                        const Carte jouerCible = Carte("Joueur",0,Faction::Neutre,"assets/alternative_carte/none.jpg");
+                        std::vector<const Carte*> cible;
+                        cible.push_back(&jouerCible);
+                        int id=jouerCible.getId();
+                        auto idCarteSelect=_overlay.openOverlay("test",_partie->getAutreJoueurActuelle()->getPlateau(),cible);
+                        std::cout<<"idCarteSelect="<<idCarteSelect<<"id joueur"<<id<<std::endl;
+                        if(id==idCarteSelect and !_partie->getAutreJoueurActuelle()->possedeGardien()) {   
+                            std::cout<<"attaque au joueur"<<std::endl;
+                            _partie->getAutreJoueurActuelle()->recevoirDegat(_partie->getJoueurActuelle()->getDegat());
+                            _partie->getJoueurActuelle()->setDegat(0); // Réinitialiser les dégâts après l'attaque
                         }
+                        else if(_partie->attaque(idCarteSelect)){
+                            std::cout<<"carte selectionné id="<<idCarteSelect<<std::endl;
+                        }
+                        
                     }
                     else {
                         std::cout<<"vous n'avez pas de dégât pour attaquer"<<std::endl;
@@ -258,9 +266,9 @@ void SFMLGame::update() {
             " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+
             " Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
         _textJoueur2.setString("Joueur 2 - Or: " + 
-            std::to_string(_partie->getJoueurActuelle()->getOr()) + 
-            " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+
-            " Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
+            std::to_string(_partie->getAutreJoueurActuelle()->getOr()) + 
+            " Vie: " + std::to_string(_partie->getAutreJoueurActuelle()->getPv())+
+            " Degat: " + std::to_string(_partie->getAutreJoueurActuelle()->getDegat()));
     }
     
     _buttonAtacker.update(_window);
@@ -275,6 +283,7 @@ void SFMLGame::render() {
 
     // Dessiner les cartes graphiques
     for (auto& [carteId, carteGraphique] : _cartesGraphiques) {
+        carteGraphique->updateAppearance();
         carteGraphique->draw(_window);
     }
 

@@ -141,6 +141,8 @@ public:
     }
 
     void defausserCarte();
+    
+    void recevoirDegat(int montant);
 
     
 

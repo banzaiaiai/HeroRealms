@@ -1,3 +1,4 @@
+#include "backEnd/Carte/Champion.hpp"
 #include "frontEnd/CarteGraphique.hpp"
 
 CarteGraphique::CarteGraphique(float x, float y, float width, float height, const Carte* carteLogique)
@@ -48,8 +49,17 @@ sf::Vector2f CarteGraphique::getSize() const {
 }
 
 void CarteGraphique::updateAppearance() {
-    if (!_carteLogique) return;
-    
-    // Met à jour l'apparence basée sur l'état logique
-    // Exemple : griser la carte si elle ne peut pas être jouée
+    // _carteLogique est const Carte*
+    const Champion* ch = dynamic_cast<const Champion*>(_carteLogique);
+    if (ch) {
+        // ch est un Champion réel -> appeler méthode du Champion
+        if (!ch->getActiver()) {
+            _sprite.setColor(sf::Color(150,150,150));
+        } else {
+            _sprite.setColor(sf::Color::White);
+        }
+    } else {
+        // pas un champion : comportement par défaut
+        _sprite.setColor(sf::Color::White);
+    }
 }

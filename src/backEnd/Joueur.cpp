@@ -268,6 +268,16 @@ bool Joueur::engagerCarte(int carteId){
         return false;
     }
 
+    Champion* ch = dynamic_cast<Champion*>(carteJouee);
+    if (!ch) {
+        std::cerr << "La carte ciblée n'est pas un Champion" << std::endl;
+        return false;
+    }
+    if(ch->getActiver()){
+        std::cerr << "La carte ciblée est déjà engagée" << std::endl;
+        return false;
+    }
+
     std::cout << "Carte engagée: " << carteJouee->getName()
               << " (ID: " << carteJouee->getId() << ")" << std::endl;
 
@@ -339,4 +349,11 @@ bool Joueur::possedeGardien() const {
         }
     }
     return false;
+}
+
+void Joueur::recevoirDegat(int montant) {
+    _pv -= montant;
+    if (_pv < 0) _pv = 0;
+    std::cout << "Joueur " << _nom << " reçoit " << montant 
+              << " dégâts. PV restants: " << _pv << std::endl;
 }

@@ -24,6 +24,7 @@ public:
 
     const int openOverlay(std::vector<const Carte*> listCarte,
                              std::string titre);
+    
 
     template<typename... Vecs>
     const int openOverlay(std::string titre, const Vecs&... vecs) {
@@ -38,6 +39,10 @@ private:
     void appendRawPtrs(std::vector<const T*>& dest, const std::vector<std::unique_ptr<T>>& src) {
         for (auto& c : src) dest.push_back(c.get());
     }
+    template<typename T>
+    void appendRawPtrs(std::vector<const T*>& dest, const std::vector<const T*>& src) {
+    dest.insert(dest.end(), src.begin(), src.end());
+}
 
 };
 
