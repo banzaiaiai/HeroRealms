@@ -88,9 +88,10 @@ bool Carte::jouerSacrifice(Joueur* joueur)
 {
     std::cout << "Carte '" << _name << "' jouée par " << joueur->getNom() << std::endl;
     declencherEffets(EventType::OnDelete, joueur);
-    if(this->getEffects(EventType::OnDelete)->size()>0){
+    if(this->getEffects(EventType::OnDelete) != nullptr){
         return true;
     }
+    return false;
 }
 void Carte::declencherEffets(EventType eventType, Joueur* joueur) {
     if (!joueur) {

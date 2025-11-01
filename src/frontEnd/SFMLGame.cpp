@@ -213,12 +213,30 @@ void SFMLGame::processEvents() {
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     handleMouseClick(event.mouseButton.x, event.mouseButton.y);
                 }
+                else if (event.mouseButton.button == sf::Mouse::Right) {
+                    sf::Vector2f mousePos = _window.mapPixelToCoords(
+                        sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+
+                    for (auto& [carteId, carteGraphique] : _cartesGraphiques) {
+                        if (carteGraphique->contains(mousePos)) {
+                            // Crée une version agrandie de la carte
+                            const Carte* carte = carteGraphique->getCarteLogique();
+                            _carteAgrandi = std::make_unique<CarteGraphique>(
+                                430.f, 180.f, 320.f, 450.f, carte);
+                            break;
+                        }
+                    }
+                }
                 break;
                 
             case sf::Event::MouseButtonReleased:
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     handleMouseRelease(event.mouseButton.x, event.mouseButton.y);
                 }
+                else if (event.mouseButton.button == sf::Mouse::Right) {
+                    _carteAgrandi.reset();
+                }
+
                 break;
                 
             default:
@@ -379,6 +397,10 @@ void SFMLGame::render() {
 
     _window.draw(_backCarteHaut);
     _window.draw(_backCarteBas);
+
+    if (_carteAgrandi) {
+        _carteAgrandi->draw(_window);
+    }
 
     _window.display();
 }

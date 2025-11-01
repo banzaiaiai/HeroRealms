@@ -38,6 +38,7 @@ private:
     Button _buttonAtacker;
     Button _buttonFinTour;
 
+    std::unique_ptr<CarteGraphique> _carteAgrandi;
     Button _buttonDefausse1;
     Button _buttonDefausse2;
 
