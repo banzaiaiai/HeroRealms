@@ -429,7 +429,7 @@ bool SFMLGame::deplacementValide(ZoneCarte* source, ZoneCarte* cible, int carteI
     int coupOr=0;
     auto cartes = source->_cartesObservees;
         for (auto carte : cartes){
-        coupOr=carte->getCoupOr();
+        if(carte->getId()==carteId){coupOr=carte->getCoupOr();};
     }
     
     if ((sourceNom == "marche" &&
