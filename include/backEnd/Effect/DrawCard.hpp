@@ -12,12 +12,6 @@ public:
     DrawCard(int count=0);
     ~DrawCard() override = default;
     void applyEffect(Joueur * joueur) override;
-
-    // Getters
-    inline int getCount() const { return _count; }
-
-    // Setters
-    inline void setCount(int count) { _count = count; }
 };
 
 #endif // DRAWCARD_H
