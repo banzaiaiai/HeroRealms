@@ -55,6 +55,7 @@ const int Overlay::openOverlay(std::vector<const Carte*> listCarte,
                 case sf::Event::Closed:
                     _listCarte.clear();
                     _listCarteGraphique.clear();
+                    _window.clear();
                     _window.close();
                     break;
 
@@ -64,6 +65,9 @@ const int Overlay::openOverlay(std::vector<const Carte*> listCarte,
                         // Chercher la carte graphique cliquée (par ID)
                         for (auto& carteGraphique : _listCarteGraphique) {
                             if (carteGraphique.contains(mousePos)) {
+                                _listCarte.clear();
+                                _listCarteGraphique.clear();
+                                _window.clear();
                                 _window.close();
                                 return carteGraphique.getCarteLogique()->getId();
                             }
