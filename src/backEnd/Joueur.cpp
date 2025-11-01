@@ -168,11 +168,9 @@ bool Joueur::deplacerCarte(int carteId, ZoneType source, ZoneType destination) {
 void Joueur::piocher(int nombre) {
     for (int i = 0; i < nombre; i++) {
         if (_pioche.empty()) {
-            std::cout << "Pioche vide, impossible de piocher" << std::endl;
-            break;
-            /* To Do 
-            Ajouter la logique de remélange de la défausse dans la pioche ici
-            */
+            auto rng = std::default_random_engine {};
+            std::shuffle(std::begin(_defausse), std::end(_defausse), rng);
+            _pioche = std::move(_defausse);
         }
         
         // Déplacer la dernière carte de la pioche vers la main

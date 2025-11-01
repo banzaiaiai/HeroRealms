@@ -76,8 +76,11 @@ public:
     void setOr(int or_) { _or = or_; }
     void setDegat(int degat) {_degat = degat; }
     void ajouterDegat(int degat) { _degat += degat; }
+    void retirerDegat(int degat) { _degat += degat; }
     void ajouterOr(int montant) { _or += montant; }
     void retirerOr(int montant) { _or -= montant; }
+    void ajouterPV(int heal) { _pv += heal; }
+    void retirerPV(int heal) { _pv -= heal; }
     
     // === GESTION DES CARTES ===
     

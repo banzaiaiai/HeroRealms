@@ -18,7 +18,7 @@ enum class EventType {
     OnTurnStart,
     OnAllyEnter,
     OnDelete,
-    OnEngenge
+    OnEngage
 };
 
 enum class Faction {

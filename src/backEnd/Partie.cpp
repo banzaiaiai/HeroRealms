@@ -31,7 +31,15 @@ Partie::Partie()
     // Piocher les mains de départ
     std::cout << "Pioche des mains de départ..." << std::endl;
     getJoueurParId(0)->piocher(3);
-    getJoueurParId(1)->piocher(5);
+
+
+    // La Pioche
+    _marcher = std::move(InitCarte::marcher()); 
+
+    for (int i = 0; i < 5; i++) {
+        ajouterCarteRiviere(std::move(_marcher.back()));
+        _marcher.pop_back();
+    }
 }
 
 Partie::~Partie() {
@@ -113,6 +121,8 @@ void Partie::passerAuJoueurSuivant() {
     std::cout << "C'est au tour de " << getJoueurActuelle()->getNom() << std::endl;
 
     GLOBALjoeurActuelle=getJoueurParId(_joueurActuelIndex);
+
+    GLOBALjoeurActuelle->piocher(5);
 }
 
 // === GESTION DE LA RIVIÈRE ===
