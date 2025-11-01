@@ -53,6 +53,8 @@ const int Overlay::openOverlay(std::vector<const Carte*> listCarte,
         while (_window.pollEvent(event)) {
             switch (event.type) {
                 case sf::Event::Closed:
+                    _listCarte.clear();
+                    _listCarteGraphique.clear();
                     _window.close();
                     break;
 

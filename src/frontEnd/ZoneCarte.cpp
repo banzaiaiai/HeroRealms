@@ -93,7 +93,9 @@ std::vector<sf::Vector2f> ZoneCarte::calculerPositionsCartes() const {
         }
     }
     else if (_nom.find("pioche") != std::string::npos || 
-             _nom.find("defausse") != std::string::npos) {
+             _nom.find("defausse") != std::string::npos ||
+             _nom.find("zone_defausse") != std::string::npos ||
+             _nom.find("fire gem") != std::string::npos) {
         // Une seule position pour pioche/défausse
         float centerX = _x + (_width - CARD_WIDTH) / 2.0f;
         float centerY = _y + (_height - CARD_HEIGHT) / 2.0f;

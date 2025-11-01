@@ -18,6 +18,9 @@ void GestionnaireZones::creerZonesStandard() {
     _zones.push_back(std::make_unique<ZoneCarte>(960, 20, 80, 120, "defausse_joueur2", sf::Color(200, 0, 0, 50)));
     
     _zones.push_back(std::make_unique<ZoneCarte>(400, 330, 500, 145, "marche", sf::Color(255, 165, 0, 50)));
+
+    _zones.push_back(std::make_unique<ZoneCarte>(1060, 335, 80, 120, "zone_defausse", sf::Color(255, 255, 0, 50)));
+    _zones.push_back(std::make_unique<ZoneCarte>(960, 335, 80, 120, "fire gem", sf::Color(255, 255, 0, 50)));
     
     // Mettre à jour la map de recherche
     for (auto& zone : _zones) {
@@ -92,6 +95,22 @@ void GestionnaireZones::mettreAJourZones(Partie* partie) {
         auto cartesRiviere = partie->getRiviere();
         for (const Carte* carte : cartesRiviere) {
             zoneMarche->observerCarte(carte);
+        }
+    }
+    // zone_defausse (rivière commune)
+    auto zone_defausse = getZoneParNom("zone_defausse");
+    if (zone_defausse) {
+        auto carteDefausseCommune = partie->getDefausseCommune();
+        if(carteDefausseCommune.size()>0){
+            zone_defausse->observerCarte(carteDefausseCommune.back());
+        }
+    }
+    // fire gem (rivière commune)
+    auto fireGem = getZoneParNom("fire gem");
+    if (fireGem) {
+        auto carteFireGem = partie->getGemmeFeu();
+        if(carteFireGem.size()>0){
+            fireGem->observerCarte(carteFireGem.back());
         }
     }
 }

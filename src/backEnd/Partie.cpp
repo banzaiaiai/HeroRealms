@@ -40,6 +40,8 @@ Partie::Partie()
         ajouterCarteRiviere(std::move(_marcher.back()));
         _marcher.pop_back();
     }
+    _defausseCommune.clear();
+    _gemmeFeu=std::move(InitCarte::fireGems());
 }
 
 Partie::~Partie() {
@@ -126,12 +128,31 @@ void Partie::passerAuJoueurSuivant() {
 }
 
 // === GESTION DE LA RIVIÈRE ===
-
 std::vector<const Carte*> Partie::getRiviere() const {
     std::vector<const Carte*> result;
     result.reserve(_riviere.size());
     
     for (const auto& carte : _riviere) {
+        result.push_back(carte.get());
+    }
+    
+    return result;
+}
+std::vector<const Carte*> Partie::getGemmeFeu() const {
+    std::vector<const Carte*> result;
+    result.reserve(_gemmeFeu.size());
+    
+    for (const auto& carte : _gemmeFeu) {
+        result.push_back(carte.get());
+    }
+    
+    return result;
+}
+std::vector<const Carte*> Partie::getDefausseCommune() const {
+    std::vector<const Carte*> result;
+    result.reserve(_defausseCommune.size());
+    
+    for (const auto& carte : _defausseCommune) {
         result.push_back(carte.get());
     }
     
@@ -261,3 +282,13 @@ bool Partie::attaque(int idCarteSelect){
     return true;
 }
 
+
+/**
+Prend un vectteur de carte et le mélange */
+
+void Partie::melangerCartes(std::vector<const Carte*>& cartes) {
+    std::random_device rd;
+    std::mt19937 g(rd());
+    if (cartes.empty()) return;
+    std::shuffle(cartes.begin(), cartes.end(), g);
+}

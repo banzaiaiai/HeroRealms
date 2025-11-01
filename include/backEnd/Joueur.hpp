@@ -16,7 +16,8 @@ enum class ZoneType {
     Pioche,
     Main,
     Plateau,
-    Defausse
+    Defausse,
+    DefausseCommune
 };
 
 /**
@@ -134,6 +135,11 @@ public:
      * Transfert de propriété depuis un vecteur externe
      */
     void initialiserDeck(std::vector<std::unique_ptr<Carte>> deck);
+
+    /**
+     * Mélange la pioche interne du joueur.
+     */
+    void melangerPioche();
 
     bool possedeGardien() const;
 

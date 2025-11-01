@@ -2,21 +2,37 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Partie.hpp"
 #include "frontEnd/ZoneCarte.hpp"
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <iostream>
 #include <set>
+#include <string>
 
 
 
 SFMLGame::SFMLGame(Partie* partie) 
     : _window(sf::VideoMode(1200, 800), "Jeu de Cartes", sf::Style::Titlebar | sf::Style::Close),
-      _partie(partie),
-      _carteSelectionnee(nullptr),
-      _carteSelectionneeId(-1),
-      _zoneSource(nullptr),
-      _overlay(),
-      _buttonAtacker("attaque", sf::Vector2f(40, 650), sf::Vector2f(100, 100)),
-      _buttonFinTour("fin de tour", sf::Vector2f(920, 370), sf::Vector2f(200, 50))
+    _partie(partie),
+    _carteSelectionnee(nullptr),
+    _carteSelectionneeId(-1),
+    _zoneSource(nullptr),
+
+    // UI elements
+    _overlay(),
+    _buttonAtacker("attaque", sf::Vector2f(40, 345), sf::Vector2f(100, 100)),
+    _buttonFinTour("fin de tour", sf::Vector2f(155, 370), sf::Vector2f(200, 50)),
+    _buttonDefausse1("defausse1", sf::Vector2f(960, 640), sf::Vector2f(80, 120)),
+    _buttonDefausse2("defausse2", sf::Vector2f(960, 20), sf::Vector2f(80, 120)),
+    _buttonpioche1("pioche1", sf::Vector2f(1060, 640), sf::Vector2f(80, 120)),
+    _buttonpioche2("pioche2", sf::Vector2f(1060, 20), sf::Vector2f(80, 120)),
+    _buttondeffausse("deffausse", sf::Vector2f(1060, 335), sf::Vector2f(80, 120)),
+
+    _rectangeHaut(sf::Vector2f(140.f, 160.f)),
+    _rectangeBas(sf::Vector2f(140.f, 160.f)),
+
+    _backCarteHaut(sf::Vector2f(80.f, 120.f)),
+    _backCarteBas(sf::Vector2f(80.f, 120.f))
 {
     std::cout << "SFMLGame construit" << std::endl;
     
@@ -34,6 +50,27 @@ SFMLGame::SFMLGame(Partie* partie)
         std::cerr << "Erreur lors du chargement de la police" << std::endl;
     }
     rendertext();
+
+    // Configurer les rectangles
+    _rectangeHaut.setPosition(5.f, 5.f);
+    _rectangeHaut.setFillColor(sf::Color::Black);
+
+    _rectangeBas.setPosition(5.f, 640.f);
+    _rectangeBas.setFillColor(sf::Color::Black);
+
+    // Load the texture into a member so it stays valid for the lifetime
+    // of the SFMLGame (RectangleShape stores a pointer to the texture).
+    if (!_backCarteTexture.loadFromFile("assets/carte/hero_realms_back.jpg")) {
+        std::cerr << "Erreur: impossible de charger assets/carte/hero_realms_back.jpg" << std::endl;
+    }
+
+    _backCarteHaut.setTexture(&_backCarteTexture);
+    _backCarteHaut.setPosition(1060.f, 640.f);
+
+    _backCarteBas.setTexture(&_backCarteTexture);
+    _backCarteBas.setPosition(1060.f, 20.f);
+
+
 }
 
 SFMLGame::~SFMLGame() {
@@ -44,12 +81,12 @@ void SFMLGame::rendertext() {
     _textJoueur1.setFont(_font);
     _textJoueur1.setCharacterSize(24);
     _textJoueur1.setFillColor(sf::Color::Red);
-    _textJoueur1.setPosition(10.f, 10.f);
+    _textJoueur1.setPosition(20.f, 640.f);
 
     _textJoueur2.setFont(_font);
     _textJoueur2.setCharacterSize(24);
     _textJoueur2.setFillColor(sf::Color::Red);
-    _textJoueur2.setPosition(10.f, 40.f);
+    _textJoueur2.setPosition(20.f, 5.f);
 }
 
 void SFMLGame::setPartie(Partie* partie) {
@@ -130,6 +167,11 @@ void SFMLGame::processEvents() {
                             std::cout<<"attaque au joueur"<<std::endl;
                             _partie->getAutreJoueurActuelle()->recevoirDegat(_partie->getJoueurActuelle()->getDegat());
                             _partie->getJoueurActuelle()->setDegat(0); // Réinitialiser les dégâts après l'attaque
+                            // regarde la victoire
+                            if(_partie->getAutreJoueurActuelle()->getPv()<=0){
+                                std::cout<<"Le joueur "<<_partie->getJoueurActuelle()->getNom()<<" a gagné la partie!"<<std::endl;
+                                _window.close();
+                            }
                         }
                         else if(_partie->attaque(idCarteSelect)){
                             std::cout<<"carte selectionné id="<<idCarteSelect<<std::endl;
@@ -140,6 +182,34 @@ void SFMLGame::processEvents() {
                         std::cout<<"vous n'avez pas de dégât pour attaquer"<<std::endl;
                     } 
                 }
+                else if (_buttonDefausse1.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
+                    std::cout << "Defausse1 cliquée" << std::endl;
+                    _overlay.openOverlay("defausse",_partie->getJoueurParId(0)->getDefausse());
+                }
+                else if (_buttonDefausse2.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
+                    std::cout << "Defausse2 cliquée" << std::endl;
+                    _overlay.openOverlay("defausse",_partie->getJoueurParId(1)->getDefausse());
+                }
+                else if (_buttonpioche1.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
+                    std::cout << "Pioche1 cliquée" << std::endl;
+                    _overlay.openOverlay("pioche",_partie->getJoueurParId(0)->getPioche());
+                    if (_partie->getAutreJoueurParId(0)) {
+                        _partie->getAutreJoueurParId(0)->melangerPioche();
+                    }
+                }
+                else if (_buttonpioche2.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
+                    std::cout << "Pioche2 cliquée" << std::endl;
+                    _overlay.openOverlay("pioche",_partie->getJoueurParId(1)->getPioche());
+                    // Shuffle the actual player's internal pioche instead of passing a temporary
+                    if (_partie->getAutreJoueurParId(1)) {
+                        _partie->getAutreJoueurParId(1)->melangerPioche();
+                    }
+                }
+                else if (_buttondeffausse.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
+                    std::cout << "Defausse generale cliquée" << std::endl;
+                    _overlay.openOverlay("defausse general",_partie->getDefausseCommune());
+                }
+
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     handleMouseClick(event.mouseButton.x, event.mouseButton.y);
                 }
@@ -158,6 +228,7 @@ void SFMLGame::processEvents() {
 }
 void SFMLGame::finDeTour() {
     _partie->getJoueurActuelle()->resetAll();
+    _partie->resetetatFaction();
     _partie->getJoueurActuelle()->defausserCarte();
     _partie->passerAuJoueurSuivant();
 }
@@ -261,18 +332,21 @@ void SFMLGame::update() {
     
     // Mise à jour des textes
     if (_partie && _partie->getJoueurActuelle()) {
-        _textJoueur1.setString("Joueur actuelle - Or: " + 
-            std::to_string(_partie->getJoueurActuelle()->getOr()) + 
-            " Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+
-            " Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
-        _textJoueur2.setString("Autre joueur - Or: " + 
-            std::to_string(_partie->getAutreJoueurActuelle()->getOr()) + 
-            " Vie: " + std::to_string(_partie->getAutreJoueurActuelle()->getPv())+
-            " Degat: " + std::to_string(_partie->getAutreJoueurActuelle()->getDegat()));
+        _textJoueur1.setString("J1 :\nOr: "+std::to_string(_partie->getJoueurActuelle()->getOr()) + "\n"+
+            "Vie: " + std::to_string(_partie->getJoueurActuelle()->getPv())+"\n"+
+            "Degat: " + std::to_string(_partie->getJoueurActuelle()->getDegat()));
+        _textJoueur2.setString("J2 :\nOr: "+std::to_string(_partie->getAutreJoueurActuelle()->getOr()) + "\n"+
+            "Vie: " + std::to_string(_partie->getAutreJoueurActuelle()->getPv())+ "\n"+
+            "Degat: " + std::to_string(_partie->getAutreJoueurActuelle()->getDegat()));
     }
     
     _buttonAtacker.update(_window);
     _buttonFinTour.update(_window);
+    _buttonDefausse1.update(_window);
+    _buttonDefausse2.update(_window);
+    _buttonpioche1.update(_window);
+    _buttonpioche2.update(_window);
+    _buttondeffausse.update(_window);
 }
 
 void SFMLGame::render() {
@@ -281,17 +355,30 @@ void SFMLGame::render() {
     // Dessiner les zones
     _zones.dessinerZones(_window);
 
+    _buttonDefausse1.draw(_window);
+    _buttonDefausse2.draw(_window); 
+    _buttonpioche1.draw(_window);
+    _buttonpioche2.draw(_window);
+    _buttondeffausse.draw(_window);
+
     // Dessiner les cartes graphiques
     for (auto& [carteId, carteGraphique] : _cartesGraphiques) {
         carteGraphique->updateAppearance();
         carteGraphique->draw(_window);
     }
 
+
+    _window.draw(_rectangeHaut);
+    _window.draw(_rectangeBas);
+
     _window.draw(_textJoueur1);
     _window.draw(_textJoueur2);
 
     _buttonAtacker.draw(_window);
     _buttonFinTour.draw(_window);
+
+    _window.draw(_backCarteHaut);
+    _window.draw(_backCarteBas);
 
     _window.display();
 }
