@@ -125,6 +125,9 @@ void Partie::passerAuJoueurSuivant() {
     GLOBALjoeurActuelle=getJoueurParId(_joueurActuelIndex);
 
     GLOBALjoeurActuelle->piocher(5);
+
+    GLOBALjoeurActuelle->defausserCarte(GLOBALjoeurActuelle->getCompteurDefausse());
+    GLOBALjoeurActuelle->setCompteurDefausse(0);
 }
 
 // === GESTION DE LA RIVIÈRE ===

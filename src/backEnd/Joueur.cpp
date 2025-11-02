@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <tuple>
+#include "frontEnd/Overlay.hpp"
 
 Joueur::Joueur(int id, Partie* partie, const std::string& nom)
     : _id(id),
@@ -296,6 +297,19 @@ bool Joueur::engagerCarte(int carteId){
 
 void Joueur::defausserCarte(int carteId, ZoneType source) {
     deplacerCarte(carteId, source, ZoneType::Defausse);
+}
+
+void Joueur::defausserCarte(int count) {
+    Overlay overlay;
+    while (count!=0) {
+        int carteId = overlay.openOverlay("DefausserCarte", _main);
+        if (carteId == -1) {
+            std::cerr << "Aucune carte sélectionnée pour la défausse." << std::endl;
+            break; // Sortir si aucune carte n'est sélectionnée
+        }
+        defausserCarte(carteId, ZoneType::Main);
+        count--;
+    }
 }
 
 void Joueur::defausserCarte() {
