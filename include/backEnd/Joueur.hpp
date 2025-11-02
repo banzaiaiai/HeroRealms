@@ -30,6 +30,7 @@ private:
     int _pv;
     int _or;
     int _degat;
+    int _compteurDefausse=0;
     std::string _nom;
     Partie* _partie;  // Non-owning pointer vers la partie
     
@@ -60,6 +61,10 @@ public:
     int getOr() const { return _or; };
     int getDegat() const { return _degat; };
     std::string getNom() const { return _nom; };
+    Partie* getPartie()  { return _partie; };
+    int getCompteurDefausse() const {
+        return _compteurDefausse;
+    };
     
     // Accès en lecture seule aux zones (retourne des pointeurs non-owning)
     std::vector<const Carte*> getPioche() const;
@@ -82,6 +87,9 @@ public:
     void retirerOr(int montant) { _or -= montant; }
     void ajouterPV(int heal) { _pv += heal; }
     void retirerPV(int heal) { _pv -= heal; }
+    void setCompteurDefausse(int count){
+        _compteurDefausse=count;
+    };
     
     // === GESTION DES CARTES ===
     
@@ -130,6 +138,7 @@ public:
      */
     void defausserCarte(int carteId, ZoneType source);
     
+    void defausserCarte(int count);
     /**
      * Crée le deck initial du joueur
      * Transfert de propriété depuis un vecteur externe
