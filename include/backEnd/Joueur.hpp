@@ -87,9 +87,8 @@ public:
     void retirerOr(int montant) { _or -= montant; }
     void ajouterPV(int heal) { _pv += heal; }
     void retirerPV(int heal) { _pv -= heal; }
-    void setCompteurDefausse(int count){
-        _compteurDefausse=count;
-    };
+    void setCompteurDefausse(int count){ _compteurDefausse = count; };
+    void addCompteurDefausse(int count){ _compteurDefausse += count; };
     
     // === GESTION DES CARTES ===
     
