@@ -8,17 +8,13 @@
 class Champion;
 
 class PrepareChampion : public IEffect {
-private:
-    Champion* _champion;
 
 public:
-    PrepareChampion(Champion* champion = nullptr);
+    PrepareChampion();
     ~PrepareChampion() override = default;
     
     void applyEffect(Joueur *joueur) override;
 
-    inline Champion* getChampion() const { return _champion; }
-    inline void setChampion(Champion* champion) { _champion = champion; }
 };
 
 #endif // PREPARECHAMPION_H
