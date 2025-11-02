@@ -130,6 +130,18 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         } },
                     });
 
+    addNonPermanent(res, 1, "Domination", 7, Faction::Imperiale,
+                    "assets/carte/BAS-EN-005-domination.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(6),
+                            std::make_shared<HealEffect>(6),
+                            std::make_shared<DrawCard>(1)
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<PrepareChampion>()} }
+                    });
+
     addChampion(    res, 1, "Cristov, the Just", 5, Faction::Imperiale,
                     "assets/carte/BAS-EN-006-cristov-the-just.jpg",
                     5, true,
@@ -164,6 +176,17 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     4, true,
                     {
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(3, OccurenceType::Champion, 1)} }
+                    });
+
+    addNonPermanent(res, 1, "Rally the Troops", 4, Faction::Imperiale,
+                    "assets/carte/BAS-EN-011-rally-the-troops.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(5),
+                            std::make_shared<HealEffect>(5)
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<PrepareChampion>()} }
                     });
 
     addNonPermanent(res, 3, "Recruit", 2, Faction::Imperiale,
