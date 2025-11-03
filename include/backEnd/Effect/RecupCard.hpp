@@ -9,10 +9,10 @@ class RecupCard : public IEffect {
 private:
     int _count;
     TypeCarte _typecarte;
-    ZoneType _zone;
-
+    ZoneType _source;
+    ZoneType _direction;
 public:
-    RecupCard(int count=0,TypeCarte typecarte=TypeCarte::Tous, ZoneType zone=ZoneType::Main);
+    RecupCard(int count=0,TypeCarte type=TypeCarte::Tous, ZoneType source=ZoneType::Main, ZoneType direction=ZoneType::Main);
     ~RecupCard();
     void applyEffect(Joueur *joueur) override;
 

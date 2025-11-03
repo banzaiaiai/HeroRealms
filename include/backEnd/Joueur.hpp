@@ -37,6 +37,8 @@ private:
     int _or;
     int _degat;
     int _compteurDefausse=0;
+
+    bool _godMode;
     
     std::string _nom;
     Partie* _partie;  // Non-owning pointer vers la partie
@@ -87,6 +89,9 @@ public:
     ZoneType getZoneRecup() const {
         return _zoneRecup;
     };
+    bool getGodMode() const {
+        return _godMode;
+    }
     
     // Accès en lecture seule aux zones (retourne des pointeurs non-owning)
     std::vector<const Carte*> getPioche() const;
@@ -123,6 +128,9 @@ public:
     };
     void setZoneRecup(ZoneType zone){
         _zoneRecup=zone;
+    };
+    void setGodMode( bool godMode){
+        _godMode=godMode;
     };
     
     // === GESTION DES CARTES ===
@@ -197,10 +205,10 @@ public:
     void recevoirDegat(int montant);
 
     
-
+    std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type);
 private:
     // Méthodes helper
-    std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type);
+    
     const std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type) const;
     
     /**

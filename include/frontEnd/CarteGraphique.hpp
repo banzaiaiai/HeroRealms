@@ -28,6 +28,11 @@ public:
     sf::FloatRect getGlobalBounds() const {
         return _sprite.getGlobalBounds();
     }
+
+    // getteur
+    bool getIsSelected(){
+        return  _isSelected;
+    }
 };
 
 #endif

@@ -1,4 +1,12 @@
 #include "backEnd/InitCarte.hpp"
+#include "backEnd/Carte/Carte.hpp"
+#include "backEnd/Effect/DrawCard.hpp"
+#include "backEnd/Effect/GainGold.hpp"
+#include "backEnd/Effect/NextCardRecup.hpp"
+#include "backEnd/Effect/RecupCard.hpp"
+#include "backEnd/Joueur.hpp"
+#include "frontEnd/ZoneCarte.hpp"
+#include <memory>
 
 
 // Fonction utilitaire privée
@@ -204,6 +212,8 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<GainGold>(1)} }
                     });
 
+    
+
     addNonPermanent(res, 1, "Word of Power", 6, Faction::Imperiale,
                     "assets/carte/BAS-EN-020-word-of-power.jpg",
                     NonPermanent::Type::Action,
@@ -302,6 +312,21 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         } }
                     });
 
+    addChampion(    res, 1, "Rasmus, the Smuggler", 4, Faction::Guilde,
+                    "assets/carte/BAS-EN-037-rasmus-the-smuggler.jpg",
+                    5, false,
+                    {
+                        {EventType::OnEngage, {std::make_shared<GainGold>(2)} },
+                        {EventType::OnAllyEnter, {std::make_shared<NextCardRecup>(1,TypeCarte::Tous,ZoneType::Pioche)}},
+                    });
+    addNonPermanent(res, 1, "Smash and Grab", 6, Faction::Guilde,
+                    "assets/carte/BAS-EN-038-smash-and-grab.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay,{std::make_shared<DamageEffect>(6),
+                        std::make_shared<RecupCard>(1,TypeCarte::Tous,ZoneType::Defausse,ZoneType::Pioche)} }
+                    });
+    
     addNonPermanent(res, 1, "Dark Energy", 4, Faction::Necros,
                     "assets/carte/BAS-EN-043-dark-energy.jpg",
                     NonPermanent::Type::Action,
@@ -376,6 +401,13 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<DiscardCard>(1)} }
                     });
 
+    addChampion(    res, 1, "Varrick, the Necromancer", 5, Faction::Necros,
+                    "assets/carte/BAS-EN-060-varrick-the-necromancer.jpg",
+                    3, false,
+                    {
+                        {EventType::OnEngage, {std::make_shared<RecupCard>(1,TypeCarte::Champion,ZoneType::Defausse,ZoneType::Pioche)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
+                    });
     addChampion(    res, 1, "Cron, the Berserker", 6, Faction::Sauvage,
                     "assets/carte/BAS-EN-062-cron-the-berserker.jpg",
                     6, false,

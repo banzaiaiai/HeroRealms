@@ -85,6 +85,10 @@ public:
     std::vector<const Carte*> getRiviere() const;
     
     /**
+     * Retourne les cartes du marcher (lecture seule)
+     */
+    std::vector<const Carte*> getMarcher() const;
+    /**
      * Ajoute une carte à la rivière
      */
     void ajouterCarteRiviere(std::unique_ptr<Carte> carte);
@@ -99,7 +103,11 @@ public:
      * Transfère la propriété à l'appelant.
      */
     std::unique_ptr<Carte> retirerGemmeFeu(int carteId);
-    
+    /**
+     * Retire une carte de la pile du marcher par ID.
+     * Transfère la propriété à l'appelant.
+     */
+    std::unique_ptr<Carte> retirerCarteMarcher(int carteId);
     /**
      * Remplit la rivière jusqu'à avoir N cartes
      */
