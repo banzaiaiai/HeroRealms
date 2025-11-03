@@ -501,7 +501,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     });
     addChampion(    res, 1, "Grak,Storm Giant",8 , Faction::Sauvage,
                     "assets/carte/BAS-EN-069-grak-storm-giant.jpg",
-                    3, true,
+                    7, true,
                     {
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(6),
                         std::make_shared<DrawDiscard>()} },
