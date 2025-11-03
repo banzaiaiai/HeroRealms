@@ -12,6 +12,7 @@
 #include "backEnd/Effect/DamageEffect.hpp"
 #include "backEnd/Effect/HealEffect.hpp"
 #include "backEnd/Effect/GainGold.hpp"
+#include "backEnd/Effect/DrawCard.hpp"
 
 class InitCarte {
 public:

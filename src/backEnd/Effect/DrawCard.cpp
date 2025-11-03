@@ -3,6 +3,6 @@
 
 DrawCard::DrawCard(int count) : _count(count) {}
 
-void DrawCard::applyEffect(Joueur *joeur){
-
+void DrawCard::applyEffect(Joueur *joueur){
+    joueur->piocher(_count);
 }

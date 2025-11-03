@@ -99,11 +99,15 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
     std::vector<std::unique_ptr<Carte>> res;
 
     
-    addChampion(    res, 2, "Man at Arms", 3, Faction::Imperiale,
-                    "assets/carte/HRBAS_Card_ManAtArms.jpg",
-                    4, true,
+    addChampion(    res, 1, "Arkus, Imperial Dragon", 8, Faction::Imperiale,
+                    "assets/carte/BAS-EN-001-arkus-imperial-dragon.jpg",
+                    6, true,
                     {
-                        {EventType::OnEngage, {std::make_shared<DamageEffect>(2, OccurenceType::Guard, 1)} }
+                        {EventType::OnEngage, {
+                                std::make_shared<DamageEffect>(5),
+                                std::make_shared<DrawCard>(1)
+                        }},
+                        {EventType::OnAllyEnter, {std::make_shared<HealEffect>(6)} }
                     });
 
     addNonPermanent(res, 1, "Close Rank", 3, Faction::Imperiale,
@@ -113,7 +117,48 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnPlay,   {std::make_shared<DamageEffect>(5, OccurenceType::Champion, 2)} },
                         {EventType::OnAllyEnter, {std::make_shared<HealEffect>(6)} }
                     });
+
+    addNonPermanent(res, 1, "Command", 5, Faction::Imperiale,
+                    "assets/carte/BAS-EN-003-command.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<GainGold>(2),
+                            std::make_shared<DamageEffect>(3),
+                            std::make_shared<HealEffect>(4),
+                            std::make_shared<DrawCard>(1)
+                        } },
+                    });
+
+    addChampion(    res, 1, "Cristov, the Just", 5, Faction::Imperiale,
+                    "assets/carte/BAS-EN-006-cristov-the-just.jpg",
+                    5, true,
+                    {
+                        {EventType::OnEngage, {
+                                std::make_shared<DamageEffect>(2),
+                                std::make_shared<HealEffect>(3)
+                        }},
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
+                    });
     
+    addChampion(    res, 1, "Kraka, High Priest", 6, Faction::Imperiale,
+                    "assets/carte/BAS-EN-007-kraka-high-priest.jpg",
+                    6, false,
+                    {
+                        {EventType::OnEngage, {
+                                std::make_shared<HealEffect>(2),
+                                std::make_shared<DrawCard>(1)
+                        }},
+                        {EventType::OnAllyEnter, {std::make_shared<HealEffect>(0, OccurenceType::Champion, 2)} }
+                    });
+    
+    addChampion(    res, 2, "Man at Arms", 3, Faction::Imperiale,
+                    "assets/carte/HRBAS_Card_ManAtArms.jpg",
+                    4, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(2, OccurenceType::Guard, 1)} }
+                    });
+
     addChampion(    res, 1, "Master Weyan", 4, Faction::Imperiale,
                     "assets/carte/BAS-EN-010-master-weyan.jpg",
                     4, true,
@@ -132,7 +177,16 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<GainGold>(1)} }
                     });
 
-    addNonPermanent(res, 3, "taxation", 1, Faction::Imperiale,
+    addNonPermanent(res, 1, "Word of Power", 6, Faction::Imperiale,
+                    "assets/carte/BAS-EN-020-word-of-power.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {std::make_shared<DrawCard>(2)} },
+                        {EventType::OnAllyEnter, {std::make_shared<HealEffect>(5)} },
+                        {EventType::OnDelete, {std::make_shared<DamageEffect>(5)} }
+                    });
+
+    addNonPermanent(res, 3, "Taxation", 1, Faction::Imperiale,
                     "assets/carte/BAS-EN-017-taxation.jpg",
                     NonPermanent::Type::Action,
                     {
@@ -164,12 +218,28 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
                     });
 
+    addChampion(    res, 1, "Parov, the Enforcer", 5, Faction::Guilde,
+                    "assets/carte/BAS-EN-032-parov-the-enforcer.jpg",
+                    5, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(3)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(4)} }
+                    });
+
     addNonPermanent(res, 3, "Profit", 1, Faction::Guilde,
                     "assets/carte/BAS-EN-033-profit.jpg",
                     NonPermanent::Type::Action,
                     {
                         {EventType::OnPlay, {std::make_shared<GainGold>(2)} },
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
+                    });
+
+    addNonPermanent(res, 1, "Dark Energy", 4, Faction::Necros,
+                    "assets/carte/BAS-EN-043-dark-energy.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {std::make_shared<DamageEffect>(7)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
                     });
 
     addChampion(    res, 2, "Death Cultist", 2, Faction::Necros,
@@ -187,12 +257,28 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnDelete, {std::make_shared<DamageEffect>(3)} }
                     });
 
+    addChampion(    res, 1, "Cron, the Berserker", 6, Faction::Sauvage,
+                    "assets/carte/BAS-EN-062-cron-the-berserker.jpg",
+                    6, false,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(5)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
+                    });
+
     addChampion(    res, 1, "Dire Wolf", 5, Faction::Sauvage,
                     "assets/carte/BAS-EN-063-dire-wolf.jpg",
                     5, true,
                     {
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(3)} },
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
+                    });
+
+    addChampion(    res, 2, "Orc Grunt", 3, Faction::Sauvage,
+                    "assets/carte/BAS-EN-071-orc-grunt.jpg",
+                    3, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(2)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
                     });
 
     addChampion(    res, 2, "Wolf Shaman", 2, Faction::Sauvage,
