@@ -33,6 +33,7 @@ void SacrificeCard::applyEffect(Joueur *joueur) {
             continue; 
         }
         joueur->getPartie()->getDefausseCommune().push_back(std::move(carteJouee));
+        joueur->ajouterDegat(_damageForSacrifice);
         break;
     }
 }

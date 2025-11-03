@@ -16,6 +16,7 @@
 #include "backEnd/Effect/DiscardCard.hpp"
 #include "backEnd/Effect/StunCard.hpp"
 #include "backEnd/Effect/PrepareChampion.hpp"
+#include "backEnd/Effect/SacrificeCard.hpp"
 
 class InitCarte {
 public:

@@ -75,6 +75,10 @@ std::vector<std::unique_ptr<Carte>> InitCarte::deckDeBase() {
                     NonPermanent::Type::Object,
                     {{ EventType::OnPlay, {std::make_shared<DamageEffect>(2)} }});
 
+    auto rd = std::random_device {}; 
+    auto rng = std::default_random_engine { rd() };
+    std::shuffle(std::begin(res), std::end(res), rng);
+
     return res;
 }
 
@@ -306,6 +310,17 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
                     });
 
+    addNonPermanent(res, 1, "Dark Reward", 5, Faction::Necros,
+                    "assets/carte/BAS-EN-044-dark-reward.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<GainGold>(3),
+                            std::make_shared<SacrificeCard>()
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(6)} }
+                    });
+
     addChampion(    res, 2, "Death Cultist", 2, Faction::Necros,
                     "assets/carte/BAS-EN-045-death-cultist.jpg",
                     3, true,
@@ -415,8 +430,8 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
 
 
 
-
-    auto rng = std::default_random_engine {};
+    auto rd = std::random_device {}; 
+    auto rng = std::default_random_engine { rd() };
     std::shuffle(std::begin(res), std::end(res), rng);
 
     return res;
