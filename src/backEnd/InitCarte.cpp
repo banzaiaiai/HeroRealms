@@ -370,7 +370,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     {
                         {EventType::OnEngage, {
                                 std::make_shared<OrEffect>(
-                                    std::string("tithe-priest"),
+                                    std::string("street-thug"),
                                     std::vector<std::shared_ptr<IEffect>>{
                                         std::make_shared<GainGold>(1),
                                         std::make_shared<DamageEffect>(2)
@@ -385,7 +385,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     {
                         {EventType::OnEngage, {
                                 std::make_shared<OrEffect>(
-                                    std::string("tithe-priest"),
+                                    std::string("cult-priest"),
                                     std::vector<std::shared_ptr<IEffect>>{
                                         std::make_shared<GainGold>(1),
                                         std::make_shared<DamageEffect>(1)
