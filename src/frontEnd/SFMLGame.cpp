@@ -434,7 +434,7 @@ void SFMLGame::render() {
     _buttonpioche2.draw(_window);
     _buttondeffausse.draw(_window);
     _buttonToutJouer.draw(_window);
-   
+
 
     // Dessiner les cartes graphiques
     for (auto& [carteId, carteGraphique] : _cartesGraphiques) {

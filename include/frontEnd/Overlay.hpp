@@ -15,6 +15,7 @@ private:
     ZoneCarte _zoneCarte;
     std::vector<const Carte*> _listCarte;
     std::vector<CarteGraphique> _listCarteGraphique;
+    std::unique_ptr<CarteGraphique> _carteAgrandi;
 
     void render();
 

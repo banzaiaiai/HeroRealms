@@ -59,6 +59,22 @@ const int Overlay::openOverlay(std::vector<const Carte*> listCarte,
                     _window.close();
                     break;
 
+                case sf::Event::MouseButtonPressed:
+                    if (event.mouseButton.button == sf::Mouse::Right) {
+                        sf::Vector2f mousePos = _window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                        // Chercher la carte graphique cliquée (par ID)
+                        for (auto& carteGraphique : _listCarteGraphique) {
+                            if (carteGraphique.contains(mousePos)) {
+                                // Crée une version agrandie de la carte
+                                const Carte* carte = carteGraphique.getCarteLogique();
+                                _carteAgrandi = std::make_unique<CarteGraphique>(
+                                    330.f, 80.f, 320.f, 450.f, carte);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+
                 case sf::Event::MouseButtonReleased:
                     if (event.mouseButton.button == sf::Mouse::Left) {
                         sf::Vector2f mousePos = _window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
@@ -72,6 +88,9 @@ const int Overlay::openOverlay(std::vector<const Carte*> listCarte,
                                 return carteGraphique.getCarteLogique()->getId();
                             }
                         }
+                    }
+                    else if (event.mouseButton.button == sf::Mouse::Right) {
+                        _carteAgrandi.reset();
                     }
                     break;
 
@@ -92,6 +111,9 @@ void Overlay::render() {
     _zoneCarte.dessiner(_window);
     for (auto& carte : _listCarteGraphique) {
         carte.draw(_window);
+    }
+    if (_carteAgrandi) {
+        _carteAgrandi->draw(_window);
     }
 }
 
