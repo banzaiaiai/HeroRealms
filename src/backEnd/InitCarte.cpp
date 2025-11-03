@@ -371,7 +371,6 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     "assets/carte/BAS-EN-045-death-cultist.jpg",
                     3, true,
                     {
-
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(2)} },
                     });
 
@@ -384,6 +383,14 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                             std::make_shared<SacrificeCard>()
                         } },
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(2)} }
+                    });
+
+    addChampion(    res, 1, "Rayla, Endweaver", 4, Faction::Necros,
+                    "assets/carte/HRBAS_Card_RaylaEndweaver.jpg",
+                    4, false,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(3)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
                     });
     
     addNonPermanent(res, 3, "Influence", 2, Faction::Necros,
@@ -411,6 +418,40 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnPlay, {
                             std::make_shared<DamageEffect>(8),
                             std::make_shared<SacrificeCard>(),
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
+                    });
+
+    addChampion(    res, 1, "Lys, the Unseen", 6, Faction::Necros,
+                    "assets/carte/BAS-EN-056-lys-the-unseen.jpg",
+                    5, true,
+                    {
+                        {EventType::OnEngage, {
+                            std::make_shared<SacrificeCard>(2),
+                            std::make_shared<DamageEffect>(2)
+
+                        } }
+                    });
+
+    addNonPermanent(res, 2, "The Rot", 3, Faction::Necros,
+                    "assets/carte/BAS-EN-057-the-rot.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(4),
+                            std::make_shared<SacrificeCard>(),
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(3)} }
+                    });
+
+    addChampion(    res, 1, "Tyrannor, the Devourer", 8, Faction::Necros,
+                    "assets/carte/BAS-EN-059-tyrannor-the-devourer.jpg",
+                    6, true,
+                    {
+                        {EventType::OnEngage, {
+                            std::make_shared<DamageEffect>(4),
+                            std::make_shared<SacrificeCard>(),
+                            std::make_shared<SacrificeCard>()
                         } },
                         {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
                     });
