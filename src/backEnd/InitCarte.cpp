@@ -1,6 +1,7 @@
 #include "backEnd/InitCarte.hpp"
 #include "backEnd/Carte/Carte.hpp"
 #include "backEnd/Effect/DrawCard.hpp"
+#include "backEnd/Effect/DrawDiscard.hpp"
 #include "backEnd/Effect/GainGold.hpp"
 #include "backEnd/Effect/IEffect.hpp"
 #include "backEnd/Effect/NextCardRecup.hpp"
@@ -498,7 +499,15 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         } },
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(3)} }
                     });
-
+    addChampion(    res, 1, "Grak,Storm Giant",8 , Faction::Sauvage,
+                    "assets/carte/BAS-EN-069-grak-storm-giant.jpg",
+                    3, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(6),
+                        std::make_shared<DrawDiscard>()} },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawDiscard>()} }
+                    });
+                    
     addNonPermanent(res, 1, "Nature's Bounty", 4, Faction::Sauvage,
                     "assets/carte/BAS-EN-064-elven-curse.jpg",
                     NonPermanent::Type::Action,

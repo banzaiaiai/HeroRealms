@@ -2,6 +2,7 @@
 #include "backEnd/Carte/Carte.hpp"
 #include "backEnd/Joueur.hpp"
 #include "frontEnd/Overlay.hpp"
+#include <memory>
 #include <vector>
 
 DrawDiscard::DrawDiscard(){
@@ -9,15 +10,12 @@ DrawDiscard::DrawDiscard(){
 };
 
 void DrawDiscard::applyEffect(Joueur *joeur){
-    Carte carte("teste",0,Faction::Neutre,"assets/alternative_carte/do-nothing.jpg");
-    Carte carte1("teste",0,Faction::Neutre,"assets/alternative_carte/draw-and-discard.jpg");
-
-    std::vector<Carte> vec;
-    vec.push_back(carte);
-    vec.push_back(carte1);
+    std::vector<std::unique_ptr<Carte>> vec;
+    vec.push_back(std::make_unique<Carte>("teste",0,Faction::Neutre,"assets/alternative_carte/do-nothing.jpg"));
+    vec.push_back(std::make_unique<Carte>("teste",0,Faction::Neutre,"assets/alternative_carte/draw-and-discard.jpg"));
     Overlay overlay;
     int carteId = overlay.openOverlay("draw & discard",vec);
-    if(carteId!=carte.getId()){
+    if(carteId==vec[1]->getId()){
         joeur->piocher(1);
         joeur->defausserCarte(1);
     }
