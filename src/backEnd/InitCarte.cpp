@@ -327,6 +327,17 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     {
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(2)} },
                     });
+
+    addNonPermanent(res, 3, "Death Touch", 1, Faction::Necros,
+                    "assets/carte/BAS-EN-047-death-touch.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(2),
+                            std::make_shared<SacrificeCard>()
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(2)} }
+                    });
     
     addNonPermanent(res, 3, "Influence", 2, Faction::Necros,
                     "assets/carte/BAS-EN-051-influence.jpg",
@@ -334,6 +345,27 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     {
                         {EventType::OnPlay, {std::make_shared<GainGold>(3)} },
                         {EventType::OnDelete, {std::make_shared<DamageEffect>(3)} }
+                    });
+
+    addChampion(    res, 1, "Krythos, Master Vampire", 7, Faction::Necros,
+                    "assets/carte/BAS-EN-054-krythos-master-vampire.jpg",
+                    6, false,
+                    {
+                        {EventType::OnEngage, {
+                            std::make_shared<DamageEffect>(3),
+                            std::make_shared<SacrificeCard>(3)
+                        } },
+                    });
+
+    addNonPermanent(res, 1, "Life Drain", 6, Faction::Necros,
+                    "assets/carte/BAS-EN-055-life-drain.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(8),
+                            std::make_shared<SacrificeCard>(),
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
                     });
 
     addChampion(    res, 1, "Broelyn, Loreweaver", 4, Faction::Sauvage,
