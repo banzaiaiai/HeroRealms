@@ -19,10 +19,10 @@ void StunCard::applyEffect(Joueur *joeur){
             std::cerr << "Aucune carte sélectionnée pour le stun." << std::endl;
             continue; // Sortir si aucune carte n'est sélectionnée 
         }
-        Carte* carteJouee = joeur->getCarteById(carteId);
+        Carte* carteJouee = autreJoueur->getCarteById(carteId);
         if (!carteJouee) {
             std::cerr << "Probléme de carte dans le stun: id introuver"<<std::endl;
-            continue;
+            break;
         }
         Champion* ch = dynamic_cast<Champion*>(carteJouee);
         if (!ch) {
