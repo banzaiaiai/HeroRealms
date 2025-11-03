@@ -3,13 +3,20 @@
 #include "backEnd/Joueur.hpp"
 #include "frontEnd/Overlay.hpp"
 #include "backEnd/Partie.hpp"
+#include <iostream>
+#include <ostream>
 
 StunCard::~StunCard() {}
 void StunCard::applyEffect(Joueur *joeur){
     Overlay overlay;
     while (true) {
+        
         Partie *partie = joeur->getPartie();
         Joueur* autreJoueur = partie->getAutreJoueurActuelle();
+        if(!autreJoueur->possedeChampion()){
+            std::cout<<"pas de champion"<<std::endl;
+            break;
+        }
         int carteId = overlay.openOverlay("SelectChampion", autreJoueur->getPlateau());
         if (carteId == -1) {
             std::cerr << "Aucune carte sélectionnée pour le stun." << std::endl;
@@ -27,6 +34,7 @@ void StunCard::applyEffect(Joueur *joeur){
         }
         ch->setActiver(true);
         std::cout << "Champion stun avec succès" << std::endl;
+        
         break;
     }
 }

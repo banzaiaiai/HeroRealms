@@ -370,6 +370,14 @@ bool Joueur::possedeGardien() const {
     }
     return false;
 }
+bool Joueur::possedeChampion() const {
+    for (const auto& carte : _plateau) {
+        if (carte && carte->estChampion()) {
+            return true;
+        }
+    }
+    return false;
+}
 
 void Joueur::recevoirDegat(int montant) {
     _pv -= montant;
