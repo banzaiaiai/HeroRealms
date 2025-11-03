@@ -245,6 +245,7 @@ void SFMLGame::processEvents() {
     }
 }
 void SFMLGame::finDeTour() {
+    _partie->getJoueurActuelle()->setNextAchat(false);
     _partie->getJoueurActuelle()->resetAll();
     _partie->resetetatFaction();
     _partie->getJoueurActuelle()->defausserCarte();
@@ -486,10 +487,12 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
                 if(joueur->getTypecarteRecup()==TypeCarte::Tous)
                 {
                     joueur->ajouterCarte(std::move(carte), joueur->getZoneRecup());
+                    joueur->setNextAchat(false);
                 }
                 else if (!carte->estChampion())
                 {
                     joueur->ajouterCarte(std::move(carte), joueur->getZoneRecup());
+                    joueur->setNextAchat(false);
                 }
             }
             joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
@@ -513,10 +516,12 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
                 if(joueur->getTypecarteRecup()==TypeCarte::Tous)
                 {
                     joueur->ajouterCarte(std::move(carte), joueur->getZoneRecup());
+                    joueur->setNextAchat(false);
                 }
                 else if (!carte->estChampion())
                 {
                     joueur->ajouterCarte(std::move(carte), joueur->getZoneRecup());
+                    joueur->setNextAchat(false);
                 }
             }
             joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
