@@ -141,6 +141,16 @@ std::vector<const Carte*> Partie::getRiviere() const {
     
     return result;
 }
+std::vector<const Carte*> Partie::getMarcher() const {
+    std::vector<const Carte*> result;
+    result.reserve(_marcher.size());
+    
+    for (const auto& carte : _marcher) {
+        result.push_back(carte.get());
+    }
+    
+    return result;
+}
 std::vector<const Carte*> Partie::getGemmeFeu() const {
     std::vector<const Carte*> result;
     result.reserve(_gemmeFeu.size());
@@ -193,6 +203,22 @@ std::unique_ptr<Carte> Partie::retirerCarteRiviere(int carteId) {
         return carte;
     }
     
+    std::cerr << "Carte " << carteId << " non trouvée dans la rivière" << std::endl;
+    return nullptr;
+}
+
+std::unique_ptr<Carte> Partie::retirerCarteMarcher(int carteId) {
+    auto it = std::find_if(_marcher.begin(), _marcher.end(),
+        [carteId](const std::unique_ptr<Carte>& carte) {
+            return carte && carte->getId() == carteId;
+        });
+    
+    if (it != _marcher.end()) {
+        std::unique_ptr<Carte> carte = std::move(*it);
+        _marcher.erase(it);
+        std::cout << "Carte " << carteId << " retirée de la rivière" << std::endl;
+        return carte;
+    }
     std::cerr << "Carte " << carteId << " non trouvée dans la rivière" << std::endl;
     return nullptr;
 }

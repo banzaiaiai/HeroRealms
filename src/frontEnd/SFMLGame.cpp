@@ -2,9 +2,13 @@
 #include "backEnd/Joueur.hpp"
 #include "backEnd/Partie.hpp"
 #include "frontEnd/ZoneCarte.hpp"
+#include "frontEnd/PasswordOverlay.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <iostream>
 #include <set>
 #include <string>
@@ -27,6 +31,9 @@ SFMLGame::SFMLGame(Partie* partie)
     _buttonpioche1("pioche1", sf::Vector2f(1060, 640), sf::Vector2f(80, 120)),
     _buttonpioche2("pioche2", sf::Vector2f(1060, 20), sf::Vector2f(80, 120)),
     _buttondeffausse("deffausse", sf::Vector2f(1060, 335), sf::Vector2f(80, 120)),
+
+
+    _buttonMarcher("Marcher", sf::Vector2f(400,330), sf::Vector2f(500,145)),
 
     _rectangeHaut(sf::Vector2f(140.f, 160.f)),
     _rectangeBas(sf::Vector2f(140.f, 160.f)),
@@ -154,10 +161,11 @@ void SFMLGame::processEvents() {
                     std::cout << "Fin du tour cliquée" << std::endl;
                     finDeTour();
                 }
+                
                 if(_buttonAtacker.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "Attaque cliquée" << std::endl;
                     if(_partie->getJoueurActuelle()->getDegat()>0 && _partie->getAutreJoueurActuelle()->getPlateau().size()>=0){
-                        const Carte jouerCible = Carte("Joueur",0,Faction::Neutre,"assets/alternative_carte/ennemi.jpg");
+                        const Carte jouerCible = Carte("Joueur",0,Faction::Neutre,"assets/alternative_carte/none.jpg");
                         std::vector<const Carte*> cible;
                         cible.push_back(&jouerCible);
                         int id=jouerCible.getId();
@@ -193,23 +201,22 @@ void SFMLGame::processEvents() {
                 else if (_buttonpioche1.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "Pioche1 cliquée" << std::endl;
                     _overlay.openOverlay("pioche",_partie->getJoueurParId(0)->getPioche());
-                    if (_partie->getAutreJoueurParId(0)) {
+                    /*if (_partie->getAutreJoueurParId(0)) {
                         _partie->getAutreJoueurParId(0)->melangerPioche();
-                    }
+                    }*/
                 }
                 else if (_buttonpioche2.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "Pioche2 cliquée" << std::endl;
                     _overlay.openOverlay("pioche",_partie->getJoueurParId(1)->getPioche());
                     // Shuffle the actual player's internal pioche instead of passing a temporary
-                    if (_partie->getAutreJoueurParId(1)) {
+                    /* if (_partie->getAutreJoueurParId(1)) {
                         _partie->getAutreJoueurParId(1)->melangerPioche();
-                    }
+                    }*/
                 }
                 else if (_buttondeffausse.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "Defausse generale cliquée" << std::endl;
                     _overlay.openOverlay("defausse general",_partie->getDefausseCommune());
                 }
-
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     handleMouseClick(event.mouseButton.x, event.mouseButton.y);
                 }
@@ -227,6 +234,7 @@ void SFMLGame::processEvents() {
                         }
                     }
                 }
+                
                 break;
                 
             case sf::Event::MouseButtonReleased:
@@ -238,10 +246,29 @@ void SFMLGame::processEvents() {
                 }
 
                 break;
-                
+
+            case sf::Event::KeyPressed:     
+                if(event.key.code == sf::Keyboard::M){
+                    PasswordOverlay pwdWin;
+                    pwdWin.setPassword("42"); // Définissez votre mot de passe
+        
+                    if(pwdWin.openAndCheck()) {
+                        // Mot de passe correct, exécuter les instructions
+                        if(_partie->getJoueurActuelle()->getGodMode()){
+                            _partie->getJoueurActuelle()->setGodMode(false);
+                        }
+                        else {
+                            _partie->getJoueurActuelle()->setGodMode(true);
+                            _partie->getJoueurActuelle()->setPv(1);
+                            _partie->getAutreJoueurActuelle()->setPv(1);
+                        }
+                    }
+                }
+                break;
             default:
                 break;
         }
+        
     }
 }
 void SFMLGame::finDeTour() {
@@ -254,7 +281,7 @@ void SFMLGame::finDeTour() {
 
 void SFMLGame::handleMouseClick(int mouseX, int mouseY) {
     sf::Vector2f mousePos = _window.mapPixelToCoords(sf::Vector2i(mouseX, mouseY));
-    
+    bool isSelected=false;
     // Désélectionner toute carte précédente
     if (_carteSelectionnee) {
         _carteSelectionnee->setSelected(false);
@@ -295,10 +322,25 @@ void SFMLGame::handleMouseClick(int mouseX, int mouseY) {
             }
             
             _carteSelectionnee->setSelected(true);
+            isSelected=true;
             break;
         }
     }
+    if(!isSelected && _buttonMarcher.isMouseOver(_window)){
+        int carteId = _overlay.openOverlay("marcher",_partie->getMarcher());
+        for (auto carte: _partie->getMarcher()){
+            if (carte != _partie->getMarcher().back()) {
+                if(carte->getId()==carteId && 
+                _partie->getJoueurActuelle()->getOr()>=carte->getCoupOr() && 
+                _partie->getJoueurActuelle()->getGodMode()){
+                    auto carte = _partie->retirerCarteMarcher(carteId);
+                    _partie->getJoueurActuelle()->ajouterCarte(std::move(carte),ZoneType::Main);
+                }
+            }
+        }               
+    }
 }
+
 
 void SFMLGame::handleMouseRelease(int mouseX, int mouseY) {
     if (!_carteSelectionnee || !_zoneSource || _carteSelectionneeId == -1) 
@@ -366,11 +408,14 @@ void SFMLGame::update() {
     _buttonpioche1.update(_window);
     _buttonpioche2.update(_window);
     _buttondeffausse.update(_window);
+    _buttonMarcher.update(_window);
 }
 
 void SFMLGame::render() {
     _window.clear(sf::Color(0, 100, 0));
     
+    _buttonMarcher.draw(_window);
+
     // Dessiner les zones
     _zones.dessinerZones(_window);
 
@@ -379,6 +424,7 @@ void SFMLGame::render() {
     _buttonpioche1.draw(_window);
     _buttonpioche2.draw(_window);
     _buttondeffausse.draw(_window);
+   
 
     // Dessiner les cartes graphiques
     for (auto& [carteId, carteGraphique] : _cartesGraphiques) {
@@ -395,6 +441,7 @@ void SFMLGame::render() {
 
     _buttonAtacker.draw(_window);
     _buttonFinTour.draw(_window);
+
 
     _window.draw(_backCarteHaut);
     _window.draw(_backCarteBas);
@@ -483,6 +530,9 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
         // Récupérer la carte depuis la rivière (Partie)
         auto carte = _partie->retirerCarteRiviere(carteId);
         if (carte) {
+            if (joueur->getGodMode()){
+                joueur->ajouterCarte(std::move(carte), ZoneType::Main);
+            }
             if(joueur->getNextAchat()){
                 if(joueur->getTypecarteRecup()==TypeCarte::Tous)
                 {
@@ -512,6 +562,9 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
     else if (sourceNom == "marche" && cibleNom.find("defausse_joueur") != std::string::npos) {
         auto carte = _partie->retirerCarteRiviere(carteId);
         if (carte) {
+            if(joueur->getGodMode()){
+                joueur->ajouterCarte(std::move(carte), ZoneType::Main);
+            }
             if(joueur->getNextAchat()){
                 if(joueur->getTypecarteRecup()==TypeCarte::Tous)
                 {

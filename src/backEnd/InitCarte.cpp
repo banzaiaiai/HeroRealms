@@ -213,7 +213,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     });
 
     addNonPermanent(res, 3, "Bribe", 3, Faction::Guilde, 
-                    "assets/carte/BAS-EN-22-bribe.jpg",
+                    "assets/carte/BAS-EN-022-bribe.jpg",
                      NonPermanent::Type::Action,
                      {
                         {EventType::OnPlay,{std::make_shared<GainGold>(3)}},
@@ -221,7 +221,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                      });
     
     addNonPermanent(res, 1, "Deception", 5, Faction::Guilde, 
-                    "assets/carte/BAS-EN-26-deception.jpg",
+                    "assets/carte/BAS-EN-026-deception.jpg",
                      NonPermanent::Type::Action,
                      {
                         {EventType::OnPlay,{std::make_shared<GainGold>(2),
