@@ -1,6 +1,7 @@
 #ifndef JOUEUR_HPP
 #define JOUEUR_HPP
 
+
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -11,6 +12,11 @@
 class Carte;
 class Partie;
 
+enum class TypeCarte {
+    Champion,
+    Action,
+    Tous
+};
 
 enum class ZoneType {
     Pioche,
@@ -31,6 +37,7 @@ private:
     int _or;
     int _degat;
     int _compteurDefausse=0;
+    
     std::string _nom;
     Partie* _partie;  // Non-owning pointer vers la partie
     
@@ -40,7 +47,13 @@ private:
     std::vector<std::unique_ptr<Carte>> _plateau;
     std::vector<std::unique_ptr<Carte>> _defausse;
 
+    // Pour gérer l'effet RecupCard 
+    bool _nextAchat=false;
+    TypeCarte _typecarteRecup=TypeCarte::Tous;
+    ZoneType _zoneRecup=ZoneType::Main;
+
 public:
+
     // Constructeur
     Joueur(int id, Partie* partie, const std::string& nom);
     
@@ -64,6 +77,15 @@ public:
     Partie* getPartie()  { return _partie; };
     int getCompteurDefausse() const {
         return _compteurDefausse;
+    };
+    bool getNextAchat() const {
+        return _nextAchat;
+    };
+    TypeCarte getTypecarteRecup() const {
+        return _typecarteRecup;
+    };
+    ZoneType getZoneRecup() const {
+        return _zoneRecup;
     };
     
     // Accès en lecture seule aux zones (retourne des pointeurs non-owning)
@@ -89,6 +111,15 @@ public:
     void retirerPV(int heal) { _pv -= heal; }
     void setCompteurDefausse(int count){
         _compteurDefausse=count;
+    };
+    void setNextAchat(bool nextAchat){
+        _nextAchat=nextAchat;
+    };
+    void setTypecarteRecup(TypeCarte typecarte){
+        _typecarteRecup=typecarte;
+    };
+    void setZoneRecup(ZoneType zone){
+        _zoneRecup=zone;
     };
     
     // === GESTION DES CARTES ===

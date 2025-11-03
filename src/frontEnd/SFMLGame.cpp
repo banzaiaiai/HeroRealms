@@ -482,8 +482,19 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
         // Récupérer la carte depuis la rivière (Partie)
         auto carte = _partie->retirerCarteRiviere(carteId);
         if (carte) {
+            if(joueur->getNextAchat()){
+                if(joueur->getTypecarteRecup()==TypeCarte::Tous)
+                {
+                    joueur->ajouterCarte(std::move(carte), joueur->getZoneRecup());
+                }
+                else if (!carte->estChampion())
+                {
+                    joueur->ajouterCarte(std::move(carte), joueur->getZoneRecup());
+                }
+            }
             joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
             std::cout << "Carte achetée depuis le marché" << std::endl;
+            
         }
     }
     // CASE 2b: Fire gem → Main
@@ -498,6 +509,16 @@ void SFMLGame::appliquerDeplacementLogique(int carteId, ZoneCarte* source, ZoneC
     else if (sourceNom == "marche" && cibleNom.find("defausse_joueur") != std::string::npos) {
         auto carte = _partie->retirerCarteRiviere(carteId);
         if (carte) {
+            if(joueur->getNextAchat()){
+                if(joueur->getTypecarteRecup()==TypeCarte::Tous)
+                {
+                    joueur->ajouterCarte(std::move(carte), joueur->getZoneRecup());
+                }
+                else if (!carte->estChampion())
+                {
+                    joueur->ajouterCarte(std::move(carte), joueur->getZoneRecup());
+                }
+            }
             joueur->ajouterCarte(std::move(carte), ZoneType::Defausse);
             std::cout << "Carte acheter depuis le marché" << std::endl;
             
