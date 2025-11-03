@@ -7,9 +7,11 @@
 class NextCardRecup : public IEffect {
 private:
     int _count;
+    TypeCarte _typecarte;
+    ZoneType _zone;
 
 public:
-    NextCardRecup(int count=0);
+    NextCardRecup(int count=0,TypeCarte typecarte=TypeCarte::Tous, ZoneType zone=ZoneType::Main);
     ~NextCardRecup();
     void applyEffect(Joueur *joueur) override;
 

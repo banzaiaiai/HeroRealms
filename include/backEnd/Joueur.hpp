@@ -194,10 +194,10 @@ public:
     void recevoirDegat(int montant);
 
     
-
+    std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type);
 private:
     // Méthodes helper
-    std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type);
+    
     const std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type) const;
     
     /**
