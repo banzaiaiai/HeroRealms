@@ -194,6 +194,8 @@ public:
 
     bool possedeGardien() const;
 
+    bool possedeChampion() const;
+
     // FIn de tour reset
     void resetAll(){
         _degat=0;
