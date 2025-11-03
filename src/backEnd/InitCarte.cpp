@@ -158,7 +158,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                                         std::make_shared<HealEffect>(4)
                                     }
                                 )
-                    }}
+                        }}
                     });
 
     addChampion(    res, 1, "Cristov, the Just", 5, Faction::Imperiale,
@@ -231,7 +231,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                                         std::make_shared<HealEffect>(0, OccurenceType::Champion, 1)
                                     }
                                 )
-                    }}
+                        }}
                     });
 
     addNonPermanent(res, 3, "Taxation", 1, Faction::Imperiale,
@@ -362,6 +362,37 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     {
                         {EventType::OnPlay,{std::make_shared<DamageEffect>(6),
                         std::make_shared<RecupCard>(1,TypeCarte::Tous,ZoneType::Defausse,ZoneType::Pioche)} }
+                    });
+
+    addChampion(    res, 2, "Street Thug", 3, Faction::Guilde,
+                    "assets/carte/BAS-EN-039-street-thug.jpg",
+                    4, false,
+                    {
+                        {EventType::OnEngage, {
+                                std::make_shared<OrEffect>(
+                                    std::string("tithe-priest"),
+                                    std::vector<std::shared_ptr<IEffect>>{
+                                        std::make_shared<GainGold>(1),
+                                        std::make_shared<DamageEffect>(2)
+                                    }
+                                )
+                        }}
+                    });
+
+    addChampion(    res, 2, "Cult Priest", 3, Faction::Necros,
+                    "assets/carte/BAS-EN-041-cult-priest.jpg",
+                    4, false,
+                    {
+                        {EventType::OnEngage, {
+                                std::make_shared<OrEffect>(
+                                    std::string("tithe-priest"),
+                                    std::vector<std::shared_ptr<IEffect>>{
+                                        std::make_shared<GainGold>(1),
+                                        std::make_shared<DamageEffect>(1)
+                                    }
+                                )
+                        }},
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
                     });
     
     addNonPermanent(res, 1, "Dark Energy", 4, Faction::Necros,
@@ -514,12 +545,26 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         } },
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(3)} }
                     });
+
+    addNonPermanent(res, 3, "Elven Gift", 2, Faction::Sauvage,
+                    "assets/carte/BAS-EN-066-elven-gift.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<GainGold>(2),
+                            std::make_shared<DrawDiscard>()
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
+                    });
+
     addChampion(    res, 1, "Grak,Storm Giant",8 , Faction::Sauvage,
                     "assets/carte/BAS-EN-069-grak-storm-giant.jpg",
                     7, true,
                     {
-                        {EventType::OnEngage, {std::make_shared<DamageEffect>(6),
-                        std::make_shared<DrawDiscard>()} },
+                        {EventType::OnEngage, {
+                            std::make_shared<DamageEffect>(6),
+                            std::make_shared<DrawDiscard>()
+                        } },
                         {EventType::OnAllyEnter, {std::make_shared<DrawDiscard>()} }
                     });
                     
@@ -538,6 +583,17 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     {
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(2)} },
                         {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
+                    });
+
+    addNonPermanent(res, 1, "Rampage", 6, Faction::Sauvage,
+                    "assets/carte/BAS-EN-073-rampage.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(6),
+                            std::make_shared<DrawDiscard>(),
+                            std::make_shared<DrawDiscard>()
+                        } }
                     });
 
     addChampion(    res, 1, "Torgen Rocksplitter", 7, Faction::Sauvage,
