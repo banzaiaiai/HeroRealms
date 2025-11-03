@@ -301,14 +301,13 @@ void Joueur::defausserCarte(int carteId, ZoneType source) {
 
 void Joueur::defausserCarte(int count) {
     Overlay overlay;
-    while (count!=0) {
+    for(int i=0;i<count;i++){ 
         int carteId = overlay.openOverlay("DefausserCarte", _main);
         if (carteId == -1) {
             std::cerr << "Aucune carte sélectionnée pour la défausse." << std::endl;
             break; // Sortir si aucune carte n'est sélectionnée
         }
         defausserCarte(carteId, ZoneType::Main);
-        count--;
     }
 }
 

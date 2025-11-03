@@ -2,7 +2,6 @@
 #define CARTE_HPP
 
 #include "backEnd/Joueur.hpp"
-
 #include <string>
 #include <vector>
 #include <map>
@@ -28,6 +27,8 @@ enum class Faction {
     Necros,
     Sauvage
 };
+
+
 
 /**
  * Classe Carte - Pure logique métier
