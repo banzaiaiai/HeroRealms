@@ -25,14 +25,14 @@ SFMLGame::SFMLGame(Partie* partie)
     // UI elements
     _overlay(),
     _buttonAtacker("attaque", sf::Vector2f(40, 345), sf::Vector2f(100, 100)),
-    _buttonFinTour("fin de tour", sf::Vector2f(155, 370), sf::Vector2f(200, 50)),
+    _buttonFinTour("fin de tour", sf::Vector2f(155, 340), sf::Vector2f(200, 50)),
     _buttonDefausse1("defausse1", sf::Vector2f(960, 640), sf::Vector2f(80, 120)),
     _buttonDefausse2("defausse2", sf::Vector2f(960, 20), sf::Vector2f(80, 120)),
     _buttonpioche1("pioche1", sf::Vector2f(1060, 640), sf::Vector2f(80, 120)),
     _buttonpioche2("pioche2", sf::Vector2f(1060, 20), sf::Vector2f(80, 120)),
     _buttondeffausse("deffausse", sf::Vector2f(1060, 335), sf::Vector2f(80, 120)),
 
-    _buttonToutJouer("tout jouer", sf::Vector2f(155,430), sf::Vector2f(200,50)),
+    _buttonToutJouer("tout jouer", sf::Vector2f(155,400), sf::Vector2f(200,50)),
 
     _buttonMarcher("Marcher", sf::Vector2f(400,330), sf::Vector2f(500,145)),
 
