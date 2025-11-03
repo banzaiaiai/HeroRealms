@@ -32,7 +32,29 @@ void SacrificeCard::applyEffect(Joueur *joueur) {
             std::cerr << "Probléme de carte dans l'engagement: id introuvable sur le plateau" << std::endl;
             continue; 
         }
-        joueur->getPartie()->getDefausseCommune().push_back(std::move(carteJouee));
+
+        // Pointeur vers le vecteur qui contient la carte
+        ZoneType source;
+
+        // Vérifie dans la main
+        for (auto carte : joueur->getMain()) {
+            if (carte->getId() == carteJouee->getId()) {
+                source = ZoneType::Main;
+                break;
+            }
+        }
+
+        // Si pas trouvée, on regarde dans la défausse
+        if (source == ZoneType::Main) {
+            for (auto carte : joueur->getDefausse()) {
+                if (carte->getId() == carteJouee->getId()) {
+                    source = ZoneType::Defausse;
+                    break;
+                }
+            }
+        }
+
+        joueur->deplacerCarte(carteJouee->getId(), source, ZoneType::DefausseCommune);
         joueur->ajouterDegat(_damageForSacrifice);
         break;
     }
