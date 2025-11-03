@@ -236,6 +236,14 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(4)} }
                     });
 
+    addNonPermanent(res, 3, "Bribe", 3, Faction::Guilde, 
+                    "assets/carte/BAS-EN-22-bribe.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay,{std::make_shared<GainGold>(3)}},
+                        {EventType::OnAllyEnter,{std::make_shared<NextCardRecup>(1,TypeCarte::Action,ZoneType::Pioche)}},
+                    });
+
     addNonPermanent(res, 1, "Death Threat", 3, Faction::Guilde,
                     "assets/carte/BAS-EN-025-death-threat.jpg",
                     NonPermanent::Type::Action,
@@ -245,6 +253,15 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                             std::make_shared<DrawCard>(1)
                         } },
                         {EventType::OnAllyEnter, {std::make_shared<StunCard>()} }
+                    });
+                    
+    addNonPermanent(res, 1, "Deception", 5, Faction::Guilde, 
+                    "assets/carte/BAS-EN-26-deception.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay,{std::make_shared<GainGold>(2),
+                                                std::make_shared<DrawCard>(1)}},
+                        {EventType::OnAllyEnter,{std::make_shared<NextCardRecup>(1,TypeCarte::Tous,ZoneType::Main)}},
                     });
 
     addNonPermanent(res, 1, "Fire Bomb", 8, Faction::Guilde,
