@@ -13,6 +13,10 @@
 #include "backEnd/Effect/HealEffect.hpp"
 #include "backEnd/Effect/GainGold.hpp"
 #include "backEnd/Effect/DrawCard.hpp"
+#include "backEnd/Effect/DiscardCard.hpp"
+#include "backEnd/Effect/StunCard.hpp"
+#include "backEnd/Effect/PrepareChampion.hpp"
+#include "backEnd/Effect/SacrificeCard.hpp"
 
 class InitCarte {
 public:

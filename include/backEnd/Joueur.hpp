@@ -117,6 +117,9 @@ public:
     void setCompteurDefausse(int count){
         _compteurDefausse=count;
     };
+    void addCompteurDefausse(int count){
+        _compteurDefausse += count;
+    };
     void setNextAchat(bool nextAchat){
         _nextAchat=nextAchat;
     };

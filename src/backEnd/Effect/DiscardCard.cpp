@@ -8,6 +8,6 @@ DiscardCard::DiscardCard(int count) : _count(count)
 }
 void DiscardCard::applyEffect(Joueur *joeur){
     Partie *partie = joeur->getPartie();
-    partie->getAutreJoueurActuelle()->setCompteurDefausse(_count);
+    partie->getAutreJoueurActuelle()->addCompteurDefausse(_count);
 }
 DiscardCard::~DiscardCard() {}

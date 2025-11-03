@@ -86,6 +86,10 @@ std::vector<std::unique_ptr<Carte>> InitCarte::deckDeBase() {
                     NonPermanent::Type::Object,
                     {{ EventType::OnPlay, {std::make_shared<DamageEffect>(2)} }});
 
+    auto rd = std::random_device {}; 
+    auto rng = std::default_random_engine { rd() };
+    std::shuffle(std::begin(res), std::end(res), rng);
+
     return res;
 }
 
@@ -192,6 +196,17 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(3, OccurenceType::Champion, 1)} }
                     });
 
+    addNonPermanent(res, 1, "Rally the Troops", 4, Faction::Imperiale,
+                    "assets/carte/BAS-EN-011-rally-the-troops.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(5),
+                            std::make_shared<HealEffect>(5)
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<PrepareChampion>()} }
+                    });
+
     addNonPermanent(res, 3, "Recruit", 2, Faction::Imperiale,
                     "assets/carte/BAS-EN-012-recruit.jpg",
                     NonPermanent::Type::Action,
@@ -203,7 +218,13 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<GainGold>(1)} }
                     });
 
-    
+    addNonPermanent(res, 3, "Taxation", 1, Faction::Imperiale,
+                    "assets/carte/BAS-EN-017-taxation.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {std::make_shared<GainGold>(2)} },
+                        {EventType::OnAllyEnter, {std::make_shared<HealEffect>(6)} }
+                    });
 
     addNonPermanent(res, 1, "Word of Power", 6, Faction::Imperiale,
                     "assets/carte/BAS-EN-020-word-of-power.jpg",
@@ -214,15 +235,6 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnDelete, {std::make_shared<DamageEffect>(5)} }
                     });
 
-    addNonPermanent(res, 3, "Taxation", 1, Faction::Imperiale,
-                    "assets/carte/BAS-EN-017-taxation.jpg",
-                    NonPermanent::Type::Action,
-                    {
-                        {EventType::OnPlay, {std::make_shared<GainGold>(2)} },
-                        {EventType::OnAllyEnter, {std::make_shared<HealEffect>(6)} }
-                    });
-
-
     addChampion(    res, 1, "Borg, Ogre Mercenary", 6, Faction::Guilde,
                     "assets/carte/BAS-EN-021-borg-ogre-mercenary.jpg",
                     6, true,
@@ -231,21 +243,52 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     });
 
     addNonPermanent(res, 3, "Bribe", 3, Faction::Guilde, 
-                    "assets/carte/BAS-EN-022-bribe.jpg",
-                     NonPermanent::Type::Action,
-                     {
+                    "assets/carte/BAS-EN-22-bribe.jpg",
+                    NonPermanent::Type::Action,
+                    {
                         {EventType::OnPlay,{std::make_shared<GainGold>(3)}},
                         {EventType::OnAllyEnter,{std::make_shared<NextCardRecup>(1,TypeCarte::Action,ZoneType::Pioche)}},
-                     });
-    
+                    });
+
+    addNonPermanent(res, 1, "Death Threat", 3, Faction::Guilde,
+                    "assets/carte/BAS-EN-025-death-threat.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(1),
+                            std::make_shared<DrawCard>(1)
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<StunCard>()} }
+                    });
+                    
     addNonPermanent(res, 1, "Deception", 5, Faction::Guilde, 
-                    "assets/carte/BAS-EN-026-deception.jpg",
-                     NonPermanent::Type::Action,
-                     {
+                    "assets/carte/BAS-EN-26-deception.jpg",
+                    NonPermanent::Type::Action,
+                    {
                         {EventType::OnPlay,{std::make_shared<GainGold>(2),
                                                 std::make_shared<DrawCard>(1)}},
                         {EventType::OnAllyEnter,{std::make_shared<NextCardRecup>(1,TypeCarte::Tous,ZoneType::Main)}},
-                     });
+                    });
+
+    addNonPermanent(res, 1, "Fire Bomb", 8, Faction::Guilde,
+                    "assets/carte/BAS-EN-027-fire-bomb.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(8),
+                            std::make_shared<StunCard>(),
+                            std::make_shared<DrawCard>(1)
+                        } },
+                        {EventType::OnDelete, {std::make_shared<DamageEffect>(5)} }
+                    });
+
+    addNonPermanent(res, 1, "Hit Job", 4, Faction::Guilde,
+                    "assets/carte/BAS-EN-028-hit-job.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {std::make_shared<DamageEffect>(7)} },
+                        {EventType::OnAllyEnter, {std::make_shared<StunCard>()} }
+                    });
 
     addNonPermanent(res, 2, "Intimidation", 2, Faction::Guilde,
                     "assets/carte/BAS-EN-029-intimidation.jpg",
@@ -279,6 +322,16 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
                     });
 
+    addChampion(    res, 1, "Rake, Master Assassin", 7, Faction::Guilde,
+                    "assets/carte/BAS-EN-036-rake-master-assassin.jpg",
+                    7, false,
+                    {
+                        {EventType::OnEngage, {
+                            std::make_shared<DamageEffect>(4),
+                            std::make_shared<StunCard>()
+                        } }
+                    });
+
     addChampion(    res, 1, "Rasmus, the Smuggler", 4, Faction::Guilde,
                     "assets/carte/BAS-EN-037-rasmus-the-smuggler.jpg",
                     5, false,
@@ -286,6 +339,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnEngage, {std::make_shared<GainGold>(2)} },
                         {EventType::OnAllyEnter, {std::make_shared<NextCardRecup>(1,TypeCarte::Tous,ZoneType::Pioche)}},
                     });
+
     addNonPermanent(res, 1, "Smash and Grab", 6, Faction::Guilde,
                     "assets/carte/BAS-EN-038-smash-and-grab.jpg",
                     NonPermanent::Type::Action,
@@ -302,11 +356,34 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
                     });
 
+    addNonPermanent(res, 1, "Dark Reward", 5, Faction::Necros,
+                    "assets/carte/BAS-EN-044-dark-reward.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<GainGold>(3),
+                            std::make_shared<SacrificeCard>()
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(6)} }
+                    });
+
     addChampion(    res, 2, "Death Cultist", 2, Faction::Necros,
                     "assets/carte/BAS-EN-045-death-cultist.jpg",
                     3, true,
                     {
+
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(2)} },
+                    });
+
+    addNonPermanent(res, 3, "Death Touch", 1, Faction::Necros,
+                    "assets/carte/BAS-EN-047-death-touch.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(2),
+                            std::make_shared<SacrificeCard>()
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(2)} }
                     });
     
     addNonPermanent(res, 3, "Influence", 2, Faction::Necros,
@@ -316,6 +393,28 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnPlay, {std::make_shared<GainGold>(3)} },
                         {EventType::OnDelete, {std::make_shared<DamageEffect>(3)} }
                     });
+
+    addChampion(    res, 1, "Krythos, Master Vampire", 7, Faction::Necros,
+                    "assets/carte/BAS-EN-054-krythos-master-vampire.jpg",
+                    6, false,
+                    {
+                        {EventType::OnEngage, {
+                            std::make_shared<DamageEffect>(3),
+                            std::make_shared<SacrificeCard>(3)
+                        } },
+                    });
+
+    addNonPermanent(res, 1, "Life Drain", 6, Faction::Necros,
+                    "assets/carte/BAS-EN-055-life-drain.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(8),
+                            std::make_shared<SacrificeCard>(),
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
+                    });
+
     addChampion(    res, 1, "Varrick, the Necromancer", 5, Faction::Necros,
                     "assets/carte/BAS-EN-060-varrick-the-necromancer.jpg",
                     3, false,
@@ -323,6 +422,15 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnEngage, {std::make_shared<RecupCard>(1,TypeCarte::Champion,ZoneType::Defausse,ZoneType::Pioche)} },
                         {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
                     });
+
+    addChampion(    res, 1, "Broelyn, Loreweaver", 4, Faction::Sauvage,
+                    "assets/carte/HRBAS_Card_BroelynLoreweaver.jpg",
+                    6, false,
+                    {
+                        {EventType::OnEngage, {std::make_shared<GainGold>(2)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DiscardCard>(1)} }
+                    });
+
     addChampion(    res, 1, "Cron, the Berserker", 6, Faction::Sauvage,
                     "assets/carte/BAS-EN-062-cron-the-berserker.jpg",
                     6, false,
@@ -339,12 +447,64 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(4)} }
                     });
 
+    addNonPermanent(res, 2, "Elven Curse", 3, Faction::Sauvage,
+                    "assets/carte/BAS-EN-064-elven-curse.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(6),
+                            std::make_shared<DiscardCard>(1)
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(3)} }
+                    });
+
+    addNonPermanent(res, 1, "Nature's Bounty", 4, Faction::Sauvage,
+                    "assets/carte/BAS-EN-064-elven-curse.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {std::make_shared<GainGold>(4)} },
+                        {EventType::OnAllyEnter, {std::make_shared<DiscardCard>(1)} },
+                        {EventType::OnDelete, {std::make_shared<DamageEffect>(4)} }
+                    });
+
     addChampion(    res, 2, "Orc Grunt", 3, Faction::Sauvage,
                     "assets/carte/BAS-EN-071-orc-grunt.jpg",
                     3, true,
                     {
                         {EventType::OnEngage, {std::make_shared<DamageEffect>(2)} },
                         {EventType::OnAllyEnter, {std::make_shared<DrawCard>(1)} }
+                    });
+
+    addChampion(    res, 1, "Torgen Rocksplitter", 7, Faction::Sauvage,
+                    "assets/carte/BAS-EN-074-torgen-rocksplitter.jpg",
+                    7, true,
+                    {
+                        {EventType::OnEngage, {
+                            std::make_shared<DamageEffect>(4),
+                            std::make_shared<DiscardCard>(1)
+                        } },
+                    });
+
+    addNonPermanent(res, 3, "Spark", 1, Faction::Sauvage,
+                    "assets/carte/BAS-EN-075-spark.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(3),
+                            std::make_shared<DiscardCard>(1)
+                        } },
+                        {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(2)} }
+                    });
+
+    addNonPermanent(res, 1, "Wolf Form", 5, Faction::Sauvage,
+                    "assets/carte/BAS-EN-078-wolf-form.jpg",
+                    NonPermanent::Type::Action,
+                    {
+                        {EventType::OnPlay, {
+                            std::make_shared<DamageEffect>(8),
+                            std::make_shared<DiscardCard>(1)
+                        } },
+                        {EventType::OnDelete, {std::make_shared<DamageEffect>(2)} }
                     });
 
     addChampion(    res, 2, "Wolf Shaman", 2, Faction::Sauvage,
@@ -357,8 +517,8 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
 
 
 
-
-    auto rng = std::default_random_engine {};
+    auto rd = std::random_device {}; 
+    auto rng = std::default_random_engine { rd() };
     std::shuffle(std::begin(res), std::end(res), rng);
 
     return res;
