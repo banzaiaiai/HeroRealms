@@ -2,11 +2,14 @@
 #include "backEnd/Carte/Carte.hpp"
 #include "backEnd/Effect/DrawCard.hpp"
 #include "backEnd/Effect/GainGold.hpp"
+#include "backEnd/Effect/IEffect.hpp"
 #include "backEnd/Effect/NextCardRecup.hpp"
 #include "backEnd/Effect/RecupCard.hpp"
+#include "backEnd/Effect/OrEffect.hpp"
 #include "backEnd/Joueur.hpp"
 #include "frontEnd/ZoneCarte.hpp"
 #include <memory>
+#include <vector>
 
 
 // Fonction utilitaire privée
@@ -142,16 +145,19 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         } },
                     });
 
-    addNonPermanent(res, 1, "Domination", 7, Faction::Imperiale,
-                    "assets/carte/BAS-EN-005-domination.jpg",
-                    NonPermanent::Type::Action,
+    addChampion(    res, 1, "Darian, War Mage", 4, Faction::Imperiale,
+                    "assets/carte/BAS-EN-004-darian-war-mage.jpg",
+                    5, false,
                     {
-                        {EventType::OnPlay, {
-                            std::make_shared<DamageEffect>(6),
-                            std::make_shared<HealEffect>(6),
-                            std::make_shared<DrawCard>(1)
-                        } },
-                        {EventType::OnAllyEnter, {std::make_shared<PrepareChampion>()} }
+                        {EventType::OnEngage, {
+                                std::make_shared<OrEffect>(
+                                    std::string("darian-war-mage"),
+                                    std::vector<std::shared_ptr<IEffect>>{
+                                        std::make_shared<DamageEffect>(3),
+                                        std::make_shared<HealEffect>(4)
+                                    }
+                                )
+                    }}
                     });
 
     addChampion(    res, 1, "Cristov, the Just", 5, Faction::Imperiale,
