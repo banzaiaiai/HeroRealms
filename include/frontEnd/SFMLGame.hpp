@@ -45,6 +45,7 @@ private:
     Button _buttonpioche1;
     Button _buttonpioche2;
 
+    Button _buttonToutJouer;
 
     Button _buttondeffausse;
     Button _buttonMarcher;

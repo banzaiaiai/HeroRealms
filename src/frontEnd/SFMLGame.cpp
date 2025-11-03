@@ -32,6 +32,7 @@ SFMLGame::SFMLGame(Partie* partie)
     _buttonpioche2("pioche2", sf::Vector2f(1060, 20), sf::Vector2f(80, 120)),
     _buttondeffausse("deffausse", sf::Vector2f(1060, 335), sf::Vector2f(80, 120)),
 
+    _buttonToutJouer("tout jouer", sf::Vector2f(155,430), sf::Vector2f(200,50)),
 
     _buttonMarcher("Marcher", sf::Vector2f(400,330), sf::Vector2f(500,145)),
 
@@ -217,6 +218,12 @@ void SFMLGame::processEvents() {
                     std::cout << "Defausse generale cliquée" << std::endl;
                     _overlay.openOverlay("defausse general",_partie->getDefausseCommune());
                 }
+                else if (_buttonToutJouer.isMouseOver(_window) && event.mouseButton.button == sf::Mouse::Left) {
+                    while (_partie->getJoueurActuelle()->getMain().size()!=0) {
+                        int carteID = _partie->getJoueurActuelle()->getMain().front()->getId();
+                        _partie->getJoueurActuelle()->jouerCarte(carteID);
+                    }
+                }
                 else if (event.mouseButton.button == sf::Mouse::Left) {
                     handleMouseClick(event.mouseButton.x, event.mouseButton.y);
                 }
@@ -234,6 +241,7 @@ void SFMLGame::processEvents() {
                         }
                     }
                 }
+                
                 
                 break;
                 
@@ -409,6 +417,7 @@ void SFMLGame::update() {
     _buttonpioche2.update(_window);
     _buttondeffausse.update(_window);
     _buttonMarcher.update(_window);
+    _buttonToutJouer.update(_window);
 }
 
 void SFMLGame::render() {
@@ -424,6 +433,7 @@ void SFMLGame::render() {
     _buttonpioche1.draw(_window);
     _buttonpioche2.draw(_window);
     _buttondeffausse.draw(_window);
+    _buttonToutJouer.draw(_window);
    
 
     // Dessiner les cartes graphiques
