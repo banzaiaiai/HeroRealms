@@ -1,6 +1,7 @@
 #include "backEnd/InitCarte.hpp"
 #include "backEnd/Carte/Carte.hpp"
 #include "backEnd/Effect/DrawCard.hpp"
+#include "backEnd/Effect/DrawDiscard.hpp"
 #include "backEnd/Effect/GainGold.hpp"
 #include "backEnd/Effect/IEffect.hpp"
 #include "backEnd/Effect/NextCardRecup.hpp"
@@ -277,7 +278,7 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                     });
                     
     addNonPermanent(res, 1, "Deception", 5, Faction::Guilde, 
-                    "assets/carte/BAS-EN-26-deception.jpg",
+                    "assets/carte/BAS-EN-026-deception.jpg",
                     NonPermanent::Type::Action,
                     {
                         {EventType::OnPlay,{std::make_shared<GainGold>(2),
@@ -513,7 +514,15 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         } },
                         {EventType::OnAllyEnter, {std::make_shared<DamageEffect>(3)} }
                     });
-
+    addChampion(    res, 1, "Grak,Storm Giant",8 , Faction::Sauvage,
+                    "assets/carte/BAS-EN-069-grak-storm-giant.jpg",
+                    7, true,
+                    {
+                        {EventType::OnEngage, {std::make_shared<DamageEffect>(6),
+                        std::make_shared<DrawDiscard>()} },
+                        {EventType::OnAllyEnter, {std::make_shared<DrawDiscard>()} }
+                    });
+                    
     addNonPermanent(res, 1, "Nature's Bounty", 4, Faction::Sauvage,
                     "assets/carte/BAS-EN-064-elven-curse.jpg",
                     NonPermanent::Type::Action,
