@@ -218,6 +218,21 @@ std::vector<std::unique_ptr<Carte>> InitCarte::marcher() {
                         {EventType::OnAllyEnter, {std::make_shared<GainGold>(1)} }
                     });
 
+    addChampion(    res, 2, "Tithe Priest", 2, Faction::Imperiale,
+                    "assets/carte/BAS-EN-015-tithe-priest.jpg",
+                    3, false,
+                    {
+                        {EventType::OnEngage, {
+                                std::make_shared<OrEffect>(
+                                    std::string("tithe-priest"),
+                                    std::vector<std::shared_ptr<IEffect>>{
+                                        std::make_shared<GainGold>(1),
+                                        std::make_shared<HealEffect>(0, OccurenceType::Champion, 1)
+                                    }
+                                )
+                    }}
+                    });
+
     addNonPermanent(res, 3, "Taxation", 1, Faction::Imperiale,
                     "assets/carte/BAS-EN-017-taxation.jpg",
                     NonPermanent::Type::Action,
