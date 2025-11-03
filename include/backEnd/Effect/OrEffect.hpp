@@ -11,10 +11,10 @@
 class OrEffect : public IEffect {
 private:
     std::string _name;
-    std::vector<IEffect> _listeEffect;
+    std::vector<std::shared_ptr<IEffect>> _listeEffect;
     
 public:
-    OrEffect(std::string name, std::vector<IEffect> listeEffect);
+    OrEffect(const std::string& name, const std::vector<std::shared_ptr<IEffect>>& listeEffect);
 
     ~OrEffect() override = default;
     
