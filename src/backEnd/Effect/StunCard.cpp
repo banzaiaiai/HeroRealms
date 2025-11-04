@@ -32,7 +32,7 @@ void StunCard::applyEffect(Joueur *joeur){
             std::cerr << "La carte ciblée n'est pas un Champion" << std::endl;
             continue;
         }
-        ch->setActiver(true);
+        autreJoueur->defausserCarte(carteId, ZoneType::Plateau);
         std::cout << "Champion stun avec succès" << std::endl;
         
         break;
