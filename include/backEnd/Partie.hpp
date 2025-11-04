@@ -111,7 +111,7 @@ public:
     /**
      * Remplit la rivière jusqu'à avoir N cartes
      */
-    void remplirRiviere(int nombreCartes);
+    void remplirRiviere();
     void setMarcher(std::vector<std::unique_ptr<Carte>> marcher);
     // === GESTION DU JEU ===
     

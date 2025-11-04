@@ -21,8 +21,10 @@ Partie::Partie()
     Joueur joueur2(1, this, "Bob");
     
     // Initialiser les decks des joueurs (transfert de propriété)
-    joueur1.initialiserDeck(std::move(InitCarte::deckDeBase()));
-    joueur2.initialiserDeck(std::move(InitCarte::deckDeBase()));
+    auto deck1= InitCarte::deckDeBase();
+    auto deck2= InitCarte::deckDeBase();
+    joueur1.initialiserDeck(std::move(deck1));
+    joueur2.initialiserDeck(std::move(deck2));
     
     // Ajouter les joueurs à la partie
     ajouterJoueur(std::move(joueur1));
@@ -240,7 +242,7 @@ std::unique_ptr<Carte> Partie::retirerGemmeFeu(int carteId) {
     return nullptr;
 }
 
-void Partie::remplirRiviere(int nombreCartes) {
+void Partie::remplirRiviere() {
     // Cette méthode pourrait piocher depuis un deck commun
     // Pour l'instant, c'est juste un placeholder
     std::cout << "Remplissage de la rivière (à implémenter)" << std::endl;
