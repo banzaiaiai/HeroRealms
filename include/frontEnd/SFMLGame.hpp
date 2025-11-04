@@ -21,6 +21,7 @@ class ZoneCarte;
  */
 class SFMLGame {
 private:
+    sf::RenderWindow _window;
     Partie* _partie;  // Pointeur non-owning vers la partie
     GestionnaireZones _zones;
     
@@ -45,12 +46,13 @@ private:
     Button _buttonpioche1;
     Button _buttonpioche2;
 
+    Button _buttondeffausse;
     Button _buttonToutJouer;
 
-    Button _buttondeffausse;
+   
     Button _buttonMarcher;
 
-    sf::RenderWindow _window;
+    
     sf::Font _font;
     sf::Text _textJoueur1;
     sf::Text _textJoueur2;

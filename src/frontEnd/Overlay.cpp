@@ -5,7 +5,7 @@
 Overlay::Overlay(): _zoneCarte(0, 0, 1000, 600, "overlay",
                                sf::Color(100, 255, 100, 100)) {}
 
-const int Overlay::openOverlay(std::vector<const Carte*> listCarte,
+int Overlay::openOverlay(std::vector<const Carte*> listCarte,
                                   std::string titre) {
     _listCarte = listCarte;
     
