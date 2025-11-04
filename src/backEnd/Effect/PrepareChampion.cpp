@@ -13,7 +13,7 @@ void PrepareChampion::applyEffect(Joueur *joueur) {
         int carteId = overlay.openOverlay("SelectChampion", joueur->getPlateau());
         if (carteId == -1) {
             std::cerr << "Aucune carte sélectionnée pour l'engagement." << std::endl;
-            continue; // Sortir si aucune carte n'est sélectionnée    
+            break; // Sortir si aucune carte n'est sélectionnée    
         }
         Carte* carteJouee = joueur->getCarteById(carteId);
         if (!carteJouee) {
