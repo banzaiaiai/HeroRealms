@@ -1,73 +1,224 @@
-#ifndef JOUEUR_H
-#define JOUEUR_H
+#ifndef JOUEUR_HPP
+#define JOUEUR_HPP
 
-#include "backEnd/Carte/Carte.hpp"
-#include "backEnd/Carte/NonPermanent.hpp"
-#include <string>
+
+#include <iostream>
 #include <vector>
+#include <memory>
+#include <string>
+#include <algorithm>
+#include <random>
 
-// Forward declaration pour Partie
+class Carte;
 class Partie;
 
+enum class TypeCarte {
+    Champion,
+    Action,
+    Tous
+};
+
+enum class ZoneType {
+    Pioche,
+    Main,
+    Plateau,
+    Defausse,
+    DefausseCommune
+};
+
+/**
+ * Classe Joueur - Possède ses cartes via unique_ptr
+ * Gestion claire de l'ownership et des transferts
+ */
 class Joueur {
 private:
     int _id;
-    Partie* _partie;
-    std::string _name;
-    int _nbCarteCte;
+    int _pv;
     int _or;
     int _degat;
-    int _pv;
+    int _compteurDefausse=0;
+
+    bool _godMode;
     
-    std::vector<Carte> _main;
-    std::vector<Carte> _pioche;
-    std::vector<Carte> _defausse;
-    std::vector<Carte> _plateau;
+    std::string _nom;
+    Partie* _partie;  // Non-owning pointer vers la partie
+    
+    // Les cartes sont POSSÉDÉES par le joueur
+    std::vector<std::unique_ptr<Carte>> _pioche;
+    std::vector<std::unique_ptr<Carte>> _main;
+    std::vector<std::unique_ptr<Carte>> _plateau;
+    std::vector<std::unique_ptr<Carte>> _defausse;
+
+    // Pour gérer l'effet RecupCard 
+    bool _nextAchat=false;
+    TypeCarte _typecarteRecup=TypeCarte::Tous;
+    ZoneType _zoneRecup=ZoneType::Main;
 
 public:
-    // Constructeur et destructeur
-    Joueur();
-    Joueur(int id, Partie* partie, std::string name);  // Prend un pointeur
+
+    // Constructeur
+    Joueur(int id, Partie* partie, const std::string& nom);
+    
+    // Destructeur
     ~Joueur();
+    
+    // Pas de copie (unique_ptr non copiable)
+    Joueur(const Joueur&) = delete;
+    Joueur& operator=(const Joueur&) = delete;
+    
+    // Move autorisé
+    Joueur(Joueur&&) noexcept = default;
+    Joueur& operator=(Joueur&&) noexcept = default;
+    
+    // === GETTERS ===
+    int getId() const { return _id; };
+    int getPv() const { return _pv; };
+    int getOr() const { return _or; };
+    int getDegat() const { return _degat; };
+    std::string getNom() const { return _nom; };
+    Partie* getPartie()  { return _partie; };
+    int getCompteurDefausse() const {
+        return _compteurDefausse;
+    };
+    bool getNextAchat() const {
+        return _nextAchat;
+    };
+    TypeCarte getTypecarteRecup() const {
+        return _typecarteRecup;
+    };
+    ZoneType getZoneRecup() const {
+        return _zoneRecup;
+    };
+    bool getGodMode() const {
+        return _godMode;
+    }
+    
+    // Accès en lecture seule aux zones (retourne des pointeurs non-owning)
+    std::vector<const Carte*> getPioche() const;
+    std::vector<const Carte*> getMain() const;
+    std::vector<const Carte*> getPlateau() const;
+    std::vector<const Carte*> getDefausse() const;
+    
+    // Accès par ID
+    const Carte* getCarteById(int carteId) const;
+    // mutable access (cherche dans les zones et retourne un pointeur modifiable)
+    Carte* getCarteById(int carteId);
+    
+    // === SETTERS ===
+    void setPv(int pv) { _pv = pv; }
+    void setOr(int or_) { _or = or_; }
+    void setDegat(int degat) {_degat = degat; }
+    void ajouterDegat(int degat) { _degat += degat; }
+    void retirerDegat(int degat) { _degat += degat; }
+    void ajouterOr(int montant) { _or += montant; }
+    void retirerOr(int montant) { _or -= montant; }
+    void ajouterPV(int heal) { _pv += heal; }
+    void retirerPV(int heal) { _pv -= heal; }
+    void setCompteurDefausse(int count){
+        _compteurDefausse=count;
+    };
+    void addCompteurDefausse(int count){
+        _compteurDefausse += count;
+    };
+    void setNextAchat(bool nextAchat){
+        _nextAchat=nextAchat;
+    };
+    void setTypecarteRecup(TypeCarte typecarte){
+        _typecarteRecup=typecarte;
+    };
+    void setZoneRecup(ZoneType zone){
+        _zoneRecup=zone;
+    };
+    void setGodMode( bool godMode){
+        _godMode=godMode;
+    };
+    
+    // === GESTION DES CARTES ===
+    
+    /**
+     * Ajoute une carte dans une zone spécifique
+     * Prend possession de la carte
+     */
+    void ajouterCarte(std::unique_ptr<Carte> carte, ZoneType zone);
+    
+    /**
+     * Retire une carte d'une zone par son ID
+     * Transfère la propriété à l'appelant
+     * @return unique_ptr vers la carte (nullptr si non trouvée)
+     */
+    std::unique_ptr<Carte> retirerCarte(int carteId, ZoneType zone);
+    
+    /**
+     * Déplace une carte d'une zone à une autre
+     * @return true si le déplacement a réussi
+     */
+    bool deplacerCarte(int carteId, ZoneType source, ZoneType destination);
+    
+    /**
+     * Pioche n cartes de la pioche vers la main
+     */
+    void piocher(int nombre);
+    
+    /**
+     * Joue une carte de la main vers le plateau
+     * @return true si la carte a pu être jouée
+     */
+    bool jouerCarte(int carteId);
 
-    // Méthodes
-    void jouerUneCarte(Carte carte);
-    void finDeTour();
-    void activerUneCarte(Carte carte);
-    void defausser(Carte carte);
-    void subitAttaque(Carte carte);
-    void subitAttaque(Joueur* joueur);  // Prend un pointeur
-    void piocher(int nbCarte);
-    void melanger();
-    void viderPlateau();
-    void mouve(Carte& carte, std::vector<Carte>& source, std::vector<Carte>& destination);
-    void mouve(std::vector<Carte>& source, std::vector<Carte>& destination);
+    /**
+     * Gère les effets de famille lors du jeu d'une carte
+     * TO DO: implémenter les effets spécifiques
+     */
+    void effetfamille(Carte* carteJouee);
+    
+    /**
+    * Permet d'engager une carte et de faire son effet
+    */
+    bool engagerCarte(int carteID);
+    /**
+     * Défausse une carte depuis n'importe quelle zone
+     */
+    void defausserCarte(int carteId, ZoneType source);
+    
+    void defausserCarte(int count);
+    /**
+     * Crée le deck initial du joueur
+     * Transfert de propriété depuis un vecteur externe
+     */
+    void initialiserDeck(std::vector<std::unique_ptr<Carte>> deck);
 
-    // Getters
-    inline int getId() const { return _id; }
-    inline Partie* getPartie() const { return _partie; }  // Retourne un pointeur
-    inline std::string getName() const { return _name; }
-    inline int getNbCarte() const { return _nbCarteCte; }
-    inline int getOr() const { return _or; }
-    inline int getDegat() const { return _degat; }
-    inline int getPv() const { return _pv; }
-    inline std::vector<Carte> getMain() const { return _main; }
-    inline std::vector<Carte> getPioche() const { return _pioche; }
-    inline std::vector<Carte> getDefausse() const { return _defausse; }
-    inline std::vector<Carte> getPlateau() const { return _plateau; }
+    /**
+     * Mélange la pioche interne du joueur.
+     */
+    void melangerPioche();
 
-    // Setters
-    inline void setId(int id) { _id = id; }
-    inline void setPartie(Partie* partie) { _partie = partie; }  // Prend un pointeur
-    inline void setName(std::string name) { _name = name; }
-    inline void setNbCarte(int nbCarte) { _nbCarteCte = nbCarte; }
-    inline void setOr(int ore) { _or = ore; }
-    inline void setDegat(int degat) { _degat = degat; }
-    inline void setPv(int pv) { _pv = pv; }
-    inline void setMain(std::vector<Carte> main) { _main = main; }
-    inline void setPioche(std::vector<Carte> pioche) { _pioche = pioche; }
-    inline void setDefausse(std::vector<Carte> defausse) { _defausse = defausse; }
-    inline void setPlateau(std::vector<Carte> plateau) { _plateau = plateau; }
+    bool possedeGardien() const;
+
+    bool possedeChampion() const;
+
+    // FIn de tour reset
+    void resetAll(){
+        _degat=0;
+        _or=0;
+    }
+
+    void defausserCarte();
+    
+    void recevoirDegat(int montant);
+
+    
+    std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type);
+private:
+    // Méthodes helper
+    
+    const std::vector<std::unique_ptr<Carte>>& getZone(ZoneType type) const;
+    
+    /**
+     * Trouve une carte par ID dans une zone
+     * @return Itérateur vers la carte (ou end() si non trouvée)
+     */
+    std::vector<std::unique_ptr<Carte>>::iterator 
+        trouverCarte(int carteId, std::vector<std::unique_ptr<Carte>>& zone);
 };
 
-#endif // JOUEUR_H
+#endif // JOUEUR_HPP

@@ -7,10 +7,11 @@
         "${workspaceFolder}/include/backEnd",
         "${workspaceFolder}/include/backEnd/Carte",
         "${workspaceFolder}/include/backEnd/Effect",
+        "${workspaceFolder}/include/frontEnd",
         "${workspaceFolder}/src",
         "${workspaceFolder}/src/backEnd",
         "${workspaceFolder}/src/backEnd/Carte", 
-        "${workspaceFolder}/src/backEnd/Effect",
+        "${workspaceFolder}/src/frontEnd",
         "/usr/include",
         "/usr/include/c++/*",
         "/usr/include/x86_64-linux-gnu/c++/*"
@@ -26,6 +27,7 @@
           "${workspaceFolder}/include/backEnd",
           "${workspaceFolder}/include/backEnd/Carte",
           "${workspaceFolder}/include/backEnd/Effect",
+          "${workspaceFolder}/include/frontEnd",
           "${workspaceFolder}/src",
           "/usr/include",
           "/usr/lib/gcc/x86_64-linux-gnu/*/include"

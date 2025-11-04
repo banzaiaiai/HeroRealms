@@ -4,17 +4,20 @@
 #include "backEnd/Carte/Carte.hpp"
 
 class NonPermanent : public Carte {
+public:
+    enum class Type { Object, Action };
+
 private:
-    enum Type { Object, Action } _type;
+    Type _type;
 
 public:
-    NonPermanent();
+    NonPermanent(const std::string& name, int coupOr, Faction faction,
+                 std::string imagePath, Type type); 
     ~NonPermanent();
-    // Getters
-    inline Type getType() const { return _type; }
 
-    // Setters
-    inline void setType(Type type) { _type = type; }
+    Type getType() const { return _type; };
+
+    bool estChampion() const override { return false; }
 };
 
 #endif // NONPERMANENT_H

@@ -1,37 +1,98 @@
-#ifndef CARTE_H
-#define CARTE_H
+#ifndef CARTE_HPP
+#define CARTE_HPP
 
+#include "backEnd/Joueur.hpp"
 #include <string>
+#include <vector>
+#include <map>
+#include <memory>
+#include <iostream>
+#include <SFML/Graphics.hpp>
 
 // Forward declaration
-class Joueur;
-
-class Carte {
-protected:
-    Joueur* _joueur;  // POINTEUR au lieu d'objet
-    std::string _name;
-    enum Faction { FACTION1, FACTION2, FACTION3 } _faction;
-    int _coupOr;
-
-public:
-    Carte();
-    ~Carte();
-    //virtual void effect(enum effect) = 0;
-
-    // Getters
-    inline Joueur* getJoueur() const { return _joueur; }  // Retourne un pointeur
-    inline std::string getName() const { return _name; }
-    inline Faction getFaction() const { return _faction; }
-    inline int getCoupOr() const { return _coupOr; }
-
-    // Setters
-    inline void setJoueur(Joueur* joueur) { _joueur = joueur; }  // Prend un pointeur
-    inline void setName(std::string name) { _name = name; }
-    inline void setFaction(Faction faction) { _faction = faction; }
-    inline void setCoupOr(int coupOr) { _coupOr = coupOr; }
-
-    // Operateur
-    bool operator==(const Carte & other) const;
+class IEffect;
+class Partie;
+enum class EventType {
+    OnPlay,
+    OnTurnStart,
+    OnAllyEnter,
+    OnDelete,
+    OnEngage
 };
 
-#endif // CARTE_H
+enum class Faction {
+    Neutre,
+    Imperiale,
+    Guilde,
+    Necros,
+    Sauvage
+};
+
+
+
+/**
+ * Classe Carte - Pure logique métier
+ * Identifiable par un ID unique
+ * NE CONTIENT AUCUNE RÉFÉRENCE À L'AFFICHAGE
+ */
+class Carte {
+private:
+    static int _nextId;  // Compteur global pour générer des IDs uniques
+    
+    int _id;
+    std::string _name;
+    int _coupOr;
+    Faction _faction;
+    std::map<EventType, std::vector<std::shared_ptr<IEffect>>> _trigger;
+    sf::Texture _texture;
+
+public:
+    // methode metier
+
+    void jouer(Joueur *joueur);
+    void jouerFaction(Joueur *joueur);
+    void jouerEngager(Joueur* joueur);
+    bool jouerSacrifice(Joueur* joueur);
+    void declencherEffets(EventType eventType, Joueur* joueur);
+    // Constructeur par défaut
+    Carte();
+    
+    // Constructeur avec paramètres
+    Carte(const std::string& name, int coupOr, Faction faction, std::string imagePath);
+    
+    // Destructeur
+    ~Carte();
+    
+    // Copie interdite (pour éviter les problèmes d'ID dupliqués)
+    Carte(const Carte&) = delete;
+    Carte& operator=(const Carte&) = delete;
+    
+    // Move autorisé
+    Carte(Carte&& other) noexcept;
+    Carte& operator=(Carte&& other) noexcept;
+    
+    // Getters
+    int getId() const { return _id; }
+    std::string getName() const { return _name; }
+    int getCoupOr() const { return _coupOr; }
+    Faction getFaction() const { return _faction; }
+    const sf::Texture& getTexture() const { return _texture; }
+    
+    // Setters
+    void setName(const std::string& name) { _name = name; }
+    void setCoupOr(int cout) { _coupOr = cout; }
+    void setFaction(Faction faction) { _faction = faction; }
+    
+    // Gestion des effets
+    void addTrigger(EventType eventType, std::vector<std::shared_ptr<IEffect>> effects);
+    const std::vector<std::shared_ptr<IEffect>>* getEffects(EventType eventType) const;
+    
+    // Comparaison par ID uniquement
+    bool operator==(const Carte& other) const { return _id == other._id; }
+    bool operator!=(const Carte& other) const { return _id != other._id; }
+
+    // methode de verification 
+    virtual bool estChampion() const  { return false; }
+};
+
+#endif // CARTE_HPP

@@ -1,1 +1,153 @@
-@startumlclass Partie {  List<Joueur> listJoueur  List<Carte> riviére  List<Carte> marcher  Joueur joueurActuelle  int tour = 0  Partie(int nbjoueur=2)  viCtoireDefaite(Joueur joueur)  consuletDefause(Joueur joueur, bool sacrifice)  void acheterUneCarte(Carte carte)  }class Joueur {  int id = 0  Partie partie  string name  int nbCarte  int or   int degat   int pv = 50  vector<Carte> main  vector<Carte> pioche  vector<Carte> defause  vector<Carte> plateau  void jouerUneCarte(Carte carte)  void finDeTour(clean le board   et change la main)  void activerUneCarte(Carte carte)  void defause(Carte carte)  void subitAttaque( Carte carte)  void subitAttaque( Joueur joueur)    }class Godmode {  void methodeBroken()}class Carte {    Joueur joueur  string name  enum Faction   int coupOr  {abstract} void effect(enum effect)}class nonPermanent {  enum Type (Object,Action)  void effect()}class Champion {  int pvActuel  int pvTotal  bool gardien  bool activer  void effect()}class Overlay {  Afficher(List<Carte> listCarte,    function<bool(Carte carte)> fn)    }Partie -- CartePartie -- JoueurJoueur -- CarteCarte -- OverlayCarte <|-- nonPermanentCarte <|-- ChampionJoueur <|-- Godmode@enduml
+@startuml
+left to right direction
+
+class Partie {
+  List<Joueur> listJoueur
+  List<Carte> riviére
+  List<Carte> marcher
+  Joueur joueurActuelle
+  int tour = 0
+  Partie(int nbjoueur=2)
+  viCtoireDefaite(Joueur joueur)
+  consuletDefause(Joueur joueur, bool sacrifice)
+  void acheterUneCarte(Carte carte)
+  
+}
+enum  EventType{
+  OnPlay
+  OnTurnStart
+  OnAllyEnter
+  OnDelete
+}
+struct EffectContext{
+  Game * game 
+  Player * sourcePlayer 
+  Player * targetPlayer
+  Carte * sourceCard
+  Carte * targetCard
+  
+  int damaage = 0 
+  int heal = 0 
+}
+class IEffect {
+  {abstract} int valueByOcc =0
+  {abstract} enum Type =0 
+  {abstract} void execute(EffectContext) = 0
+}
+package "Effect" {
+class DamageEffect{
+  int totalDegat
+  int valueByOcc
+  enum Type
+  void execute(EffectContext)
+}
+class HealEffect{
+  int totalHeal
+  int valueByOcc
+  enum Type
+  void execute(EffectContext)
+}
+class GainGold{
+  int totalGold
+  int valueByOcc
+  enum Type
+  void execute(EffectContext)
+}
+class DrawCard{
+  int totalCard
+  int valueByOcc
+  enum Type
+  bool discard
+  void execute(EffectContext)
+}
+class PrepareChampion{
+  void execute(EffectContext)
+}
+class DiscardCard{
+  void total 
+  void execute(EffectContext)
+}
+class RecupCard{
+  vector<Carte> entrer
+  vector<Carte> sortie
+  void execute(EffectContext)
+}
+class StunCard{
+  void execute(EffectContext)
+}
+class NextCardRecup{
+  
+  void execute(EffectContext)
+}
+}
+
+
+class Joueur {
+  int id = 0
+  Partie partie
+  string name
+  int nbCarte
+  int or 
+  int degat 
+  int pv = 50
+  vector<Carte> main
+  vector<Carte> pioche
+  vector<Carte> defause
+  vector<Carte> plateau
+  void jouerUneCarte(Carte carte)
+  void finDeTour(clean le board 
+  et change la main)
+  void activerUneCarte(Carte carte)
+  void defause(Carte carte)
+  void subitAttaque( Carte carte)
+  void subitAttaque( Joueur joueur)
+  
+  
+}
+class Godmode {
+  void methodeBroken()
+}
+
+class Carte {
+  
+  Joueur joueur
+  string name
+  enum Faction 
+  int coupOr
+  map<EventType,vector<IEffect>> triger
+  
+  void addTrigger(EventType,IEffect)
+  void triger(EventType,EffectContext)
+}
+
+class nonPermanent {
+  enum Type (Object,Action)
+}
+class Champion {
+  int pvActuel
+  int pvTotal
+  bool gardien
+  bool activer
+}
+
+class Overlay {
+  Afficher(List<Carte> listCarte,
+    function<bool(Carte carte)> fn)
+}
+
+Partie -right-> Carte
+Partie -left--> Joueur
+Joueur --> Carte
+Carte <-- Overlay
+Carte --> IEffect
+Carte -right-> EventType
+IEffect -> EffectContext
+Effect -l--|> IEffect
+
+Carte <|-- nonPermanent
+Carte <|-- Champion
+
+
+
+Joueur <|-- Godmode
+@enduml

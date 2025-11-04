@@ -2,16 +2,26 @@
 #define DAMAGEEFFECT_H
 
 #include "backEnd/Effect/IEffect.hpp"
+#include "backEnd/Joueur.hpp"
+#include "backEnd/Carte/Carte.hpp"
+#include "backEnd/Carte/Champion.hpp"
 
 class DamageEffect : public IEffect {
 private:
     int _damage;
+    OccurenceType _occurenceType;
+    int _valueByOccurence;
 
 public:
-    DamageEffect(int damage = 0);
+    DamageEffect(int damage, OccurenceType occurenceType = OccurenceType::None,
+                 int valueByOccurence = 0):
+        _damage(damage),
+        _occurenceType(occurenceType),
+        _valueByOccurence(valueByOccurence) {};
+
     ~DamageEffect() override = default;
     
-    void applyEffect() override;  // Implémentation
+    void applyEffect(Joueur *joueur) override;  // Implémentation
 
     // Getters et setters...
     inline int getDamage() const { return _damage; }

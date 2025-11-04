@@ -2,6 +2,7 @@
 #define DRAWCARD_H
 
 #include "backEnd/Effect/IEffect.hpp"
+#include "backEnd/Joueur.hpp"
 
 class DrawCard : public IEffect {
 private:
@@ -10,13 +11,7 @@ private:
 public:
     DrawCard(int count=0);
     ~DrawCard() override = default;
-    void applyEffect() override;
-
-    // Getters
-    inline int getCount() const { return _count; }
-
-    // Setters
-    inline void setCount(int count) { _count = count; }
+    void applyEffect(Joueur * joueur) override;
 };
 
 #endif // DRAWCARD_H
