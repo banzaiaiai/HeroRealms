@@ -165,7 +165,7 @@ void SFMLGame::processEvents() {
                 
                 if(_buttonAtacker.isMouseOver(_window) and event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "Attaque cliquée" << std::endl;
-                    if(_partie->getJoueurActuelle()->getDegat()>0 ){
+                    if(_partie->getJoueurActuelle()->getDegat()>0){
                         const Carte jouerCible = Carte("Joueur",0,Faction::Neutre,"assets/alternative_carte/none.jpg");
                         std::vector<const Carte*> cible;
                         cible.push_back(&jouerCible);

@@ -11,7 +11,7 @@
 Joueur::Joueur(int id, Partie* partie, const std::string& nom)
     : _id(id),
       _pv(20),
-      _or(50),
+      _or(0),
       _degat(0),
       _nom(nom),
       _partie(partie)
