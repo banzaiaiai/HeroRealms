@@ -32,7 +32,7 @@ Partie::Partie()
 
     // Piocher les mains de départ
     std::cout << "Pioche des mains de départ..." << std::endl;
-    getJoueurParId(0)->piocher(5);
+    getJoueurParId(0)->piocher(3);
 
 
     // La Pioche
