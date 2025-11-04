@@ -13,6 +13,7 @@ Joueur::Joueur(int id, Partie* partie, const std::string& nom)
       _pv(20),
       _or(0),
       _degat(0),
+      _godMode(false),
       _nom(nom),
       _partie(partie)
 
